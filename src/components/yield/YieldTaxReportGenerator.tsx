@@ -34,8 +34,8 @@ import { useCallback, useEffect, useState } from "react";
 import { TaxPlatform } from "@/utils/csvExport";
 import { useVaultYieldHarvest } from "@/hooks/useVaultYieldHarvest";
 import { useWallet } from "@/hooks/useWallet";
-import { getCachedPrices, PriceData } from "@/lib/priceStorage";
-import { signCsvContent, type SigningResult } from "@/components/yield/sign";
+import { PriceData, getCachedPrices } from "@/lib/priceStorage";
+import { type SigningResult, signCsvContent } from "@/components/yield/sign";
 
 /** Shape of a single row in the generated tax report. */
 export interface YieldTaxReportRow {

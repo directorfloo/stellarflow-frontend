@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { useDeferredHydration } from '@/hooks/useDeferredHydration';
 
 interface DeferredHydrationBoundaryProps {

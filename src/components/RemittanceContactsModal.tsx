@@ -1,5 +1,5 @@
 // src/components/RemittanceContactsModal.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Contact {
   id: string;
@@ -89,7 +89,7 @@ export const RemittanceContactsModal: React.FC<RemittanceContactsModalProps> = (
           if (Array.isArray(parsed)) {
             saveContacts(parsed);
           }
-        } catch (err) {
+        } catch (_err) {
           setError('Invalid backup file format');
         }
       };

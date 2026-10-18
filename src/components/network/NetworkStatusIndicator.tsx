@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { formatLatencyDisplay } from "@/config/rpcNodes";
-import { useNetworkHeartbeat, type UseNetworkHeartbeatReturn } from "@/hooks/useNetworkHeartbeat";
+import { type UseNetworkHeartbeatReturn, useNetworkHeartbeat } from "@/hooks/useNetworkHeartbeat";
 import { NodeFailoverDropdown } from "./NodeFailoverDropdown";
 
 export interface NetworkStatusIndicatorProps {

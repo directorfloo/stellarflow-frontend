@@ -2,13 +2,13 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertTriangle, ArrowLeft, CheckCircle2, CircleHelp, LoaderCircle, X } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CircleHelp, LoaderCircle, X, CheckCircle2 as _CheckCircle2 } from "lucide-react";
 import {
+  type SEP24Operation,
   createSEP24InteractiveUrl,
   getConfiguredSEP24AnchorOrigins,
   parseSEP24AnchorMessage,
   validateSEP24InteractiveUrl,
-  type SEP24Operation,
 } from "@/lib/sep24Interactive";
 
 type ModalStatus = "idle" | "loading-url" | "ready" | "failed";

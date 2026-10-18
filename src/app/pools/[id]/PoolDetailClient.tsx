@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { PoolFeeApyTrendChart, type PoolApyDataPoint } from '@/components/charts/PoolFeeApyTrendChart';
+import { type PoolApyDataPoint, PoolFeeApyTrendChart } from '@/components/charts/PoolFeeApyTrendChart';
 import { PoolReserveMonitor } from '@/components/amm/PoolReserveMonitor';
 
 interface PoolDetailClientProps {

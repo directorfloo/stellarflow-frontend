@@ -9,7 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Lock, Delete, ShieldCheck, Clock, AlertCircle, Trash2 } from 'lucide-react';
+import { AlertCircle, Clock, Delete, Lock, ShieldCheck, Trash2 } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Types

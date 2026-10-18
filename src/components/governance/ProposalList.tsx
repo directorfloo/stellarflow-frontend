@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { subscribe } from "@/workers/masterTimerWorker";
 import { useDebounce } from "@/app/hooks/useDebounce";
 import { withShortenedAddressField } from "@/utils/addressUtils";
@@ -9,7 +9,7 @@ import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
   PROPOSAL_STATUS_BADGE_VARIANTS,
-  PROPOSAL_STATUS_DOT_VARIANTS,
+  PROPOSAL_STATUS_DOT_VARIANTS as _PROPOSAL_STATUS_DOT_VARIANTS,
 } from "@/lib/classNameVariants";
 
 // ─────────────────────────────────────────────────────────────────────────────

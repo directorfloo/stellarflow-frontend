@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  ShieldAlert,
-  ShieldCheck,
+  Activity,
   AlertTriangle,
-  RefreshCw,
-  Filter,
-  Search,
-  ExternalLink,
-  Copy,
+  Bug,
   Check,
-  Terminal,
   ChevronDown,
   ChevronUp,
-  Sparkles,
-  Bug,
-  Activity,
+  Copy,
+  RefreshCw,
+  Search,
+  ShieldAlert,
+  ShieldCheck,
   Sliders,
+  Sparkles,
+  Terminal,
+  ExternalLink as _ExternalLink,
+  Filter as _Filter,
 } from "lucide-react";
 import type {
   CspAggregatedMetrics,

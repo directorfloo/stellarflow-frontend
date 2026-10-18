@@ -10,7 +10,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Responsive, useContainerWidth, type Layout } from "react-grid-layout";
+import { type Layout, Responsive, useContainerWidth } from "react-grid-layout";
 import "react-grid-layout/css/styles.css";
 
 import Icon from "@/components/icons/Icon";

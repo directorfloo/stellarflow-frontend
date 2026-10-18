@@ -186,7 +186,7 @@ export const CSP_REPORT_ENDPOINT = "/api/v1/security/csp-report";
 export function formatCspPayload(
   event: SecurityPolicyViolationEvent | Partial<CspViolationMetadata>
 ): CspViolationMetadata {
-  const isEvent = typeof (event as SecurityPolicyViolationEvent).blockedURI !== "undefined";
+  const _isEvent = typeof (event as SecurityPolicyViolationEvent).blockedURI !== "undefined";
 
   const blockedURI = event.blockedURI || "unknown";
   const violatedDirective = event.violatedDirective || "unknown";
@@ -334,7 +334,7 @@ export function reportManualCspViolation(
   return sendCspReport(payload);
 }
 
-export default {
+const cspReporter = {
   initCspReporter,
   destroyCspReporter,
   formatCspPayload,
@@ -342,3 +342,5 @@ export default {
   sendCspReport,
   reportManualCspViolation,
 };
+
+export default cspReporter;

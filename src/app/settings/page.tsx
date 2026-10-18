@@ -9,18 +9,25 @@ import { openPushPreferencesModal } from '@/components/notifications';
 import { loadPreferences } from '@/services/notifications';
 import { useTransactionAudio } from '@/hooks/useTransactionAudio';
 import { useHapticFeedback } from '@/hooks/useHapticFeedback';
-import { useScreenLock, ScreenLockModal } from '@/components/security/ScreenLockModal';
+import { ScreenLockModal as _ScreenLockModal, useScreenLock } from '@/components/security/ScreenLockModal';
 import { AutoLockSettings } from '@/components/security/AutoLockSettings';
 import { useTransactionHistoryWithFallback } from '@/app/hooks/useTransactionHistory';
-import { exportTransactionsToCsv, type TaxPlatform } from '@/utils/csvExport';
+import { type TaxPlatform, exportTransactionsToCsv } from '@/utils/csvExport';
 import { useToast } from '@/components/ui/ToastQueue';
 import { useDashboardCustomizer } from '@/components/dashboard/useDashboardCustomizer';
-import { WalletNonceResync } from '@/components/wallet/WalletNonceResync';
+import { WalletNonceResync as _WalletNonceResync } from '@/components/wallet/WalletNonceResync';
 import { useZKProofLoader } from '@/components/zk/useZKProofLoader';
-import { useThemeContext, type Theme } from '@/context/ThemeContext';
+import { type Theme, useThemeContext } from '@/context/ThemeContext';
 import { CustomTokenSettings } from '@/components/tokens/CustomTokenSettings';
 import { NotificationPreferencesPanel } from '@/components/settings/NotificationPreferencesPanel';
+import { KeyboardShortcutsSettings } from '@/components/keyboard-shortcuts/KeyboardShortcutsSettings';
 import { LocalStorageSettings } from '@/components/settings/LocalStorageSettings';
+import { NotificationPreferencesDrawer } from '@/app/components/NotificationPreferencesDrawer';
+import {
+  NetworkProvider,
+  useNetwork,
+  useNetworkActions,
+} from '@/app/components/providers/NetworkProvider';
 
 interface Settings {
   emailReports: boolean;
@@ -43,7 +50,7 @@ const TOGGLE_STYLES = {
 
 function SettingsContent() {
   const [showKey, setShowKey] = useState(false);
-  const [screenLockModalOpen, setScreenLockModalOpen] = useState(false);
+  const [_screenLockModalOpen, _setScreenLockModalOpen] = useState(false);
 
   // Custom Horizon endpoint form
   const { horizonUrl, customHorizonUrl } = useNetwork();
@@ -80,26 +87,26 @@ function SettingsContent() {
     }
   };
   const {
-    isEnabled: soundEffectsEnabled,
-    toggle: toggleSoundEffects,
-    currentPack,
-    setSoundPack,
-    playPreview,
+    isEnabled: _soundEffectsEnabled,
+    toggle: _toggleSoundEffects,
+    currentPack: _currentPack,
+    setSoundPack: _setSoundPack,
+    playPreview: _playPreview,
   } = useTransactionAudio();
   const {
-    isEnabled: hapticsEnabled,
-    toggle: toggleHaptics,
-    triggerTap: testHapticTap,
-    triggerTxConfirm: testHapticTx,
-    isSupported: hapticsSupported,
+    isEnabled: _hapticsEnabled,
+    toggle: _toggleHaptics,
+    triggerTap: _testHapticTap,
+    triggerTxConfirm: _testHapticTx,
+    isSupported: _hapticsSupported,
   } = useHapticFeedback();
-  const { isPinSet, isLocked, idleTimeoutMinutes, lockNow } = useScreenLock();
+  const { isPinSet: _isPinSet, isLocked: _isLocked, idleTimeoutMinutes: _idleTimeoutMinutes, lockNow: _lockNow } = useScreenLock();
   const { data: transactions } = useTransactionHistoryWithFallback();
   const { addToast, updateToast } = useToast();
-  const [exportPlatform, setExportPlatform] = useState<TaxPlatform>("standard");
+  const [exportPlatform, _setExportPlatform] = useState<TaxPlatform>("standard");
   const [isExporting, setIsExporting] = useState(false);
-  const { openCustomizer, Customizer } = useDashboardCustomizer();
-  const { Loader: ZKProofLoader, startProofGeneration } = useZKProofLoader();
+  const { openCustomizer: _openCustomizer, Customizer: _Customizer } = useDashboardCustomizer();
+  const { Loader: _ZKProofLoader, startProofGeneration: _startProofGeneration } = useZKProofLoader();
   const { theme: currentTheme, setTheme: setThemePreference, mounted: themeMounted } = useThemeContext();
   const [settings, setSettings] = useState<Settings>({
     emailReports: true,
@@ -121,7 +128,7 @@ function SettingsContent() {
 
   const debouncedSettings = useDebounce(settings, 500);
 
-  const throttledSetSessionTimeout = useRafThrottle((v: string) => setSettings(prev => ({ ...prev, sessionTimeout: v })));
+  const _throttledSetSessionTimeout = useRafThrottle((v: string) => setSettings(prev => ({ ...prev, sessionTimeout: v })));
 
   // Compute hasChanges at render time to be used in the render and effect
   const hasChanges = JSON.stringify(debouncedSettings) !== JSON.stringify(savedSettings);
@@ -139,7 +146,7 @@ function SettingsContent() {
     }
   }, [debouncedSettings, hasChanges, isPending]);
 
-  const handleToggle = (key: keyof Settings) => {
+  const _handleToggle = (key: keyof Settings) => {
     if (key === 'pushNotifications') {
       openPushPreferencesModal();
       return;
@@ -147,8 +154,8 @@ function SettingsContent() {
     setSettings(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const multiSigTrackClasses = settings.multiSigApproval ? TOGGLE_STYLES.enabled.track : TOGGLE_STYLES.disabled.track;
-  const multiSigKnobClasses = settings.multiSigApproval ? TOGGLE_STYLES.enabled.knob : TOGGLE_STYLES.disabled.knob;
+  const _multiSigTrackClasses = settings.multiSigApproval ? TOGGLE_STYLES.enabled.track : TOGGLE_STYLES.disabled.track;
+  const _multiSigKnobClasses = settings.multiSigApproval ? TOGGLE_STYLES.enabled.knob : TOGGLE_STYLES.disabled.knob;
 
   const EXPORT_PLATFORMS: { label: string; value: TaxPlatform }[] = [
     { label: "Standard CSV", value: "standard" },
@@ -156,7 +163,7 @@ function SettingsContent() {
     { label: "CoinTracker", value: "cointracker" },
   ];
 
-  const handleExport = async () => {
+  const _handleExport = async () => {
     if (isExporting || !transactions || transactions.length === 0) return;
 
     setIsExporting(true);
@@ -204,12 +211,10 @@ function SettingsContent() {
               <label className="text-xs text-gray-500 uppercase font-bold">Display Name</label>
               <input type="text" defaultValue="Sadeeq" className="w-full bg-[#0d1117] border border-gray-700 rounded-md py-2 px-3 text-sm focus:outline-none focus:border-blue-500" />
             </div>
-              <div className="space-y-2">
-                <label className="text-xs text-gray-500 uppercase font-bold">Admin Role</label>
-                <input type="text" defaultValue="Lead Trainer / Developer" disabled className="w-full bg-[#0d1117] border border-gray-800 rounded-md py-2 px-3 text-sm text-gray-500 cursor-not-allowed" />
-              </div>
+            <div className="space-y-2">
+              <label className="text-xs text-gray-500 uppercase font-bold">Admin Role</label>
+              <input type="text" defaultValue="Lead Trainer / Developer" disabled className="w-full bg-[#0d1117] border border-gray-800 rounded-md py-2 px-3 text-sm text-gray-500 cursor-not-allowed" />
             </div>
-          </section>
           </div>
         </section>
 
@@ -368,7 +373,6 @@ function SettingsContent() {
         isOpen={isDrawerOpen} 
         onClose={() => setIsDrawerOpen(false)} 
       />
-          </div>
     </div>
   );
 }
@@ -377,7 +381,7 @@ export default function SettingsPage() {
   return <NetworkProvider><SettingsContent /></NetworkProvider>;
 }
 
-function ToggleItem({ icon, title, description, enabled, onToggle, onConfigure }: { icon: React.ReactNode, title: string, description: string, enabled: boolean, onToggle: () => void, onConfigure?: () => void }) {
+function _ToggleItem({ icon, title, description, enabled, onToggle, onConfigure }: { icon: React.ReactNode, title: string, description: string, enabled: boolean, onToggle: () => void, onConfigure?: () => void }) {
   const trackClasses = enabled ? TOGGLE_STYLES.enabled.track : TOGGLE_STYLES.disabled.track;
   const knobClasses = enabled ? TOGGLE_STYLES.enabled.knob : TOGGLE_STYLES.disabled.knob;
 

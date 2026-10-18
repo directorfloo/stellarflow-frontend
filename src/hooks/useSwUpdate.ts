@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 import {
+  type SwUpdateState,
   applySwUpdate,
   getSwUpdateState,
   initSwUpdateListener,
   subscribeToSwUpdates,
-  type SwUpdateState,
 } from "@/services/swUpdate";
 
 /**

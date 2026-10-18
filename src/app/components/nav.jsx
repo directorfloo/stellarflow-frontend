@@ -1,12 +1,12 @@
 "use client";
 
-import React, { memo, useCallback } from "react";
+import React, { useCallback as _useCallback, memo } from "react";
 import OptimizedImage from "./OptimizedImage";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
-import { useProgressBar } from "./TopLoadingBar";
+import { useProgressBar as _useProgressBar } from "./TopLoadingBar";
 import dynamic from "next/dynamic";
 import MobileMenu from "@/components/navigation/MobileMenu";
 import { AccessibilityToggle } from "@/components/ui/AccessibilityToggle";

@@ -6,15 +6,15 @@ import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
   DEFAULT_NOTIFICATION_PREFERENCES,
+  type NotificationPreferences,
   PREFERENCE_LABELS,
   getNotificationPermission,
   isPushSupported,
   loadPreferences,
   subscribeToPush,
+  triggerTestNotification,
   unsubscribeFromPush,
   updatePushPreferences,
-  triggerTestNotification,
-  type NotificationPreferences,
 } from "@/services/notifications";
 
 export interface NotificationPreferencesModalProps {

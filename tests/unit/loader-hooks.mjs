@@ -13,7 +13,7 @@
  *
  * This file is intentionally plain ESM so Node can load it before any hooks run.
  */
-import { readFileSync, existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import ts from 'typescript';

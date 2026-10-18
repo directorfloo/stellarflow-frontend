@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  calculateConcentrationRatio,
   type ConcentrationTickBand,
+  calculateConcentrationRatio,
 } from "../../src/components/amm/ConcentrationRatioMeter";
 
 describe("calculateConcentrationRatio", () => {

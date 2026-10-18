@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { stopEventPropagation, createIsolatedClickHandler } from '../utils/eventPropagationManager';
+import { createIsolatedClickHandler as _createIsolatedClickHandler, stopEventPropagation } from '../utils/eventPropagationManager';
 
 /**
  * Hook for managing isolated cell click events
@@ -7,7 +7,7 @@ import { stopEventPropagation, createIsolatedClickHandler } from '../utils/event
  */
 export const useIsolatedCellClick = (onCellClick, options = {}) => {
   const {
-    isolateByDefault = true,
+    isolateByDefault: _isolateByDefault = true,
     stopPropagation: shouldStop = true,
     preventDefault: shouldPrevent = false
   } = options;

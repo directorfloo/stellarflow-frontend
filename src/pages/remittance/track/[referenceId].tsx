@@ -5,7 +5,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
+  AlertCircle,
   ArrowLeft,
+  Check,
   CheckCircle2,
   Clock,
   ExternalLink,
@@ -20,11 +22,9 @@ import {
   Smartphone,
   Sparkles,
   Upload,
-  UserCheck,
   X,
-  AlertCircle,
-  Copy,
-  Check,
+  Copy as _Copy,
+  UserCheck as _UserCheck,
 } from "lucide-react";
 
 export type DeliveryStep =
@@ -480,7 +480,7 @@ export default function RemittanceTrackingPage() {
                   {STEPS_CONFIG.map((step, idx) => {
                     const isPassed = idx < currentStepIdx || isCompleted;
                     const isCurrent = idx === currentStepIdx && !isCompleted;
-                    const isUpcoming = idx > currentStepIdx && !isCompleted;
+                    const _isUpcoming = idx > currentStepIdx && !isCompleted;
                     const IconComp = step.icon;
 
                     const stepRecord = data.stepsHistory.find((h) => h.step === step.id);

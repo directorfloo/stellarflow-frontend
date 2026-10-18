@@ -1,4 +1,4 @@
-import { getFetchCacheOptions, REVALIDATE_INTERVALS } from '@/config/cacheConfig'
+import { REVALIDATE_INTERVALS as _REVALIDATE_INTERVALS, getFetchCacheOptions } from '@/config/cacheConfig'
 
 /**
  * API service layer with enforced cache re-validation periods.

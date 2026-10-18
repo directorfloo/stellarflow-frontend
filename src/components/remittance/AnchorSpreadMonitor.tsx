@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Filler,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Tooltip,
-  Filler,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Award, TrendingDown, TrendingUp } from 'lucide-react';

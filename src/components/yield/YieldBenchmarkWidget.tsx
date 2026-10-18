@@ -17,24 +17,24 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  Chart as ChartJS,
   BarController,
   BarElement,
   CategoryScale,
+  type ChartData,
+  Chart as ChartJS,
+  type ChartOptions,
+  Legend,
   LinearScale,
   Tooltip,
-  Legend,
-  type ChartData,
-  type ChartOptions,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { TrendingUp, TrendingDown, Info, RefreshCw } from "lucide-react";
+import { Info, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
 import {
-  useYieldBenchmarks,
-  calculateApyAdvantage,
-  calculateAggregateAdvantage,
-  calculateChartMax,
   type YieldBenchmarkAsset,
+  calculateAggregateAdvantage,
+  calculateApyAdvantage,
+  calculateChartMax,
+  useYieldBenchmarks,
 } from "@/hooks/useYieldBenchmarks";
 
 ChartJS.register(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { TokenBadge } from './TokenBadge';
 import type { TokenBadgeProps } from './TokenBadge';
 
@@ -154,7 +154,7 @@ describe('TokenBadge', () => {
     render(<TokenBadge {...props} />);
 
     const fallback = screen.getByLabelText('USDC fallback icon').parentElement;
-    const style = window.getComputedStyle(fallback!);
+    const _style = window.getComputedStyle(fallback!);
 
     // Fixed size container (32px for md size)
     expect(fallback).toHaveStyle('width: 32px');

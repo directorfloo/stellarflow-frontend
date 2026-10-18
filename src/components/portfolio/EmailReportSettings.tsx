@@ -39,11 +39,16 @@ import {
 
 import {
   DEFAULT_EMAIL_REPORT_SETTINGS,
+  type EmailReportSettings as EmailReportSettingsModel,
+  type EmailReportSubscription,
+  type EmailReportVerification,
   FREQUENCY_LABELS,
   OTP_CODE_LENGTH,
   OTP_TTL_MS,
   REPORT_FREQUENCIES,
   REPORT_SECTIONS,
+  type ReportFrequency,
+  type ReportSection,
   SECTION_LABELS,
   assessSubscriptionReadiness,
   cancelEmailReportSubscription,
@@ -63,11 +68,6 @@ import {
   submitEmailReportSubscription,
   toggleSection,
   verifyEmailOtp,
-  type EmailReportSettings as EmailReportSettingsModel,
-  type EmailReportSubscription,
-  type EmailReportVerification,
-  type ReportFrequency,
-  type ReportSection,
 } from "@/services/emailReports";
 
 /** Minutes shown in the "code" hint, derived so the copy cannot drift from the TTL. */

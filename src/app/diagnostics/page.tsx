@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import { useRpcHealth } from '@/hooks/useRpcHealth';

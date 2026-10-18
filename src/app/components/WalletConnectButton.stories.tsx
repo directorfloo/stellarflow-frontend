@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import WalletConnectButton from "./WalletConnectButton";
-import { WalletProvider } from "@/app/hooks/useWalletState";
+import { WalletProvider as _WalletProvider } from "@/app/hooks/useWalletState";
 
 const meta: Meta<typeof WalletConnectButton> = {
   title: "UI/Buttons/WalletConnectButton",

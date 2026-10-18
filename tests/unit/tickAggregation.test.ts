@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
+  type AggregatedLevel,
   DEFAULT_TICK_STEPS,
   aggregateLevels,
   bucketStart,
@@ -12,7 +13,6 @@ import {
   normalizeTickSize,
   parseTickSize,
   tickPreferenceKey,
-  type AggregatedLevel,
 } from "../../src/components/trading/tickAggregation.ts";
 
 describe("tick aggregation bucketing", () => {

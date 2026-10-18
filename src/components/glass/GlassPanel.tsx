@@ -16,11 +16,11 @@
 import React from "react";
 
 import {
+  type GlassTuning,
+  type GlassVariant,
   buildGlassStyle,
   resolveGlassClassName,
   splitGlassProps,
-  type GlassTuning,
-  type GlassVariant,
 } from "./glassTheme";
 
 export interface GlassPanelProps

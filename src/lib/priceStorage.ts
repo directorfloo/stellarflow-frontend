@@ -1,5 +1,5 @@
 import { PriceData } from '@/types';
-import { STORES, getAll, getByIndex, put, putMany, evictOldRecords, count, getByTimeRange } from './indexedDb';
+import { STORES, count, evictOldRecords, getAll, getByIndex, getByTimeRange, put, putMany } from './indexedDb';
 
 const DEFAULT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const REHYDRATION_LIMIT = 100;

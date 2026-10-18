@@ -19,7 +19,7 @@ import React, {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/icons/Icon";

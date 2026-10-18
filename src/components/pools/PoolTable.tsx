@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useDebounce } from "@/app/hooks/useDebounce";
-import { Search, Flame } from "lucide-react";
+import { Flame, Search } from "lucide-react";
 import { VolumeAnomalyAlert } from "@/components/amm/VolumeAnomalyAlert";
 
 export interface Pool {

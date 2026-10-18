@@ -1,26 +1,26 @@
 "use client";
 
 import {
-  CandlestickSeries,
-  createChart,
-  HistogramSeries,
-  LineSeries,
   type CandlestickData,
+  CandlestickSeries,
   type HistogramData,
+  HistogramSeries,
   type IChartApi,
   type ISeriesApi,
   type LineData,
+  LineSeries,
   type Time,
+  createChart,
 } from "lightweight-charts";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSocket } from "@/app/hooks/useSocket";
 import type { AssetSymbol } from "@/config/assetSymbols";
 import { CHART_TIMEFRAME_EVENT } from "@/lib/keyboardShortcuts";
 import {
+  type OhlcvCandle,
   finiteNumber,
   mapHistoricalOhlcv,
   normalizeTimestamp,
-  type OhlcvCandle,
 } from "@/lib/tradingOhlcv";
 
 export const CANDLE_RESOLUTIONS = ["1m", "5m", "15m", "1h", "1d"] as const;

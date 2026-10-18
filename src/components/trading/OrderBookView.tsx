@@ -3,15 +3,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
-  TrendingUp,
-  TrendingDown,
-  Settings,
-  WifiOff,
-  Wifi,
-  Circle,
   BarChart3,
-  Zap,
+  Circle,
   RefreshCw,
+  Wifi,
+  WifiOff,
+  Zap,
+  Settings as _Settings,
+  TrendingDown as _TrendingDown,
+  TrendingUp as _TrendingUp,
 } from "lucide-react";
 
 interface OrderBookEntry {
@@ -52,7 +52,7 @@ const ROW_HEIGHT = 24;
 const COMPACT_ROW_HEIGHT = 20;
 
 // Mock WebSocket data generator for development
-const generateMockOrderBook = (pair: string): OrderBookData => {
+const generateMockOrderBook = (_pair: string): OrderBookData => {
   const basePrice = 0.1234; // Mock XLM/USDC price
   const spread = basePrice * 0.001; // 0.1% spread
   
@@ -122,7 +122,6 @@ export function OrderBookView({
   const [deltaCount, setDeltaCount] = useState(0);
   
   const wsRef = useRef<WebSocket | null>(null);
-  const fallbackIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const deltaCounterRef = useRef(0);
   const lastDeltaTimeRef = useRef(Date.now());
   
@@ -176,6 +175,7 @@ export function OrderBookView({
 
   // WebSocket connection management
   useEffect(() => {
+    let fallbackInterval: ReturnType<typeof setInterval> | null = null;
     const connectWebSocket = () => {
       try {
         // Use mock data if no WebSocket endpoint provided
@@ -185,7 +185,7 @@ export function OrderBookView({
           setConnected(true);
           
           // Simulate periodic updates
-          const mockInterval = setInterval(() => {
+          fallbackInterval = setInterval(() => {
             setOrderBook(generateMockOrderBook(pair));
             setLastUpdateTime(Date.now());
             
@@ -198,7 +198,7 @@ export function OrderBookView({
             }
           }, 100); // 10 updates per second
           
-          return () => clearInterval(mockInterval);
+          return;
         }
         
         setReconnecting(true);
@@ -365,8 +365,8 @@ export function OrderBookView({
       if (wsRef.current) {
         wsRef.current.close();
       }
-      if (fallbackIntervalRef.current) {
-        clearInterval(fallbackIntervalRef.current);
+      if (fallbackInterval) {
+        clearInterval(fallbackInterval);
       }
     };
   }, [pair, wsEndpoint, depth, connected]);
@@ -521,7 +521,7 @@ export function OrderBookView({
             >
               {askVirtualizer.getVirtualItems().map((virtualRow) => {
                 const reversedIndex = groupedOrderBook.asks.length - 1 - virtualRow.index;
-                const order = groupedOrderBook.asks[reversedIndex];
+                const _order = groupedOrderBook.asks[reversedIndex];
                 return (
                   <div
                     key={virtualRow.key}

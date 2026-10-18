@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, BookOpen, ExternalLink, ShieldCheck, ArrowRightLeft, Landmark, Layers } from 'lucide-react';
+import { ArrowRightLeft, BookOpen, ExternalLink, Landmark, Layers, Search, ShieldCheck } from 'lucide-react';
 import { DeFiTerm } from '@/components/ui/DeFiTerm';
-import { getAllGlossaryTerms, searchGlossary } from '@/lib/defiGlossary';
+import { getAllGlossaryTerms as _getAllGlossaryTerms, searchGlossary } from '@/lib/defiGlossary';
 
 export default function GlossaryPage() {
   const [searchQuery, setSearchQuery] = useState('');

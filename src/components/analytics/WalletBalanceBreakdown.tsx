@@ -22,11 +22,11 @@
 
 import React, { useMemo } from "react";
 import {
-  Wallet,
-  ClipboardList,
-  Vault,
-  Droplets,
   ChevronRight,
+  ClipboardList,
+  Droplets,
+  Vault,
+  Wallet,
 } from "lucide-react";
 import type {
   AssetProtocolCategory,

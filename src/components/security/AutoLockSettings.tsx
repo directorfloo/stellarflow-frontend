@@ -27,8 +27,8 @@
  */
 
 import React from "react";
-import { Clock, Shield, ShieldOff, Info } from "lucide-react";
-import { useSessionTimeout, type AutoLockDuration } from "./SessionTimeoutManager";
+import { Clock, Info, Shield, ShieldOff } from "lucide-react";
+import { type AutoLockDuration, useSessionTimeout } from "./SessionTimeoutManager";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants

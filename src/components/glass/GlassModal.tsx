@@ -17,10 +17,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 
 import {
+  type GlassTuning,
   buildGlassStyle,
   resolveGlassClassName,
   splitGlassProps,
-  type GlassTuning,
 } from "./glassTheme";
 
 export interface GlassModalProps

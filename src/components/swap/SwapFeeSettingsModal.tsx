@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo as _useMemo, useState } from "react";
 import OptimizedDialog from "@/app/components/OptimizedDialog";
-import Icon from "@/components/icons/Icon";
-import { ICON_IDS } from "@/components/icons/iconIds";
+import _Icon from "@/components/icons/Icon";
+import { ICON_IDS as _ICON_IDS } from "@/components/icons/iconIds";
 
 import { CongestionFeeAlert } from "@/components/common/CongestionFeeAlert";
 

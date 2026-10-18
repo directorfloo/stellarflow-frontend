@@ -8,15 +8,15 @@
 import { getLatestPrice } from '@/lib/priceStorage';
 import { AssetSymbol } from '@/config/assetSymbols';
 import {
-  parseSimulationFootprint,
+  ContractDeploymentFootprintEstimate,
+  SimulationFootprintSummary,
+  StorageCostBreakdown,
+  StorageTier,
+  StorageTradeoffItem,
   calculateStorageCost,
   compareStorageTradeoffs,
   estimateContractDeploymentFootprint,
-  SimulationFootprintSummary,
-  StorageCostBreakdown,
-  StorageTradeoffItem,
-  ContractDeploymentFootprintEstimate,
-  StorageTier,
+  parseSimulationFootprint,
 } from '@/lib/storageCostCalculator';
 
 // Fallback XLM price in USD if offline or uninitialized

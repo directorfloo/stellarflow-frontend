@@ -23,16 +23,16 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Shield, Key, Eye, EyeOff, AlertTriangle, CheckCircle2, Info } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Eye, EyeOff, Info, Key, Shield, X } from "lucide-react";
 import type {
   PublicKeyCredentialCreationOptionsJSON,
   RegistrationResponseJSON,
 } from "@simplewebauthn/browser";
 import {
+  type PasskeyDevice,
   classifyPasskeyError,
   detectPasskeySupport,
   usePasskeys,
-  type PasskeyDevice,
 } from "@/hooks/usePasskeys";
 import { BiometricAnimation } from "./BiometricAnimation";
 
@@ -314,9 +314,11 @@ export function PasskeyRegisterModal({
                         onChange={(e) => setDeviceName(e.target.value)}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" && deviceName.trim()) {
-                            isSupported === false
-                              ? setStep("fallback")
-                              : startRegistration();
+                            if (isSupported === false) {
+                              setStep("fallback");
+                            } else {
+                              startRegistration();
+                            }
                           }
                         }}
                         placeholder={

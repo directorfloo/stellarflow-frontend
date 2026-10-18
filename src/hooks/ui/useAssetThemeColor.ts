@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useRef as _useRef, useCallback, useEffect, useMemo, useState } from "react";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -332,7 +332,7 @@ export function extractDominantColorFromImage(
     }
 
     return buildExtractedColor(bestBucket.r, bestBucket.g, bestBucket.b, contrastCheck);
-  } catch (err) {
+  } catch (_err) {
     const fallbackRgb = DEFAULT_PROTOCOL_BLUE_RGB;
     return buildExtractedColor(fallbackRgb.r, fallbackRgb.g, fallbackRgb.b, contrastCheck);
   }
@@ -470,7 +470,7 @@ export function useAssetThemeColor(
         }
       };
 
-      img.onerror = (e) => {
+      img.onerror = (_e) => {
         if (!isMounted) return;
         setError(new Error(`Failed to load asset image: ${imageSource}`));
         applyExtracted(defaultExtractedColor, true);

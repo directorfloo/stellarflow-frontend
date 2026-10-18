@@ -30,21 +30,22 @@ export function AccessibleToastContainer({
   const timers = useRef(new Map<string, ReturnType<typeof setTimeout>>());
 
   useEffect(() => {
+    const activeTimers = timers.current;
     const activeIds = new Set(visibleToasts.map((toast) => toast.id));
 
-    for (const [id, timer] of timers.current) {
+    for (const [id, timer] of activeTimers) {
       if (!activeIds.has(id)) {
         clearTimeout(timer);
-        timers.current.delete(id);
+        activeTimers.delete(id);
       }
     }
 
     for (const toast of visibleToasts) {
-      if (toast.durationMs && toast.durationMs > 0 && !timers.current.has(toast.id)) {
-        timers.current.set(
+      if (toast.durationMs && toast.durationMs > 0 && !activeTimers.has(toast.id)) {
+        activeTimers.set(
           toast.id,
           setTimeout(() => {
-            timers.current.delete(toast.id);
+            activeTimers.delete(toast.id);
             onDismiss(toast.id);
           }, toast.durationMs),
         );
@@ -52,8 +53,8 @@ export function AccessibleToastContainer({
     }
 
     return () => {
-      for (const timer of timers.current.values()) clearTimeout(timer);
-      timers.current.clear();
+      for (const timer of activeTimers.values()) clearTimeout(timer);
+      activeTimers.clear();
     };
   }, [onDismiss, visibleToasts]);
 

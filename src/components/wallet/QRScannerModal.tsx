@@ -1,29 +1,29 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo as _useMemo, useCallback, useEffect, useRef, useState } from "react";
 import {
   AlertTriangle,
   Camera,
   CheckCircle2,
   ClipboardPaste,
-  Copy,
   Info,
   QrCode,
   RefreshCw,
-  Sparkles,
   Volume2,
   VolumeX,
   X,
+  Copy as _Copy,
+  Sparkles as _Sparkles,
 } from "lucide-react";
 import { triggerHaptic } from "@/lib/haptics";
 
 import {
-  parseAndValidateStellarQR,
   type ScannedStellarPayment,
-  STELLAR_PUBKEY_REGEX,
-  STELLAR_MUXED_REGEX,
-  STELLAR_FEDERATION_REGEX,
-  SEP07_URI_REGEX,
+  SEP07_URI_REGEX as _SEP07_URI_REGEX,
+  STELLAR_FEDERATION_REGEX as _STELLAR_FEDERATION_REGEX,
+  STELLAR_MUXED_REGEX as _STELLAR_MUXED_REGEX,
+  STELLAR_PUBKEY_REGEX as _STELLAR_PUBKEY_REGEX,
+  parseAndValidateStellarQR,
 } from "@/lib/qrScannerValidation";
 
 export interface QRScannerModalProps {
@@ -172,7 +172,7 @@ export function QRScannerModal({
         videoRef.current.setAttribute("playsinline", "true");
         await videoRef.current.play();
 
-        codeReader.decodeFromVideoElement(videoRef.current, (result, error) => {
+        codeReader.decodeFromVideoElement(videoRef.current, (result, _error) => {
           if (result && isScanningRef.current) {
             const rawText = result.getText();
             const validation = parseAndValidateStellarQR(rawText);

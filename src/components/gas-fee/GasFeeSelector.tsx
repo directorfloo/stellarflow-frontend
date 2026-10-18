@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useGasFee, type FeeTier } from "@/hooks/useGasFee";
+import { type FeeTier, useGasFee } from "@/hooks/useGasFee";
 
 const STROOPS_PER_XLM = 10_000_000;
 const MAX_MULTIPLIER = 100;

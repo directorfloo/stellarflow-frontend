@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { compressStreamPayload, createKeyIndexedArray } from '../utils/jsonStreamOptimizer';
 
 export const useOptimizedStream = () => {

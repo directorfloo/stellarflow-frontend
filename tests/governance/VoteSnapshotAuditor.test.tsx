@@ -1,12 +1,12 @@
 import React from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
   VoteSnapshotAuditor,
-  explorerLedgerUrl,
   computeVotingPowerBreakdown,
-  hasVotingPower,
+  explorerLedgerUrl,
   formatVotingPower,
+  hasVotingPower,
 } from '@/components/governance/VoteSnapshotAuditor';
 
 const ADDRESS = 'GA5THZLKMNPQRSXYZABCDEFGHIJKLMNBC9A';

@@ -24,10 +24,10 @@ import React, { useCallback, useMemo, useState } from 'react';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import {
-  useRpcBenchmark,
-  classifyLatency,
-  PUBLIC_TESTNET_ENDPOINTS,
   PUBLIC_MAINNET_ENDPOINTS,
+  PUBLIC_TESTNET_ENDPOINTS,
+  classifyLatency,
+  useRpcBenchmark,
 } from '@/hooks/useRpcBenchmark';
 import type { RpcBenchmarkEndpoint, RpcBenchmarkResult } from '@/hooks/useRpcBenchmark';
 import { useOptionalNetwork } from '@/app/components/providers/NetworkProvider';

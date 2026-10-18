@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { rpc } from '@stellar/stellar-sdk';
 
 const SOROBAN_RPC_URL = 'https://soroban-testnet.stellar.org';

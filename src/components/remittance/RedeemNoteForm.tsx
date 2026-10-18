@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from "react";
 import { CheckCircle2, FileUp, LoaderCircle, ShieldAlert } from "lucide-react";
 import {
-  validateShieldedRemittanceNote,
-  type ShieldedRemittanceNote,
   type ShieldedNoteValidation,
+  type ShieldedRemittanceNote,
+  validateShieldedRemittanceNote,
 } from "@/lib/shieldedRemittanceNote";
 import {
   ShieldedProofProgress,

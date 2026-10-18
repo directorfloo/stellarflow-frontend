@@ -14,7 +14,7 @@
  * this pool is outperforming or underperforming the protocol-wide average.
  */
 
-import React, { memo, useMemo, useState, useId } from "react";
+import React, { memo, useId, useMemo, useState } from "react";
 import { HelpCircle } from "lucide-react";
 import type { LiquidityPool } from "@/lib/pools";
 import styles from "./CapitalEfficiencyGauge.module.css";

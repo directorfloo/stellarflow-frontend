@@ -8,17 +8,17 @@ import React, {
   useState,
 } from "react";
 import DOMPurify from "isomorphic-dompurify";
-import { formatAddress, shortenAddress } from "@/utils/addressUtils";
-import { useWallet } from "@/app/hooks/useWalletState";
+import { formatAddress as _formatAddress, shortenAddress } from "@/utils/addressUtils";
+import { useWallet as _useWallet } from "@/app/hooks/useWalletState";
 import { useToast } from "@/components/ui/ToastQueue";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import type {
   Delegate,
   DelegationGraphData,
-  DelegationGraphNode,
   DelegationGraphLink,
-  DelegateVoteRecord,
+  DelegationGraphNode,
+  DelegateVoteRecord as _DelegateVoteRecord,
 } from "@/types/delegation";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -535,7 +535,7 @@ export function DelegationGraphVisualizer({
 
   // Search & Filtering States
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [_selectedTag, _setSelectedTag] = useState<string>("all");
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -855,7 +855,7 @@ export function DelegationGraphVisualizer({
 
         const dx = tgt.x - src.x;
         const dy = tgt.y - src.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const _dist = Math.sqrt(dx * dx + dy * dy) || 1;
         const angle = Math.atan2(dy, dx);
 
         // Arrow tip lands just outside target's radius
@@ -1083,9 +1083,15 @@ export function DelegationGraphVisualizer({
 
     if (clickedNode) {
       isDraggingRef.current = true;
-      draggedNodeRef.current = clickedNode;
-      clickedNode.fx = clickedNode.x;
-      clickedNode.fy = clickedNode.y;
+      const draggedNode = {
+        ...clickedNode,
+        fx: clickedNode.x,
+        fy: clickedNode.y,
+      };
+      simNodesRef.current = nodes.map((node) =>
+        node === clickedNode ? draggedNode : node,
+      );
+      draggedNodeRef.current = draggedNode;
       alphaRef.current = Math.max(alphaRef.current, 0.3); // wake physics
     } else {
       isDraggingRef.current = false;

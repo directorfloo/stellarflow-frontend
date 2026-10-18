@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS, IconId } from "@/components/icons/iconIds";
@@ -116,8 +116,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   // Clean up timeouts on unmount
   useEffect(() => {
+    const activeTimeouts = timeouts.current;
     return () => {
-      Object.values(timeouts.current).forEach(clearTimeout);
+      Object.values(activeTimeouts).forEach(clearTimeout);
     };
   }, []);
 

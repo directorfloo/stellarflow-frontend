@@ -9,7 +9,7 @@
  * without requiring boilerplate code on every individual UI component.
  */
 
-import React, { useEffect, type ReactNode } from 'react';
+import React, { type ReactNode, useEffect } from 'react';
 import { triggerHaptic } from '@/lib/haptics';
 
 interface HapticProviderProps {

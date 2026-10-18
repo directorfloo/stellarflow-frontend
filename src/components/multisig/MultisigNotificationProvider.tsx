@@ -40,6 +40,7 @@ import { loadPreferences } from "@/services/notifications";
 import { WebSocketManager } from "@/utils/WebSocketManager";
 import {
   DEMO_CO_SIGNER_PUBLIC_KEY,
+  type MultisigSignatureRequest,
   buildDemoSignatureRequests,
   buildMultisigApprovalDeepLink,
   filterPendingSignatureRequests,
@@ -56,7 +57,6 @@ import {
   saveCachedSignatureRequests,
   subscribeToServiceWorkerSignatureRequests,
   subscribeToSignatureRequestEvents,
-  type MultisigSignatureRequest,
 } from "@/services/multisigNotifications";
 
 export interface MultisigNotificationContextValue {

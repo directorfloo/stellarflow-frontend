@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useMemo, useCallback } from 'react';
-import { TrendingUp, Zap, Vote, Lock, Info } from 'lucide-react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Info, Lock, TrendingUp, Vote, Zap } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -62,7 +62,7 @@ function formatDuration(weeks: number): string {
 /**
  * Get color based on voting power percentage
  */
-function getPowerColor(percentage: number): string {
+function _getPowerColor(percentage: number): string {
   if (percentage >= 5) return 'text-purple-400';
   if (percentage >= 1) return 'text-blue-400';
   if (percentage >= 0.1) return 'text-cyan-400';

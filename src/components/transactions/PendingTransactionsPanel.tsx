@@ -9,7 +9,7 @@ import {
 } from "@/app/components/providers/NetworkProvider";
 import { usePendingTransactionsFeed } from "@/hooks/usePendingTransactionsFeed";
 import { usePendingTransaction } from "@/hooks/usePendingTransaction";
-import { STUCK_THRESHOLD_MS, type NetworkContext } from "@/lib/txSpeedUpOps";
+import { type NetworkContext, STUCK_THRESHOLD_MS } from "@/lib/txSpeedUpOps";
 import { TxSpeedUpModal } from "@/components/transactions/TxSpeedUpModal";
 import type { DemoPendingTransfer } from "@/lib/demoPendingTransactions";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AlertTriangle, Flame, RefreshCw, Zap, X } from "lucide-react";
+import { AlertTriangle, Flame, X, Zap, RefreshCw as _RefreshCw } from "lucide-react";
 import { useSorobanNetworkHealth } from "@/hooks/useSorobanNetworkHealth";
 
 export interface CongestionFeeAlertProps {
@@ -27,7 +27,7 @@ export function CongestionFeeAlert({
   className = "",
   forceShow = false,
 }: CongestionFeeAlertProps) {
-  const { metrics, isSimulatingHighCongestion, toggleSimulateHighCongestion } =
+  const { metrics, isSimulatingHighCongestion: _isSimulatingHighCongestion, toggleSimulateHighCongestion: _toggleSimulateHighCongestion } =
     useSorobanNetworkHealth();
 
   const [dismissed, setDismissed] = useState(false);

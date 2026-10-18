@@ -6,16 +6,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  calculateStorageCost,
-  compareStorageTradeoffs,
-  parseSimulationFootprint,
-  estimateContractDeploymentFootprint,
-  formatLedgerDuration,
-  STROOPS_PER_XLM,
   LEDGERS_PER_DAY,
   LEDGERS_PER_MONTH,
-  LEDGERS_PER_YEAR,
-  RENT_CONFIG,
+  STROOPS_PER_XLM,
+  LEDGERS_PER_YEAR as _LEDGERS_PER_YEAR,
+  RENT_CONFIG as _RENT_CONFIG,
+  calculateStorageCost,
+  compareStorageTradeoffs,
+  estimateContractDeploymentFootprint,
+  formatLedgerDuration,
+  parseSimulationFootprint,
 } from './storageCostCalculator.ts';
 
 test('calculateStorageCost: computes correct Stroop and XLM cost for persistent storage', () => {

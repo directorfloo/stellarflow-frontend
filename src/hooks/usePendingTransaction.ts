@@ -20,9 +20,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useRAFInterval } from "@/app/hooks/useRAFInterval";
 import { useOnlineStatus } from "@/app/hooks/useOnlineStatus";
 import {
+  type LedgerTxStatus,
   STUCK_THRESHOLD_MS,
   fetchLedgerTxStatus,
-  type LedgerTxStatus,
 } from "@/lib/txSpeedUpOps";
 
 export type PendingTxStatus = "idle" | LedgerTxStatus;

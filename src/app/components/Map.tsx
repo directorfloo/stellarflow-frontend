@@ -1,7 +1,7 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import React, { useEffect, useState, memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useErrorTimeout } from "../hooks/useErrorTimeout";
 import type {
@@ -16,7 +16,7 @@ const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.Map
 const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), { ssr: false });
 const GeoJSON = dynamic(() => import("react-leaflet").then((mod) => mod.GeoJSON), { ssr: false });
 
-interface NetworkNode {
+interface _NetworkNode {
   name: string;
   network: string;
   nodes: number;
@@ -46,7 +46,7 @@ function Map() {
     };
 
     loadMapData();
-  }, []);
+  }, [setError]);
 
   // Custom style for network regions
   const networkStyle = (

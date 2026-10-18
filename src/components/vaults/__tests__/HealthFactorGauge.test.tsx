@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { HealthFactorGauge, HealthFactorZone } from '../HealthFactorGauge';
+import { HealthFactorGauge, HealthFactorZone as _HealthFactorZone } from '../HealthFactorGauge';
 
 describe('HealthFactorGauge', () => {
   it('renders Safe zone for healthFactor above 1.5', () => {

@@ -1,6 +1,6 @@
 import type { XdrFields } from './worker-types';
 export type { XdrFields } from './worker-types';
-import type { FuseResultMatch } from 'fuse.js';
+import type { FuseResultMatch as _FuseResultMatch } from 'fuse.js';
 
 export interface LogEntry {
   id: string;

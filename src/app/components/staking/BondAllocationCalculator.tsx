@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useId } from "react";
+import React, { useCallback, useId, useMemo, useState } from "react";
 import type { StakerTableRecord } from "./StakerTableRow";
 import { SliderRow } from "./SliderRow";
 

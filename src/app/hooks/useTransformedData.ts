@@ -6,10 +6,10 @@
 
 import {
   shortenAddress,
-  withShortenedAddresses,
   withShortenedAddressField,
+  withShortenedAddresses,
 } from '@/utils/addressUtils';
-import type { Relayer, Contract } from '@/types';
+import type { Contract, Relayer } from '@/types';
 
 /**
  * Transform relayer data with pre-computed shortened addresses

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseDeferredHydrationOptions {
   /** Delay in ms after layout mount before hydrating (default: 0) */

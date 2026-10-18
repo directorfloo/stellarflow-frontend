@@ -13,8 +13,8 @@ import Link from "next/link";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
-  buildMultisigApprovalDeepLink,
   type MultisigSignatureRequest,
+  buildMultisigApprovalDeepLink,
 } from "@/services/multisigNotifications";
 import { useOptionalMultisigNotifications } from "./MultisigNotificationProvider";
 

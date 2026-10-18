@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { X, CreditCard, Landmark, Smartphone, DollarSign, CheckCircle2, ArrowRight, Info } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CreditCard, DollarSign, Info, Landmark, Smartphone, X } from 'lucide-react';
 
 export type PaymentMethod = 'credit_card' | 'bank_transfer' | 'apple_pay' | 'mobile_money';
 export type FiatRampProvider = 'moonpay' | 'transak' | 'local_anchor';

@@ -27,20 +27,20 @@ import { ICON_IDS } from "@/components/icons/iconIds";
 import { useWalletCommands } from "@/hooks/useWalletCommands";
 import { useDebounce } from "@/app/hooks/useDebounce";
 import {
+  type CommandItem,
+  type CommandResult,
   DOC_COMMANDS,
   GROUP_LABELS,
   NAVIGATION_COMMANDS,
   PRICE_FEED_COMMANDS,
+  type PoolSummary,
+  type TokenSummary,
   createCommandIndex,
   groupResults,
   poolCommand,
   searchCommands,
   titleSegments,
   tokenCommand,
-  type CommandItem,
-  type CommandResult,
-  type PoolSummary,
-  type TokenSummary,
 } from "@/lib/commandRegistry";
 
 export interface CommandPaletteProps {

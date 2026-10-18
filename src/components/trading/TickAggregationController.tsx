@@ -19,11 +19,13 @@
  * independent for each trading pair.
  */
 
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { type ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useOrderBook } from "@/app/hooks/useOrderBook";
 import type { AssetSymbol } from "@/config/assetSymbols";
 import { getItem, setItem } from "@/utils/storage";
 import {
+  type AggregatedLevel,
+  type OrderBookSide,
   aggregateLevels,
   computeDepthRatios,
   decimalsForTick,
@@ -31,8 +33,6 @@ import {
   getTickStepOptions,
   parseTickSize,
   tickPreferenceKey,
-  type AggregatedLevel,
-  type OrderBookSide,
 } from "./tickAggregation";
 
 export interface TickAggregationControllerProps {

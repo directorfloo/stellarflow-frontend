@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cspViolationStore } from "@/lib/security/cspViolationStore";
-import { isBrowserExtensionViolation, type CspViolationMetadata } from "@/utils/cspReporter";
+import { type CspViolationMetadata, isBrowserExtensionViolation } from "@/utils/cspReporter";
 
 /**
  * Normalizes browser-native CSP report formats or custom JSON payloads.

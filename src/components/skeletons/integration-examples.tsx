@@ -211,7 +211,7 @@ export function LoadingContainerExample() {
  * Shows skeleton only on initial load, not on background refetch
  */
 export function RefetchExample() {
-  const { data: pools, isLoading, isFetching, isRefetching } = usePoolsQuery();
+  const { data: pools, isLoading, isFetching: _isFetching, isRefetching } = usePoolsQuery();
 
   // Show skeleton only on initial load (isLoading), not on refetch
   if (isLoading) {
@@ -315,7 +315,7 @@ function usePoolsQuery() {
   return { data: null, isLoading: true, error: null };
 }
 
-function usePriceDataQuery(pairId: string) {
+function usePriceDataQuery(_pairId: string) {
   return { data: null, isLoading: true, error: null };
 }
 
@@ -340,22 +340,22 @@ function useTransactionsQuery() {
 }
 
 // Mock components
-function VaultCard({ vault }: any) {
+function VaultCard({ vault: _vault }: any) {
   return <div>VaultCard</div>;
 }
-function PoolTable({ pools }: any) {
+function PoolTable({ pools: _pools }: any) {
   return <div>PoolTable</div>;
 }
-function TokenPriceChart(props: any) {
+function TokenPriceChart(_props: any) {
   return <div>TokenPriceChart</div>;
 }
-function StatCard(props: any) {
+function StatCard(_props: any) {
   return <div>StatCard</div>;
 }
-function PortfolioHistoryChart({ data }: any) {
+function PortfolioHistoryChart({ data: _data }: any) {
   return <div>PortfolioHistoryChart</div>;
 }
-function PortfolioAllocationChart({ data }: any) {
+function PortfolioAllocationChart({ data: _data }: any) {
   return <div>PortfolioAllocationChart</div>;
 }
 function TradingView() {
@@ -364,15 +364,15 @@ function TradingView() {
 function LoadingContainer({ isLoading, fallback, children }: any) {
   return isLoading ? fallback : children;
 }
-function UserHeader({ user }: any) {
+function UserHeader({ user: _user }: any) {
   return <div>UserHeader</div>;
 }
-function PortfolioOverview({ portfolio }: any) {
+function PortfolioOverview({ portfolio: _portfolio }: any) {
   return <div>PortfolioOverview</div>;
 }
-function TransactionHistoryTable({ transactions }: any) {
+function TransactionHistoryTable({ transactions: _transactions }: any) {
   return <div>TransactionHistoryTable</div>;
 }
 
 const React = { useEffect: (() => {}) as any, useState: (() => [10, () => {}]) as any };
-const Suspense = ({ fallback, children }: any) => children;
+const Suspense = ({ fallback: _fallback, children }: any) => children;

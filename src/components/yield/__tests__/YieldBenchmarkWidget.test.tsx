@@ -12,18 +12,18 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import {
   YieldBenchmarkWidget,
   formatAdvantage,
   formatApy,
 } from "../YieldBenchmarkWidget";
 import {
-  calculateApyAdvantage,
-  calculateRelativeAdvantage,
-  calculateChartMax,
-  calculateAggregateAdvantage,
   type YieldBenchmarkAsset,
+  calculateAggregateAdvantage,
+  calculateApyAdvantage,
+  calculateChartMax,
+  calculateRelativeAdvantage,
 } from "@/hooks/useYieldBenchmarks";
 
 // ─── Fixtures ───────────────────────────────────────────────────────────────

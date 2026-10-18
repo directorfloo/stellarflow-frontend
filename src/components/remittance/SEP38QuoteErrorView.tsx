@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AlertTriangle, RefreshCw, ServerCrash, XCircle, Clock } from "lucide-react";
+import { AlertTriangle, Clock, RefreshCw, ServerCrash, XCircle } from "lucide-react";
 
 export interface SEP38QuoteErrorViewProps {
   error?: { status?: number; message?: string } | null;

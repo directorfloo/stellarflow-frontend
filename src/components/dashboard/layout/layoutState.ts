@@ -14,9 +14,9 @@
 import { ALL_WIDGET_IDS, DEFAULT_VISIBLE_WIDGET_IDS, getWidgetDefinition } from "./catalog";
 import { GRID_COLS, REFERENCE_BREAKPOINT, REFERENCE_COLS, colsForBreakpoint } from "./grid";
 import {
-  LAYOUT_SCHEMA_VERSION,
-  type DashboardLayouts,
   type DashboardLayoutState,
+  type DashboardLayouts,
+  LAYOUT_SCHEMA_VERSION,
   type LayoutItem,
 } from "./types";
 

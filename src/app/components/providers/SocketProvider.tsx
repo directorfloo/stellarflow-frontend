@@ -1,12 +1,12 @@
 'use client'
 
 import React, {
+  ReactNode,
   createContext,
   useContext,
   useMemo,
-  ReactNode,
 } from 'react'
-import { useSocket, UseSocketOptions } from '../../hooks/useSocket'
+import { UseSocketOptions, useSocket } from '../../hooks/useSocket'
 import { PriceData } from '@/types'
 import { useMounted } from '@/app/hooks/useMounted'
 

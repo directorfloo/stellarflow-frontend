@@ -14,8 +14,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   NETWORK_CONFIGS,
-  useOptionalNetwork,
   type NetworkTarget,
+  useOptionalNetwork,
 } from "@/app/components/providers/NetworkProvider";
 
 export type CongestionLevel = "low" | "moderate" | "high";
@@ -284,6 +284,8 @@ export function useSorobanNetworkHealth(
     const interval = setInterval(() => void fetchSorobanStats(), pollIntervalMs);
 
     return () => {
+      // Incrementing this token invalidates any request still in flight.
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- cleanup intentionally advances the request generation.
       generationRef.current++;
       clearInterval(interval);
     };

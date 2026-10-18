@@ -24,14 +24,14 @@
 
 import React, { useEffect, useRef } from "react";
 import {
-  Chart,
   BarController,
   BarElement,
   CategoryScale,
+  Chart,
+  type ChartConfiguration,
+  Legend,
   LinearScale,
   Tooltip,
-  Legend,
-  type ChartConfiguration,
 } from "chart.js";
 import type { PerAssetBreakdown } from "@/types/portfolio";
 import { BalanceValue } from "@/context/BalancePrivacyContext";

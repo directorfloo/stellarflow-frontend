@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { formatTokenAmount, formatCountdown } from '@/utils/formatters';
+import React, { useEffect, useState } from 'react';
+import { formatCountdown, formatTokenAmount } from '@/utils/formatters';
 import YieldFarmModal from './YieldFarmModal';
 import { AutoHarvestGasOptimizationWizard } from './AutoHarvestGasOptimizationWizard';
 

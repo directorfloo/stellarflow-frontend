@@ -9,7 +9,7 @@
  * `./iconIds.ts`. Keeping the sprite sheet as a static file allows the browser to cache it
  * independently of the JavaScript bundle.
  */
-import { ICON_IDS } from "./iconIds";
+import { ICON_IDS as _ICON_IDS } from "./iconIds";
 export { ICON_IDS } from "./iconIds";
 export type { IconId } from "./iconIds";
 

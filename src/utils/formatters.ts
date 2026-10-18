@@ -1,6 +1,6 @@
 export function formatTokenAmount(
   amount: string,
-  decimals: number = 7,
+  _decimals: number = 7,
   maxFractionDigits: number = 7,
 ): string {
   const parsed = parseFloat(amount);

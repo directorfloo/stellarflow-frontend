@@ -10,8 +10,8 @@
  */
 
 import {
-  CIRCUIT_BREAKER_MODULE_LABELS,
   type ActiveModulePause,
+  CIRCUIT_BREAKER_MODULE_LABELS,
   type CircuitBreakerEventType,
   type CircuitBreakerIndexerEvent,
   type CircuitBreakerModule,

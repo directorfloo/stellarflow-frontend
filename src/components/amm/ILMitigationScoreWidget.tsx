@@ -5,9 +5,9 @@ import { AlertTriangle, CheckCircle2, ShieldCheck, TrendingUp } from "lucide-rea
 import { DeFiTooltip } from "@/components/ui/DeFiTooltip";
 import type { PoolPnLPosition } from "@/components/pools/PoolPnLCard";
 import {
-  computeIlMitigationForPosition,
   type IlMitigationScore,
   type IlMitigationStatus,
+  computeIlMitigationForPosition,
 } from "./ilMitigationScore";
 
 // ---------------------------------------------------------------------------

@@ -2,22 +2,22 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  AlertTriangle,
+  ArrowRight,
   Bell,
   BellOff,
-  Settings,
-  X,
   Check,
-  AlertTriangle,
-  TrendingUp,
-  Shield,
-  Zap,
-  ArrowRight,
-  ExternalLink,
+  Globe,
   Info,
+  Settings,
+  Shield,
   Smartphone,
-  Globe
+  TrendingUp,
+  X,
+  Zap,
+  ExternalLink as _ExternalLink
 } from "lucide-react";
-import { usePushNotifications, useNotificationTriggers } from "@/hooks/usePushNotifications";
+import { useNotificationTriggers, usePushNotifications } from "@/hooks/usePushNotifications";
 
 interface PushNotificationManagerProps {
   /** Whether to show as a modal dialog */
@@ -63,7 +63,7 @@ export function PushNotificationManager({
   const {
     triggers,
     loading: triggersLoading,
-    updateTrigger,
+    updateTrigger: _updateTrigger,
     enableTrigger,
     disableTrigger,
   } = useNotificationTriggers();
@@ -148,7 +148,7 @@ export function PushNotificationManager({
     }
   };
 
-  const getBrowserIcon = () => {
+  const _getBrowserIcon = () => {
     const userAgent = navigator.userAgent.toLowerCase();
     if (userAgent.includes('chrome')) return Globe;
     if (userAgent.includes('safari')) return Smartphone;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { within as _within, fireEvent, render, screen } from '@testing-library/react';
 import { VotingPowerCalculator } from '../VotingPowerCalculator';
 
 describe('VotingPowerCalculator', () => {
@@ -146,7 +146,7 @@ describe('VotingPowerCalculator', () => {
   });
 
   it('calculates multiplier correctly for different durations', () => {
-    const { rerender } = render(<VotingPowerCalculator {...defaultProps} />);
+    const { rerender: _rerender } = render(<VotingPowerCalculator {...defaultProps} />);
     
     // Test various durations
     const testCases = [

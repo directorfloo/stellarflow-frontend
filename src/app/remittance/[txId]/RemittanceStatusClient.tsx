@@ -21,9 +21,9 @@ import { notFound } from "next/navigation";
 import { StatusStepper } from "@/components/remittance/StatusStepper";
 import { RemittanceHistoryModal } from "@/components/remittance/RemittanceHistoryModal";
 import {
-  useRemittanceStatus,
-  RemittanceStatus,
   REMITTANCE_STEPS,
+  RemittanceStatus,
+  useRemittanceStatus,
 } from "@/hooks/useRemittanceStatus";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";

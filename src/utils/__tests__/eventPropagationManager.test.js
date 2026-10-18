@@ -1,8 +1,8 @@
 import { 
-  stopEventPropagation, 
-  stopEventImmediately, 
+  createCellClickHandler,
   createIsolatedClickHandler,
-  createCellClickHandler 
+  stopEventImmediately,
+  stopEventPropagation
 } from '../eventPropagationManager';
 
 describe('Event Propagation Manager', () => {

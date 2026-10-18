@@ -5,14 +5,14 @@ import OptimizedDialog from "@/app/components/OptimizedDialog";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
+  type CustomToken,
+  type TokenImportInput,
+  type TokenMetadata,
   fetchTokenMetadata,
   isTokenImported,
   saveCustomToken,
   validateAssetInput,
   validateContractId,
-  type CustomToken,
-  type TokenImportInput,
-  type TokenMetadata,
 } from "@/lib/customTokens";
 
 // ---------------------------------------------------------------------------

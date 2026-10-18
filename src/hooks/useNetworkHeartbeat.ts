@@ -4,17 +4,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   DEFAULT_RPC_NODES,
   LATENCY_THRESHOLDS,
+  type LatencyTier,
+  type NetworkTarget,
+  type NodeLatencyRecord,
   STORAGE_KEYS,
+  type StellarRpcNode,
   classifyLatency,
   getDefaultNodeForNetwork,
   persistActiveNode,
   persistCustomNodes,
   readCustomNodes,
   readPersistedActiveNode,
-  type LatencyTier,
-  type NetworkTarget,
-  type NodeLatencyRecord,
-  type StellarRpcNode,
 } from "@/config/rpcNodes";
 import { rpcManager } from "@/services/rpc";
 import { useOptionalNetwork } from "@/app/components/providers/NetworkProvider";

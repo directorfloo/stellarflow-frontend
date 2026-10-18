@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 export type BiometricState = "idle" | "scanning" | "success" | "error";
 
@@ -22,7 +22,7 @@ export function BiometricAnimation({
   className = "",
 }: BiometricAnimationProps) {
   const cx = size / 2;
-  const cy = size / 2;
+  const _cy = size / 2;
 
   const colorMap: Record<BiometricState, string> = {
     idle: "#6B7280",      // gray-500

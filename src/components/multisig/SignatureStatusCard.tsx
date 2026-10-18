@@ -2,16 +2,16 @@
 
 import React, { useState } from "react";
 import {
+  Check,
   CheckCircle2,
   Clock,
   Copy,
-  Check,
-  Shield,
+  Key,
+  PenTool,
+  RotateCcw,
   UserCheck,
   XCircle,
-  Key,
-  RotateCcw,
-  PenTool,
+  Shield as _Shield,
 } from "lucide-react";
 import { triggerHaptic } from "@/lib/haptics";
 

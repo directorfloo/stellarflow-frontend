@@ -2,27 +2,27 @@
 
 import React, { useMemo, useState } from 'react';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  type ChartData,
+  Chart as ChartJS,
+  type ChartOptions,
+  Filler,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler,
-  type ChartData,
-  type ChartOptions,
   type TooltipItem,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {
-  TrendingUp,
-  TrendingDown,
   Activity,
-  RotateCcw,
   Info,
   Maximize2,
+  RotateCcw,
+  TrendingDown,
+  TrendingUp,
   X,
 } from 'lucide-react';
 

@@ -2,18 +2,18 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  X,
-  TrendingUp,
-  Clock,
-  ExternalLink,
-  DollarSign,
-  Zap,
-  BarChart3,
-  Calendar,
-  Filter,
-  ArrowUpRight,
   ArrowDownRight,
+  ArrowUpRight,
+  Clock,
+  DollarSign,
+  ExternalLink,
   Fuel,
+  TrendingUp,
+  X,
+  Zap,
+  BarChart3 as _BarChart3,
+  Calendar as _Calendar,
+  Filter as _Filter,
 } from "lucide-react";
 import { BalanceValue } from "@/context/BalancePrivacyContext";
 
@@ -119,7 +119,7 @@ const mockHarvestEvents: HarvestEvent[] = [
   }
 ];
 
-function formatCurrency(value: number, currency = 'USD'): string {
+function formatCurrency(value: number, _currency = 'USD'): string {
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(2)}M`;
   if (value >= 1_000) return `$${(value / 1_000).toFixed(2)}K`;
   return `$${value.toFixed(2)}`;
@@ -162,10 +162,10 @@ function truncateHash(hash: string): string {
 export function HarvestHistoryModal({
   isOpen,
   onClose,
-  vaultId,
+  vaultId: _vaultId,
   vaultName = "Yield Vault"
 }: HarvestHistoryModalProps) {
-  const [selectedEvent, setSelectedEvent] = useState<HarvestEvent | null>(null);
+  const [_selectedEvent, _setSelectedEvent] = useState<HarvestEvent | null>(null);
   const [timeFilter, setTimeFilter] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
   
   // Filter events based on time selection

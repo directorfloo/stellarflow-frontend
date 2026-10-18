@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  createChart,
+  CandlestickData,
+  HistogramData,
   IChartApi,
   ISeriesApi,
-  CandlestickData,
-  Time,
   LineData,
-  HistogramData,
   LineStyle,
+  Time,
+  createChart,
 } from 'lightweight-charts';
 import { getItem, setItem } from '@/utils/storage';
-import { calculateSimpleMovingAverage, calculateRSI } from '@/app/charts/chartCalculations';
-import { Activity, BarChart2, TrendingUp, Sliders, RefreshCw } from 'lucide-react';
+import { calculateRSI, calculateSimpleMovingAverage } from '@/app/charts/chartCalculations';
+import { Activity, BarChart2, RefreshCw, Sliders, TrendingUp } from 'lucide-react';
 
 export type Timeframe = '1H' | '24H' | '7D' | '1M' | '1Y' | 'ALL';
 

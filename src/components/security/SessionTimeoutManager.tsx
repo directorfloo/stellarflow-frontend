@@ -38,7 +38,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Clock, Shield, X } from "lucide-react";
+import { Shield, X, Clock as _Clock } from "lucide-react";
 import { useWalletSession } from "@/context/WalletContext";
 
 // ─────────────────────────────────────────────────────────────────────────────

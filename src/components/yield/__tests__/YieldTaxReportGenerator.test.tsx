@@ -68,7 +68,7 @@ function makeVaultYieldData(overrides: { harvestEvents?: unknown[] } = {}) {
 // Jest module mocks
 // ---------------------------------------------------------------------------
 
-let mockPrices: Array<{ assetPair: string; price: number; timestamp: number }> = [];
+let _mockPrices: Array<{ assetPair: string; price: number; timestamp: number }> = [];
 
 jest.mock("@tanstack/react-query", () => ({
   __esModule: true,

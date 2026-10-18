@@ -5,7 +5,7 @@ import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import { useToast } from '@/components/ui/ToastQueue';
 import { useWallet, useWalletActions } from '@/app/hooks/useWalletState';
-import { scanAccountAllowances, revokeAllowance } from '@/lib/allowanceAuditOps';
+import { revokeAllowance, scanAccountAllowances } from '@/lib/allowanceAuditOps';
 import type { AllowanceRiskLevel, TokenAllowance } from '@/types/allowance';
 
 function useTokenAllowances(publicKey: string | null | undefined) {

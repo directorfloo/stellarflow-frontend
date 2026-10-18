@@ -4,10 +4,10 @@ import { useEffect, useMemo, useRef } from "react";
 import {
   ArcElement,
   Chart,
+  type ChartConfiguration,
   Legend,
   PieController,
   Tooltip,
-  type ChartConfiguration,
 } from "chart.js";
 
 Chart.register(PieController, ArcElement, Tooltip, Legend);

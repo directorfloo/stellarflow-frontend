@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { X, CreditCard, Landmark, Wallet, CheckCircle2, XCircle, ShieldCheck, Loader2, AlertTriangle, ArrowRight } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CheckCircle2, CreditCard, Landmark, Loader2, ShieldCheck, Wallet, X, XCircle } from 'lucide-react';
 import { BENEFICIARY_COUNTRIES } from '@/lib/beneficiaries';
 
 export type OnRampProvider = 'moonpay' | 'transak' | 'walletconnect';

@@ -2,11 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  Chart,
   ArcElement,
+  Chart,
+  type ChartConfiguration,
   DoughnutController,
   Tooltip,
-  type ChartConfiguration,
 } from "chart.js";
 import type { PortfolioAllocationSlice } from "@/types/portfolio";
 import { BalanceValue } from "@/context/BalancePrivacyContext";

@@ -1,23 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
+  CategoryScale,
   Chart,
+  type ChartConfiguration,
+  Filler,
   LineController,
   LineElement,
-  PointElement,
   LinearScale,
-  CategoryScale,
-  Filler,
+  PointElement,
   Tooltip,
-  type ChartConfiguration,
 } from "chart.js";
 import { useChartWorker } from "../charts/useChartWorker";
 import { useImageWorker } from "../images/useImageWorker";
 import {
-  windowSeries,
   CHART_HISTORY_LIMIT,
   type SeriesWindow,
+  windowSeries,
 } from "../charts/chartCalculations";
 
 Chart.register(
@@ -49,7 +49,7 @@ const DashboardTrafficChart = React.memo(function DashboardTrafficChart({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart<"line"> | null>(null);
   const { computeSeries } = useChartWorker();
-  const { decodeImage } = useImageWorker();
+  const { decodeImage: _decodeImage } = useImageWorker();
 
   // Track pointer state for RAF loop
   const pointerPositionRef = useRef<PointerPosition | null>(null);
@@ -132,10 +132,11 @@ const DashboardTrafficChart = React.memo(function DashboardTrafficChart({
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- dependencyKey represents labels and values by content.
   }, [dependencyKey, computeSeries]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- labels and values are already reflected in series state
+
     if (!canvasRef.current) return;
 
     const { labels: windowedLabels, values: windowedValues } = series;

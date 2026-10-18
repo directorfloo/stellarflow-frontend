@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWallet, useWalletActions } from '@/app/components/providers/WalletProvider';
 import { useSwapExecution } from '@/hooks/useSwapExecution';
 import { formatTokenAmount } from '@/utils/formatters';
@@ -23,7 +23,7 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
   const { wallet } = useWallet();
   const { refreshWalletState } = useWalletActions();
   const isConnected = wallet?.connected || false;
-  const address = wallet?.publicKey || '';
+  const _address = wallet?.publicKey || '';
   const { executeSwap, isSwapping } = useSwapExecution();
 
   const [fromToken, setFromToken] = useState<TokenOption>(tokens[0]);

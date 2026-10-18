@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PriceData } from "@/types";
 import { savePriceBatch } from "@/lib/priceStorage";
 import { useErrorTimeout } from "./useErrorTimeout";
@@ -137,6 +137,7 @@ function useSocketState(options: UseSocketOptions): UseSocketReturn {
   // reconcile.
   // ------------------------------------------------------------------
   useEffect(() => {
+    const subscribedAssets = subscribedAssetsRef.current;
     const handleIncomingData = (data: any) => {
       if (!isVisible) return;
       if (
@@ -171,7 +172,7 @@ function useSocketState(options: UseSocketOptions): UseSocketReturn {
     wsManager.subscribeToStatus(handleStatusChange);
     wsManager.addConsumer();
 
-    const assetsOnMount = Array.from(subscribedAssetsRef.current);
+    const assetsOnMount = Array.from(subscribedAssets);
     if (assetsOnMount.length > 0) {
       wsManager.subscribeToAssets(assetsOnMount);
     }
@@ -182,10 +183,10 @@ function useSocketState(options: UseSocketOptions): UseSocketReturn {
       // Unsubscribe from ALL assets this consumer is tracking — not just the
       // snapshot captured at mount — so dynamically added subscriptions are
       // cleaned up and do not leak in the singleton manager.
-      const remaining = Array.from(subscribedAssetsRef.current);
+      const remaining = Array.from(subscribedAssets);
       if (remaining.length > 0) {
         wsManager.unsubscribeFromAssets(remaining);
-        subscribedAssetsRef.current.clear();
+        subscribedAssets.clear();
       }
       flushPendingUpdates();
       wsManager.removeConsumer();

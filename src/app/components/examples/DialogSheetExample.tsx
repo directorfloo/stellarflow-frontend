@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Settings, FileText, Bell } from "lucide-react";
+import { Bell, FileText, Settings } from "lucide-react";
 import OptimizedDialog from "../OptimizedDialog";
 import OptimizedSheet from "../OptimizedSheet";
 

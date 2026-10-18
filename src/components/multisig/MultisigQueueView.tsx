@@ -2,32 +2,32 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  AlertTriangle,
-  ArrowRight,
   CheckCircle2,
   Clock,
-  ExternalLink,
   FileSignature,
-  FileText,
-  Key,
   Layers,
   PenTool,
   Play,
   RotateCcw,
   Shield,
-  ShieldAlert,
-  ShieldCheck,
   Sparkles,
   Users,
-  Wallet,
-  XCircle,
+  AlertTriangle as _AlertTriangle,
+  ArrowRight as _ArrowRight,
+  ExternalLink as _ExternalLink,
+  FileText as _FileText,
+  Key as _Key,
+  ShieldAlert as _ShieldAlert,
+  ShieldCheck as _ShieldCheck,
+  Wallet as _Wallet,
+  XCircle as _XCircle,
 } from "lucide-react";
-import { SignatureStatusCard, CoSigner, SignerStatus } from "./SignatureStatusCard";
+import { CoSigner, SignatureStatusCard, SignerStatus } from "./SignatureStatusCard";
 import { triggerHaptic } from "@/lib/haptics";
 import {
   DEMO_CO_SIGNER_PUBLIC_KEY,
-  isEnvelopeAwaitingSigner,
   type MultisigQueueFilter,
+  isEnvelopeAwaitingSigner,
 } from "@/services/multisigNotifications";
 
 export type { MultisigQueueFilter };

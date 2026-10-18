@@ -26,12 +26,12 @@ import { ICON_IDS } from "@/components/icons/iconIds";
 import { useOptionalToast } from "@/components/ui/ToastQueue";
 import {
   MAX_STORAGE_QUOTA_BYTES,
+  type SanitizerReport,
+  type StorageFootprint,
   clearLocalDataCache,
   getLastSanitizerReport,
   getOriginQuotaBytes,
   getStorageFootprint,
-  type SanitizerReport,
-  type StorageFootprint,
 } from "@/utils/storageSanitizer";
 
 function formatBytes(bytes: number): string {

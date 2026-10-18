@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { useSocket } from '../../hooks/useSocket'
 import { ASSET_SYMBOL_LIST } from '@/config/assetSymbols'
 import { CHART_HISTORY_LIMIT } from '../../charts/chartCalculations'

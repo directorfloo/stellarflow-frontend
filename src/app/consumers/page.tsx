@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
-  Users,
-  Layers,
-  CreditCard,
-  Plus,
   CheckCircle2,
   Copy,
+  CreditCard,
+  Layers,
+  Plus,
+  Users,
 } from 'lucide-react';
 import { useDebounce } from '@/app/hooks/useDebounce';
 import { withShortenedAddressField } from '@/utils/addressUtils';
@@ -15,8 +15,8 @@ import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import { ConsumerSearchInput } from '@/app/components/ConsumerSearchInput';
 import {
-  ConsumerTableRow,
   type ConsumerTableRecord,
+  ConsumerTableRow,
 } from '@/app/components/consumers/ConsumerTableRow';
 
 // --- Types ---

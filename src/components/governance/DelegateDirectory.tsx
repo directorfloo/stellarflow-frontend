@@ -1,20 +1,20 @@
 "use client";
 
 import React, {
-  useMemo,
   useCallback,
-  useState,
-  useRef,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from "react";
 import Fuse, { IFuseOptions } from "fuse.js";
 import DOMPurify from "isomorphic-dompurify";
 import { useDebounce } from "@/app/hooks/useDebounce";
 import { useIsHydrated } from "@/app/hooks/useIsHydrated";
 import {
+  WalletProvider,
   useWallet,
   useWalletActions,
-  WalletProvider,
 } from "@/app/hooks/useWalletState";
 import { useToast } from "@/components/ui/ToastQueue";
 import { withShortenedAddressField } from "@/utils/addressUtils";
@@ -22,8 +22,8 @@ import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import type {
   Delegate,
-  DelegateVoteRecord,
   DelegateDirectoryFilter,
+  DelegateVoteRecord,
 } from "@/types/delegation";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -547,12 +547,13 @@ function DelegateDirectoryContent({
 
   // Cleanup timers on unmount
   useEffect(() => {
+    const timeouts = timeoutsRef.current;
     // Inject delegate styles once (idempotent)
     ensureDelegateStyles();
 
     return () => {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current.clear();
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
     };
   }, []);
 

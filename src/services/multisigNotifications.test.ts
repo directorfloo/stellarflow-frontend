@@ -4,22 +4,24 @@
  * Run: node --test src/services/multisigNotifications.test.ts
  */
 
-import { describe, it, beforeEach } from "node:test";
+import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
+  MAX_TRACKED_REQUESTS,
   MULTISIG_PENDING_FILTER,
   MULTISIG_PUSH_MESSAGE_TYPE,
   MULTISIG_REQUESTS_STORAGE_KEY,
   MULTISIG_REQUEST_EVENT,
-  MAX_TRACKED_REQUESTS,
+  type MultisigEnvelopeSignatureState,
+  type MultisigSignatureRequest,
   buildDemoSignatureRequests,
   buildMultisigApprovalDeepLink,
   buildMultisigPushPayload,
   countPendingSignatureRequests,
   filterPendingSignatureRequests,
   isAwaitingSignature,
-  isMultisigAlertEnabled,
   isEnvelopeAwaitingSigner,
+  isMultisigAlertEnabled,
   isMultisigDemoMode,
   isRequestTargetingSigner,
   loadCachedSignatureRequests,
@@ -36,8 +38,6 @@ import {
   saveCachedSignatureRequests,
   subscribeToSignatureRequestEvents,
   toSignatureRequest,
-  type MultisigEnvelopeSignatureState,
-  type MultisigSignatureRequest,
 } from "./multisigNotifications.ts";
 
 const SIGNER = "GBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXDV90210";

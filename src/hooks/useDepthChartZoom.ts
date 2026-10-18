@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useReducer, type RefObject } from "react";
+import { type RefObject, useEffect, useReducer } from "react";
 import {
   DEFAULT_ZOOM_INDEX,
   DEPTH_ZOOM_LEVELS,

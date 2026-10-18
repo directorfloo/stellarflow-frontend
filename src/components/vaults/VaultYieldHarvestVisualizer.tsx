@@ -2,23 +2,23 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  TrendingUp,
-  Zap,
-  Clock,
-  ExternalLink,
+  ArrowRight,
   ChevronDown,
   ChevronUp,
+  Clock,
+  ExternalLink,
   RefreshCw,
-  ArrowRight,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 import { BalanceValue } from "@/context/BalancePrivacyContext";
-import { SocialShareModal, type SocialShareData } from "@/components/common";
+import { type SocialShareData, SocialShareModal } from "@/components/common";
 import {
-  useVaultYieldHarvest,
   type HarvestEvent,
   type PoolAllocation,
-  type YieldPathNode,
   type YieldPathEdge,
+  type YieldPathNode,
+  useVaultYieldHarvest,
 } from "@/hooks/useVaultYieldHarvest";
 
 // ---------------------------------------------------------------------------

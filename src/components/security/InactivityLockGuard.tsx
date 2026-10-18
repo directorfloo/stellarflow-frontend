@@ -10,20 +10,20 @@ import React, {
   useState,
 } from "react";
 import {
-  Lock,
-  Unlock,
-  Shield,
-  ShieldCheck,
-  Fingerprint,
-  Wallet,
-  KeyRound,
-  Clock,
   AlertTriangle,
+  Clock,
   Eye,
   EyeOff,
-  CheckCircle2,
+  Fingerprint,
+  KeyRound,
+  Lock,
   RefreshCw,
-  Sliders,
+  Shield,
+  ShieldCheck,
+  Unlock,
+  Wallet,
+  CheckCircle2 as _CheckCircle2,
+  Sliders as _Sliders,
 } from "lucide-react";
 import { useOptionalWallet } from "@/app/components/providers/WalletProvider";
 
@@ -294,7 +294,7 @@ export function InactivityLockGuard({
       // Simulate challenge verification latency
       await new Promise((res) => setTimeout(res, 800));
       unlockSession();
-    } catch (err) {
+    } catch (_err) {
       setAuthError("Wallet verification failed. Please ensure your wallet extension is unlocked.");
     } finally {
       setIsVerifying(false);

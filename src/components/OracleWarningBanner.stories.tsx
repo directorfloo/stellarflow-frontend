@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OracleWarningBanner, type OracleHealthMetrics } from './OracleWarningBanner';
+import { type OracleHealthMetrics, OracleWarningBanner } from './OracleWarningBanner';
 
 const meta: Meta<typeof OracleWarningBanner> = {
   title: 'Components/OracleWarningBanner',

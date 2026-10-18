@@ -9,9 +9,9 @@ import {
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
+  type TooltipContentProps,
   XAxis,
   YAxis,
-  type TooltipContentProps,
 } from "recharts";
 import { SkeletonChart } from "@/components/skeletons/SkeletonChart";
 import { ASSET_DECIMALS, type AssetSymbol } from "@/config/assetSymbols";

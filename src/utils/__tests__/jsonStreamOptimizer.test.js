@@ -1,4 +1,4 @@
-import { flattenJsonPayload, compressStreamPayload } from '../jsonStreamOptimizer';
+import { compressStreamPayload, flattenJsonPayload } from '../jsonStreamOptimizer';
 
 describe('JSON Stream Optimizer', () => {
   test('should flatten nested JSON objects', () => {

@@ -13,8 +13,8 @@
  * - Visual charts and animations
  */
 
-import { useState, useMemo, useCallback } from "react";
-import { Download, TrendingDown, DollarSign, ArrowRight, Sparkles } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
+import { ArrowRight, DollarSign, Download, Sparkles, TrendingDown } from "lucide-react";
 import type { FxCurrencyCode } from "@/types/fxRates";
 import { useFxRatesWithFallback } from "@/app/hooks/useFxRates";
 
@@ -80,7 +80,7 @@ const CURRENCY_NAMES: Record<FxCurrencyCode, string> = {
   KES: "Kenyan Shilling",
 };
 
-interface ComparisonResult extends MtoProfile {
+interface _ComparisonResult extends MtoProfile {
   totalFee: number;
   recipientGets: number;
   effectiveFeePct: number;

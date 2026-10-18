@@ -52,7 +52,7 @@ export async function submitTransaction(payload: Record<string, number>): Promis
   }
 
   const { isConnected, getAddress } = await import("@stellar/freighter-api");
-  const { Horizon, TransactionBuilder, Networks, Transaction } = await import("@stellar/stellar-sdk");
+  const { Horizon, TransactionBuilder, Networks, Transaction: _Transaction } = await import("@stellar/stellar-sdk");
 
   if (!(await isConnected())) {
     throw new Error("Freighter wallet is not connected. Please connect your wallet first.");

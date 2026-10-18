@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, Search, Download, Upload, Plus, Trash2, Send } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Download, Plus, Search, Send, Trash2, Upload, X } from 'lucide-react';
 
 export interface Contact {
   id: string;

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@/app/components/providers/WalletProvider';
 import OptimizedDialog from '@/app/components/OptimizedDialog';
 import { useSocket } from '@/app/hooks/useSocket';
@@ -24,7 +24,7 @@ interface StopLossFormProps {
   pendingStopLosses?: StopLossCondition[];
 }
 
-interface PriceData {
+interface _PriceData {
   symbol: string;
   price: number;
   timestamp: number;
@@ -36,8 +36,8 @@ export const StopLossForm: React.FC<StopLossFormProps> = ({
   pendingStopLosses = [],
 }) => {
   const { wallet } = useWallet();
-  const isConnected = wallet?.connected || false;
-  const address = wallet?.publicKey || '';
+  const _isConnected = wallet?.connected || false;
+  const _address = wallet?.publicKey || '';
   const { lastUpdate } = useSocket({
     assetIds: [...ASSET_SYMBOL_LIST] as AssetSymbol[],
     enableDeltaUpdates: true,

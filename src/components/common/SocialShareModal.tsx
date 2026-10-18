@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import {
-  Share2,
-  Copy,
   Check,
+  Copy,
   Download,
-  X,
-  Sparkles,
-  ShieldCheck,
   Send,
+  Share2,
+  ShieldCheck,
+  Sparkles,
+  X,
 } from "lucide-react";
 
 export type ShareCategory = "trade" | "yield" | "governance";

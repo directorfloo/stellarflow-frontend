@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIsolatedCellClick } from '../hooks/useIsolatedCellClick';
-import { EVENT_CONFIG } from '../config/eventConfig';
+import { EVENT_CONFIG as _EVENT_CONFIG } from '../config/eventConfig';
 
 export const StatusIconWithIsolation = ({ 
   status = 'online', 
@@ -44,7 +44,7 @@ export const TableRowWithIsolatedCell = ({
   onRowClick, 
   onStatusClick 
 }) => {
-  const { createRowHandler, createStatusIconHandler } = useIsolatedCellClick(onRowClick);
+  const { createRowHandler, createStatusIconHandler: _createStatusIconHandler } = useIsolatedCellClick(onRowClick);
 
   return (
     <tr onClick={createRowHandler(onRowClick)}>

@@ -11,7 +11,7 @@
  * Usage: `npm run test:coverage`
  * Override the threshold with `COMPONENT_COVERAGE_MIN=<percent>` if needed.
  */
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 

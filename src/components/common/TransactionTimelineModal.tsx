@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CheckCircle2, CircleAlert, ChevronDown, LoaderCircle, Maximize2, Minimize2, Share2, X } from "lucide-react";
+import { CheckCircle2, ChevronDown, CircleAlert, LoaderCircle, Maximize2, Minimize2, Share2, X } from "lucide-react";
 
 import { CongestionFeeAlert } from "./CongestionFeeAlert";
 

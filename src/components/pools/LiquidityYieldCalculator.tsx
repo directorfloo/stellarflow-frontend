@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useId } from "react";
+import React, { useId, useMemo, useState } from "react";
 
 export interface LiquidityYieldCalculatorProps {
   /** Current Total Value Locked (TVL) in the pool */

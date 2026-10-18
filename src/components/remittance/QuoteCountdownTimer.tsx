@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useToast } from "@/components/ui/ToastQueue";
 
 export interface QuoteCountdownTimerProps {
@@ -53,7 +53,7 @@ export default function QuoteCountdownTimer({
     setTimeLeft(calculateTimeLeft());
     
     const tick = () => {
-      setTimeLeft((prev) => {
+      setTimeLeft((_prev) => {
         const newTimeLeft = calculateTimeLeft();
         
         if (newTimeLeft <= 0 && !hasRefreshedRef.current) {

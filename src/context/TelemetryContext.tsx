@@ -9,17 +9,17 @@
  */
 
 import React, {
+  type ReactNode,
   createContext,
   useContext,
   useMemo,
-  type ReactNode,
 } from 'react';
 import {
   SocketProvider,
+  type SocketProviderOptions,
   useSocketActions,
   useSocketConnection,
   useSocketData,
-  type SocketProviderOptions,
 } from '@/app/components/providers/SocketProvider';
 import type { PriceData } from '@/types';
 

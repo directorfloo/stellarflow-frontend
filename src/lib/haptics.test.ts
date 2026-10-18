@@ -7,15 +7,15 @@
  */
 
 import {
-  isHapticsSupported,
+  HAPTIC_PATTERNS,
+  HAPTIC_STORAGE_KEY,
+  cancelHaptic,
   getHapticsEnabled,
+  isHapticsSupported,
+  resolvePattern,
   setHapticsEnabled,
   toggleHaptics,
   triggerHaptic,
-  cancelHaptic,
-  resolvePattern,
-  HAPTIC_PATTERNS,
-  HAPTIC_STORAGE_KEY,
 } from './haptics';
 
 describe('Native Mobile Haptics Engine', () => {

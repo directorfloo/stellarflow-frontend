@@ -16,10 +16,10 @@
  */
 
 import React, {
+  type ReactNode,
   createContext,
   useContext,
   useMemo,
-  type ReactNode,
 } from 'react';
 import { useTelemetryActions, useTelemetryConnection, useTelemetryFeed } from '@/context/TelemetryContext';
 import type { PriceData } from '@/types';

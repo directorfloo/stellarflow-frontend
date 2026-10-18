@@ -44,7 +44,7 @@ export async function claimEscrow({
   const {
     Contract,
     Networks,
-    rpc,
+    rpc: _rpc,
     TransactionBuilder,
     nativeToScVal,
   } = await import('@stellar/stellar-sdk');

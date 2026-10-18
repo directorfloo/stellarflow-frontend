@@ -21,7 +21,7 @@ import { InactivityLockGuard } from "@/components/security/InactivityLockGuard";
 import { CspReporterInit } from "@/components/security/CspReporterInit";
 import { StorageSanitizer } from "@/components/providers/StorageSanitizer";
 import { WalletSessionProvider } from "@/context/WalletContext";
-import { GasFeeProvider } from "@/components/gas-fee";
+import { GasFeeProvider as _GasFeeProvider } from "@/components/gas-fee";
 import { headers } from "next/headers";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { HapticProvider } from "@/components/providers/HapticProvider";
@@ -33,8 +33,8 @@ import {
 import { RpcFailoverMonitor } from "./components/providers/RpcFailoverMonitor";
 import { CommandPalette } from "@/components/command-palette";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
-import { CircuitBreakerProvider, CircuitBreakerBanner } from "@/components/circuit-breaker";
-import { MobileBottomNav } from "@/components/navigation";
+import { CircuitBreakerBanner, CircuitBreakerProvider } from "@/components/circuit-breaker";
+import { InstallBanner } from "./components/InstallBanner";
 
 export const metadata: Metadata = {
   title: "StellarFlow Network Dashboard",

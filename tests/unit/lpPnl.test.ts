@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import {
+  type LPPosition,
+  LP_PNL_CSV_HEADERS,
   buildLPPnLCsv,
   computeLPPnL,
   computeLPPnLRows,
@@ -10,11 +12,9 @@ import {
   formatPercent,
   formatSignedUsd,
   formatUsd,
-  LP_PNL_CSV_HEADERS,
   roiTone,
   sortLPPnLRows,
   summarizeLPPnL,
-  type LPPosition,
 } from "../../src/components/analytics/lpPnl.ts";
 
 const WINNER: LPPosition = {

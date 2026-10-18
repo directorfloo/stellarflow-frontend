@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ArrowRight, CheckCircle, ChevronLeft } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowRight, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Step = 'source' | 'asset' | 'target' | 'review';
 

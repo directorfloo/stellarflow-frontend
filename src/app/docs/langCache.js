@@ -51,7 +51,7 @@ const runtimeCache = new Map();
 function hasWindowLocalStorage() {
   try {
     return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 }
@@ -63,7 +63,7 @@ function readFromStorage() {
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     return parsed;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -72,7 +72,7 @@ function writeToStorage(obj) {
   if (!hasWindowLocalStorage()) return;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
-  } catch (e) {
+  } catch (_e) {
     // ignore quota errors
   }
 }
@@ -106,7 +106,7 @@ function setLangConfig(lang, config) {
   try {
     const obj = Object.fromEntries(runtimeCache.entries());
     writeToStorage(obj);
-  } catch (e) {
+  } catch (_e) {
     // ignore
   }
 }

@@ -3,16 +3,16 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import {
-  Bell,
+  ArrowRight,
   BarChart3,
-  Zap,
-  WifiOff,
+  Bell,
+  Info,
   Settings,
   Smartphone,
-  ArrowRight,
-  Info,
+  WifiOff,
+  Zap,
 } from "lucide-react";
-const OfflineBanner = dynamic(() => import("@/components/pwa/OfflineBanner").then((module) => module.OfflineBanner), { ssr: false });
+const _OfflineBanner = dynamic(() => import("@/components/pwa/OfflineBanner").then((module) => module.OfflineBanner), { ssr: false });
 const PushNotificationManager = dynamic(() => import("@/components/notifications/PushNotificationManager").then((module) => module.PushNotificationManager), { ssr: false });
 const HarvestHistoryModal = dynamic(() => import("@/components/yield/HarvestHistoryModal").then((module) => module.HarvestHistoryModal), { ssr: false });
 const OrderBookView = dynamic(() => import("@/components/trading/OrderBookView").then((module) => module.OrderBookView), { ssr: false });
@@ -30,7 +30,7 @@ const NotificationPreferencesPanel = dynamic(() => import("@/components/settings
  */
 export default function DemoPage() {
   const [showHarvestModal, setShowHarvestModal] = useState(false);
-  const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const [_showNotificationModal, setShowNotificationModal] = useState(false);
   const [forceOffline, setForceOffline] = useState(false);
 
   // Simulate offline state for demo

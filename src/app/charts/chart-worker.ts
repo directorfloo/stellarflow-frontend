@@ -8,9 +8,9 @@
 // `chartCalculations` module — this file is purely the message-passing shell.
 
 import {
-  windowSeries,
   aggregateSeriesStats,
   computeSparklinePoints,
+  windowSeries,
 } from "./chartCalculations";
 import type {
   ChartWorkerInboundMessage,

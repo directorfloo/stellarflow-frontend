@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image, { ImageProps } from "next/image";
 import { useImageWorker } from "../images/useImageWorker";
 
@@ -20,6 +20,7 @@ export default function OptimizedImage({
   enableAsyncDecode = true,
   enableProgressiveLoading = true,
   placeholderQuality = 0.3,
+  alt = "",
   src,
   ...props
 }: OptimizedImageProps) {
@@ -81,7 +82,7 @@ export default function OptimizedImage({
             setIsLoaded(true);
           }
         }
-      } catch (err) {
+      } catch (_err) {
         if (!cancelled) {
           setDecodedSrc(src as string);
           setIsLoaded(true);
@@ -120,6 +121,7 @@ export default function OptimizedImage({
           width={width}
           height={height}
           src={decodedSrc}
+          alt={alt}
           onLoad={handleLoad}
           className={`transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
           {...props}

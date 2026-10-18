@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import type { NetworkContext } from "@/lib/txSpeedUpOps";
 import {
-  fetchDemoPendingTransfers,
   type DemoPendingTransfer,
+  fetchDemoPendingTransfers,
 } from "@/lib/demoPendingTransactions";
 
 interface PendingTransactionsFeedResult {

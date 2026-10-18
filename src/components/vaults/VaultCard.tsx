@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { createChart, IChartApi, ISeriesApi, Time, AreaData, AreaSeries } from 'lightweight-charts';
+import React, { useCallback as _useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AreaData, AreaSeries, IChartApi, ISeriesApi, Time, createChart } from 'lightweight-charts';
 import OptimizedDialog from '@/app/components/OptimizedDialog';
 import { useWallet } from '@/app/components/providers/WalletProvider';
 import { BalanceValue } from '@/context/BalancePrivacyContext';
@@ -182,7 +182,7 @@ function VaultActionModal({
   isSubmitting,
 }: VaultActionModalProps) {
   const [amount, setAmount] = useState<string>('');
-  const { wallet } = useWallet();
+  const { wallet: _wallet } = useWallet();
 
   const parsedAmount = useMemo(() => parseAmount(amount), [amount]);
   

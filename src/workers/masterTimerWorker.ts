@@ -42,7 +42,9 @@ export function subscribe(cb: Callback): () => void {
 // Export for convenience if direct start is needed.
 export { start };
 
-export default {
+const masterTimerWorker = {
   subscribe,
   start,
 };
+
+export default masterTimerWorker;

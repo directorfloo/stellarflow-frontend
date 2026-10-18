@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import OptimizedDialog from "@/app/components/OptimizedDialog";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
@@ -378,11 +379,12 @@ export function QrScannerModal({
                     <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-600 border-t-blue-500" />
                   </div>
                 ) : qrDataUrl ? (
-                  <img
+                  <Image
                     src={qrDataUrl}
                     alt="Stellar payment QR code"
                     width={280}
                     height={280}
+                    unoptimized
                     className="rounded-lg"
                   />
                 ) : null}

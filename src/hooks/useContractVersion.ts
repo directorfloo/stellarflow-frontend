@@ -16,7 +16,7 @@
 
 import { useEffect, useState } from "react";
 import type { ContractVersionInfo, ContractVersionResult } from "@/types/contractVersion";
-import { getContractVersionInfo, getCachedContractVersion } from "@/services/contractVersionService";
+import { getCachedContractVersion, getContractVersionInfo } from "@/services/contractVersionService";
 
 export interface UseContractVersionOptions {
   /** Soroban RPC / Horizon URL override. Defaults to the active RPC node. */

@@ -1,7 +1,7 @@
 const assert = require("assert");
 const path = require("path");
 const fs = require("fs");
-const { execSync } = require("child_process");
+const { execSync: _execSync } = require("child_process");
 
 const tempDir = path.join(__dirname, "temp-fiat-onramp");
 

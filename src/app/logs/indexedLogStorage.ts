@@ -1,5 +1,5 @@
 import { LogEntry } from './types';
-import { STORES, getAll, putMany, evictOldRecords, clearStore, count } from '@/lib/indexedDb';
+import { STORES, clearStore, count, evictOldRecords, getAll, putMany } from '@/lib/indexedDb';
 
 const MAX_LOG_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 

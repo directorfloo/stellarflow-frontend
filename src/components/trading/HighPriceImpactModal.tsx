@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { AlertTriangle, ShieldAlert, ArrowRight, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import { AlertTriangle, ArrowRight, ShieldAlert, X } from "lucide-react";
 
 export interface HighPriceImpactModalProps {
   isOpen: boolean;

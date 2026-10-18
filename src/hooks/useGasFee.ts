@@ -25,8 +25,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   NETWORK_CONFIGS,
-  useOptionalNetwork,
   type NetworkTarget,
+  useOptionalNetwork,
 } from "@/app/components/providers/NetworkProvider";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -312,6 +312,8 @@ export function useGasFee(
     const id = setInterval(() => void fetchFee(), POLL_INTERVAL_MS);
 
     return () => {
+      // Incrementing this token invalidates any request still in flight.
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- cleanup intentionally advances the request generation.
       generationRef.current++;
       clearInterval(id);
     };

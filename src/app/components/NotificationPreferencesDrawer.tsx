@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { X, BellRing, BellOff, Loader2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { BellRing, Loader2, X, BellOff as _BellOff } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useDebounce } from '../hooks/useDebounce';
 
 interface NotificationPreferencesDrawerProps {
@@ -31,11 +31,11 @@ export function NotificationPreferencesDrawer({ isOpen, onClose }: NotificationP
   const [isSaving, setIsSaving] = useState(false);
 
   const debouncedPreferences = useDebounce(preferences, 1000);
-  const [initialLoaded, setInitialLoaded] = useState(false);
+  const initialLoaded = useRef(false);
 
   useEffect(() => {
-    if (!initialLoaded) {
-      setInitialLoaded(true);
+    if (!initialLoaded.current) {
+      initialLoaded.current = true;
       return;
     }
     const syncWithBackend = async () => {

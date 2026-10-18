@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen as _screen, render } from '@testing-library/react';
 import { SkeletonCard } from '../SkeletonCard';
 import { SkeletonTable } from '../SkeletonTable';
 import { SkeletonChart } from '../SkeletonChart';

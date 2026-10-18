@@ -2,23 +2,23 @@
 
 import React, { useCallback, useState } from "react";
 import {
+  AlertCircle,
+  ArrowRight,
   Bell,
   BellOff,
-  Settings,
-  TrendingUp,
-  Shield,
-  Zap,
-  ArrowRight,
-  Smartphone,
-  Globe,
   CheckCircle,
-  AlertCircle,
-  Info,
   ExternalLink,
+  Info,
+  Settings,
+  Shield,
+  TrendingUp,
   Volume2,
   VolumeX,
+  Zap,
+  Globe as _Globe,
+  Smartphone as _Smartphone,
 } from "lucide-react";
-import { usePushNotifications, useNotificationTriggers } from "@/hooks/usePushNotifications";
+import { useNotificationTriggers, usePushNotifications } from "@/hooks/usePushNotifications";
 
 interface NotificationPreferencesPanelProps {
   /** Show as compact view */
@@ -39,7 +39,7 @@ interface NotificationPreferencesPanelProps {
  * - Frequency and timing controls
  */
 export function NotificationPreferencesPanel({ 
-  compact = false 
+  compact: _compact = false
 }: NotificationPreferencesPanelProps) {
   const {
     permission,

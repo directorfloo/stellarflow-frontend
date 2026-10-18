@@ -1,6 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
+  type DepthChartPoint,
   accumulateAsks,
   accumulateBids,
   buildDepthChartModel,
@@ -12,7 +13,6 @@ import {
   resolveDepthViewport,
   roundUpToNiceNumber,
   slicePointsToDomain,
-  type DepthChartPoint,
 } from "../orderBookDepth.ts";
 
 const level = (price: number, amount: number) => ({ price, amount, total: 0 });

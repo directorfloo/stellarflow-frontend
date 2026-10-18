@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 

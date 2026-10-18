@@ -21,7 +21,7 @@
  * wrapper, no clone, no extra nodes on the happy path.
  */
 
-import React, { useCallback, useId, useState, type ReactElement } from 'react';
+import React, { type ReactElement, useCallback, useId, useState } from 'react';
 import { Lock } from 'lucide-react';
 import { useMounted } from '@/app/hooks/useMounted';
 import { useModulePause } from './CircuitBreakerContext';

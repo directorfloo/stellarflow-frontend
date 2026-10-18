@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { X } from "lucide-react";
 
 const STORAGE_KEY = "stellarflow-install-banner-dismissed";

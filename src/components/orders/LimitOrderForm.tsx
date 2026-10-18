@@ -15,10 +15,10 @@ import type { OrderBookLevel } from "@/types";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import { ASSET_SYMBOLS } from "@/config/assetSymbols";
 import {
-  submitLimitOrder,
+  type ActiveLimitOrder,
   cancelLimitOrder,
   fetchActiveOrders,
-  type ActiveLimitOrder,
+  submitLimitOrder,
 } from "@/lib/limitOrderOps";
 
 // ─── Constants ────────────────────────────────────────────────────────────────

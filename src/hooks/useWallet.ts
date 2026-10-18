@@ -26,10 +26,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  isConnected,
-  isAllowed,
-  requestAccess,
   WatchWalletChanges,
+  isAllowed,
+  isConnected,
+  requestAccess,
 } from "@stellar/freighter-api";
 
 // ─────────────────────────────────────────────────────────────────────────────

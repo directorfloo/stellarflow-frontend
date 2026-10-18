@@ -28,7 +28,7 @@ const NEXT_STATIC_CHUNKS = path.join(
   "static",
   "chunks",
 );
-const NEXT_ANALYZE_DIR =
+const _NEXT_ANALYZE_DIR =
   process.env.NEXT_ANALYZE_DIR ||
   path.join(process.cwd(), ".next", "analyze");
 const OUTPUT_DIR = process.env.OUTPUT_DIR || ".";

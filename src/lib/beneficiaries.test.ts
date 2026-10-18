@@ -6,17 +6,17 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
+  BENEFICIARIES_STORAGE_KEY,
   COUNTRY_BANKING_RULES,
-  isValidIban,
+  addBeneficiary,
+  clearBeneficiaries,
   isValidAccountNumber,
+  isValidIban,
   isValidRoutingCode,
   isValidSwiftBic,
-  validateBeneficiary,
-  addBeneficiary,
-  removeBeneficiary,
-  clearBeneficiaries,
   loadSavedBeneficiaries,
-  BENEFICIARIES_STORAGE_KEY,
+  removeBeneficiary,
+  validateBeneficiary,
 } from "./beneficiaries.ts";
 
 test("isValidIban accepts a structurally valid GB IBAN", () => {

@@ -75,7 +75,7 @@ import {
 import { useMounted } from "@/app/hooks/useMounted";
 import { localStoragePersister } from "@/app/lib/persister";
 import { queryClient } from "@/app/lib/queryClient";
-import { clearStore, STORES } from "@/lib/indexedDb";
+import { STORES, clearStore } from "@/lib/indexedDb";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Constants

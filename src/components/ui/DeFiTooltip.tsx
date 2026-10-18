@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useId, useEffect } from 'react';
-import { ExternalLink, HelpCircle, AlertTriangle, BookOpen } from 'lucide-react';
-import { getGlossaryTerm, GlossaryTerm } from '@/lib/defiGlossary';
+import React, { useEffect, useId, useRef, useState } from 'react';
+import { AlertTriangle, BookOpen, ExternalLink, HelpCircle } from 'lucide-react';
+import { GlossaryTerm, getGlossaryTerm } from '@/lib/defiGlossary';
 
 export interface DeFiTooltipProps {
   /** Known term key in glossary (e.g., 'slippage', 'twap', 'impermanent-loss', 'health-factor') */

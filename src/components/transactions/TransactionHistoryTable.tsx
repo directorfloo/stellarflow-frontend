@@ -4,11 +4,11 @@ import { useMemo, useState } from "react";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import { useToast } from "@/components/ui/ToastQueue";
-import { exportTransactionsToCsv, type TaxPlatform } from "@/utils/csvExport";
+import { type TaxPlatform as _TaxPlatform, exportTransactionsToCsv as _exportTransactionsToCsv } from "@/utils/csvExport";
 import { useTransactionHistoryWithFallback } from "@/app/hooks/useTransactionHistory";
 import type { TransactionRecord, TransactionType } from "@/types/transactions";
 import { TransactionHistoryTableSkeleton } from "@/components/skeletons/TransactionHistoryTableSkeleton";
-import { SocialShareModal, type SocialShareData } from "@/components/common";
+import { type SocialShareData, SocialShareModal } from "@/components/common";
 
 const TYPE_FILTERS: { label: string; value: "all" | TransactionType }[] = [
   { label: "All Activity", value: "all" },

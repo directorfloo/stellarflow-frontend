@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   BatchDecodeResult,
-  DecodeXdrPayload,
-  XdrWorkerOutboundMessage,
   BatchResultMessage,
+  DecodeXdrPayload,
   XdrErrorMessage,
+  XdrWorkerOutboundMessage,
 } from './worker-types';
 
 export interface UseXdrWorkerOptions {
   onProgress?: (current: number, total: number) => void;
 }
 
-export function useXdrWorker(options?: UseXdrWorkerOptions) {
+export function useXdrWorker(_options?: UseXdrWorkerOptions) {
   const workerRef = useRef<Worker | null>(null);
   const [decoding, setDecoding] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -81,13 +81,14 @@ export function useXdrWorker(options?: UseXdrWorkerOptions) {
 
     worker.addEventListener('message', handleMessage);
 
+    const pendingRequests = pendingRequestsRef.current;
     return () => {
       worker.removeEventListener('message', handleMessage);
       // Clear all pending requests
-      pendingRequestsRef.current.forEach(({ timeoutId }) => {
+      pendingRequests.forEach(({ timeoutId }) => {
         clearTimeout(timeoutId);
       });
-      pendingRequestsRef.current.clear();
+      pendingRequests.clear();
       worker.terminate();
     };
   }, []);

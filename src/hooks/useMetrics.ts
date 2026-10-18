@@ -28,7 +28,7 @@
  *   const { data, isLoading, isFetching, error } = useMetrics()
  */
 
-import { useQuery, type UseQueryResult } from '@tanstack/react-query'
+import { type UseQueryResult, useQuery } from '@tanstack/react-query'
 import { getCacheProfile } from '../app/lib/cacheProfiles'
 import type {
   CorridorData,

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useState, useCallback, useEffect, useRef } from "react";
+import React, { useRef as _useRef, memo, useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -148,8 +148,8 @@ const FloatingSidebar = memo(() => {
                   handleSetHovered(label, e);
                   handlePrefetch(href);
                 }}
-                onPointerEnter={(e) => handlePrefetch(href)}
-                onMouseOver={(e) => handlePrefetch(href)}
+                onPointerEnter={(_e) => handlePrefetch(href)}
+                onMouseOver={(_e) => handlePrefetch(href)}
                 onMouseLeave={() => handleSetHovered(null)}
                 className="relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200"
                 style={{

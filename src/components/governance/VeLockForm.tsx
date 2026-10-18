@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Lock, Unlock, TrendingUp, Clock } from 'lucide-react';
+import { Clock, Lock, TrendingUp, Unlock } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Types

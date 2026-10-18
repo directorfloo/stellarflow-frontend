@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { 
-  BookOpen, 
-  Terminal, 
-  Code2, 
-  Layers, 
-  Copy, 
   Check, 
-  ExternalLink, 
-  Play,
-  Cpu
+  Copy,
+  BookOpen as _BookOpen,
+  Code2 as _Code2,
+  Cpu as _Cpu,
+  ExternalLink as _ExternalLink,
+  Layers as _Layers,
+  Play as _Play,
+  Terminal as _Terminal
 } from 'lucide-react';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
@@ -27,9 +27,10 @@ export default function DocsPage() {
   const timeoutsRef = React.useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   useEffect(() => {
+    const timeouts = timeoutsRef.current;
     return () => {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current.clear();
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
     };
   }, []);
 
@@ -53,7 +54,7 @@ export default function DocsPage() {
         timeoutsRef.current.delete(timer);
       }, 2000);
       timeoutsRef.current.add(timer);
-    } catch (e) {
+    } catch (_e) {
       // noop
     }
   };

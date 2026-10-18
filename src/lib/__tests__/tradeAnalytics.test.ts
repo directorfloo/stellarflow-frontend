@@ -1,12 +1,12 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
+  type TradeHop,
+  calculateGasToTradeSizeRatio,
+  calculateMultiHopSlippage,
   calculatePriceVariance,
   calculateRealizedSlippagePercent,
   deriveFillQualityRating,
-  calculateGasToTradeSizeRatio,
-  calculateMultiHopSlippage,
-  type TradeHop,
 } from "../tradeAnalytics.ts";
 
 describe("Trade Analytics & Execution Fill Quality Profiler (#939)", () => {

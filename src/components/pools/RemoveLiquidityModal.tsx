@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useWallet } from '@/app/components/providers/WalletProvider';
 import { useRemoveLiquidity } from '@/hooks/useRemoveLiquidity';
 import { formatTokenAmount } from '@/utils/formatters';
@@ -29,7 +29,7 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
   onSuccess,
 }) => {
   const { wallet } = useWallet();
-  const isConnected = wallet?.connected || false;
+  const _isConnected = wallet?.connected || false;
   const { removeLiquidity, isRemoving } = useRemoveLiquidity();
 
   const [percentage, setPercentage] = useState<number>(50);

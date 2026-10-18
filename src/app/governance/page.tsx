@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { WalletProvider, useWallet, useWalletStatus, useWalletActions } from '@/app/hooks/useWalletState';
+import { WalletProvider, useWallet, useWalletActions, useWalletStatus } from '@/app/hooks/useWalletState';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import { ProposalList, type ProposalRecord, type ProposalStatus } from '@/components/governance/ProposalList';

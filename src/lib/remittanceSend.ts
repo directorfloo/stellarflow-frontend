@@ -1,6 +1,6 @@
 import {
-  SEND_ASSETS,
   type PayoutCorridor,
+  SEND_ASSETS,
   type SendAsset,
 } from "@/types/remittanceSend";
 import type { Sep38Quote } from "@/types/remittanceSend";

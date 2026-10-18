@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo as _useMemo, useCallback, useEffect, useState } from "react";
 import OptimizedDialog from "@/app/components/OptimizedDialog";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS, type IconId } from "@/components/icons/iconIds";

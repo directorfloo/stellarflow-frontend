@@ -42,7 +42,7 @@ function generateQRCodeSVG(data: string, size: number): string {
   // but this creates a valid scannable QR code for Stellar addresses
   const cellSize = size / 25; // 25x25 grid for simplicity
   const padding = 2;
-  const actualSize = size - padding * 2 * cellSize;
+  const _actualSize = size - padding * 2 * cellSize;
   
   // Create a simple pattern that's scannable (in a real implementation, use proper QR encoding)
   // This is a placeholder that creates a valid-looking QR code with the correct position markers

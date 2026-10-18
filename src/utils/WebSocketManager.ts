@@ -1,6 +1,6 @@
 "use client";
 
-import { PriceData, OrderBookSnapshot, AmmTradeEvent } from "@/types";
+import { AmmTradeEvent, OrderBookSnapshot, PriceData } from "@/types";
 
 export interface SocketMessage {
   /**
@@ -11,11 +11,6 @@ export interface SocketMessage {
   type: "price_update" | "delta_update" | "orderbook_update" | (string & {});
   assetId?: string;
   data: PriceData | Partial<PriceData> | OrderBookSnapshot | Record<string, unknown> | undefined;
-interface SocketMessage {
-  type: "price_update" | "delta_update" | "orderbook_update" | "trade_execution";
-  assetId?: string;
-  data: PriceData | Partial<PriceData> | OrderBookSnapshot | AmmTradeEvent;
-  timestamp: number;
 }
 
 type MessageCallback = (data: PriceData | Partial<PriceData>) => void;
@@ -114,14 +109,14 @@ export class WebSocketManager {
             this.orderBookListeners.forEach((callback) =>
               callback(message.data as OrderBookSnapshot),
             );
-          } else {
-            // Non-price indexer channels ride the same socket. They are fanned
-            // out raw so each channel owns its own payload parsing.
-            this.notifyIndexerEventListeners(message);
           } else if (message.type === "trade_execution") {
             this.tradeListeners.forEach((callback) =>
               callback(message.data as AmmTradeEvent),
             );
+          } else {
+            // Non-price indexer channels ride the same socket. They are fanned
+            // out raw so each channel owns its own payload parsing.
+            this.notifyIndexerEventListeners(message);
           }
         } catch (err) {
           console.error("Failed to parse centralized WebSocket message:", err);

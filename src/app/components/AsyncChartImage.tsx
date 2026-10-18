@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageWorker } from "../images/useImageWorker";
 
 interface AsyncChartImageProps {
@@ -114,11 +114,16 @@ export default function AsyncChartImage({
 
     return () => {
       abortControllerRef.current?.abort();
-      if (currentSrc && currentSrc.startsWith("blob:")) {
+    };
+  }, [processChartImage]);
+
+  useEffect(() => {
+    return () => {
+      if (currentSrc?.startsWith("blob:")) {
         URL.revokeObjectURL(currentSrc);
       }
     };
-  }, [processChartImage]);
+  }, [currentSrc]);
 
   const renderCanvas = useCallback(() => {
     const canvas = canvasRef.current;

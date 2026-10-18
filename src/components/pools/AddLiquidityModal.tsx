@@ -71,7 +71,7 @@ interface ApprovalState {
  *
  * Returns 0 when the pool is empty or inputs are invalid.
  */
-function calcCounterAmount(
+function _calcCounterAmount(
   amountA: number,
   reserveA: number,
   reserveB: number,

@@ -11,7 +11,7 @@
  */
 
 const fs = require('fs');
-const path = require('path');
+const _path = require('path');
 const { execSync } = require('child_process');
 
 const BASELINE_FILE = '.bundle-report.baseline.json';
@@ -45,7 +45,7 @@ try {
   // Build and analyze
   try {
     execSync('npm run build', { stdio: 'inherit' });
-  } catch (err) {
+  } catch (_err) {
     console.error('❌ Build failed during pre-commit check');
     process.exit(1);
   }

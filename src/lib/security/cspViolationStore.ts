@@ -6,7 +6,7 @@
  * buffer of recent incident payloads for the developer analytics dashboard.
  */
 
-import { isBrowserExtensionViolation, type CspViolationMetadata } from "@/utils/cspReporter";
+import { type CspViolationMetadata, isBrowserExtensionViolation } from "@/utils/cspReporter";
 
 export type CspSeverity = "Critical" | "High" | "Medium" | "Low";
 
@@ -297,7 +297,7 @@ class CspViolationStore {
 
 // Global singleton instance
 declare global {
-  // eslint-disable-next-line no-var
+
   var __cspViolationStore: CspViolationStore | undefined;
 }
 

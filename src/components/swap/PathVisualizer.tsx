@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { TokenIcon } from '@/components/ui/TokenIcon';
 import type { TokenOption } from './SwapForm';

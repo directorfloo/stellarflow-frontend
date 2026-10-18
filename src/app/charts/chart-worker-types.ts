@@ -4,8 +4,8 @@
 // to a dedicated Web Worker, mirroring the XDR worker thread-isolation pattern.
 
 import type {
-  SeriesWindow,
   SeriesStats,
+  SeriesWindow,
   SparklineGeometry,
 } from "./chartCalculations";
 

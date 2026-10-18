@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Settings, Coins } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { Coins, Settings } from "lucide-react";
 import TokenListManagerModal from "../components/TokenListManagerModal";
 import { getActiveTokens } from "@/lib/tokenListService";
 import type { TokenInfo } from "@/types/tokenList";
@@ -89,9 +90,12 @@ export default function TokenListsPage() {
                 >
                   <div className="flex items-center gap-3">
                     {token.logoURI ? (
-                      <img
+                      <Image
                         src={token.logoURI}
                         alt={token.symbol}
+                        width={32}
+                        height={32}
+                        unoptimized
                         className="w-8 h-8 rounded-full bg-zinc-800"
                         onError={(e) => {
                           e.currentTarget.style.display = "none";

@@ -1,4 +1,4 @@
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import { getCacheProfile } from "../lib/cacheProfiles";
 import type {
   PerAssetBreakdown,

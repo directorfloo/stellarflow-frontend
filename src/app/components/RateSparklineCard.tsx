@@ -4,8 +4,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Shimmer } from "@/components/skeletons/Shimmer";
 import { useChartWorker } from "../charts/useChartWorker";
 import {
-  computeSparklinePoints,
   CHART_HISTORY_LIMIT,
+  computeSparklinePoints,
 } from "../charts/chartCalculations";
 
 const SPARKLINE_GEOMETRY = { width: 120, height: 32, limit: CHART_HISTORY_LIMIT };

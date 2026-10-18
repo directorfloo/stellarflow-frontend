@@ -21,13 +21,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   KEYBOARD_SHORTCUTS_CHANGE_EVENT,
   KEYBOARD_SHORTCUTS_STORAGE_KEY,
+  type KeyboardShortcutDefinition,
+  type KeyboardTargetLike,
+  type ShortcutTimeframe,
   getKeyboardShortcutsEnabled,
   resolveShortcut,
   setKeyboardShortcutsEnabled,
   toggleKeyboardShortcutsEnabled,
-  type KeyboardShortcutDefinition,
-  type KeyboardTargetLike,
-  type ShortcutTimeframe,
 } from "@/lib/keyboardShortcuts";
 
 export interface KeyboardShortcutPreference {

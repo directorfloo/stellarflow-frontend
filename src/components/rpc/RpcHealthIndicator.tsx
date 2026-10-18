@@ -10,9 +10,9 @@
 
 import React, { useState } from "react";
 import {
-  useRpcHealth,
   type RpcEndpointHealth,
   type RpcHealthStatus,
+  useRpcHealth,
 } from "@/hooks/useRpcHealth";
 import type { NetworkTarget } from "@/app/components/providers/NetworkProvider";
 

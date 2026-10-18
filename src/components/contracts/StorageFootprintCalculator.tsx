@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';
 import {
-  calculateStorageCost,
-  compareStorageTradeoffs,
-  parseSimulationFootprint,
-  formatLedgerDuration,
-  StorageTier,
   LEDGERS_PER_DAY,
   LEDGERS_PER_MONTH,
   LEDGERS_PER_YEAR,
+  StorageTier,
+  calculateStorageCost,
+  compareStorageTradeoffs,
+  formatLedgerDuration,
+  parseSimulationFootprint,
 } from '@/lib/storageCostCalculator';
 import { getXlmUsdRate } from '@/services/storageFootprintService';
 

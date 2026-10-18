@@ -6,7 +6,7 @@ import { ICON_IDS } from "@/components/icons/iconIds";
 import { useToast } from "@/components/ui/ToastQueue";
 import { useRemittancePayoutsWithFallback } from "@/app/hooks/useRemittancePayouts";
 import { exportRemittancePayoutsToCsv } from "@/utils/remittanceCsvExport";
-import { ReceiptModal, type ReceiptData } from "@/components/remittance/ReceiptModal";
+import { type ReceiptData, ReceiptModal } from "@/components/remittance/ReceiptModal";
 import type { RemittancePayoutRecord } from "@/types/remittancePayout";
 
 const STATUS_STYLES: Record<RemittancePayoutRecord["status"], string> = {

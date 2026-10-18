@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { WebSocketServer, WebSocket } from 'ws'
+import { WebSocket, WebSocketServer } from 'ws'
 import {
-  ASSET_SYMBOL_LIST,
   ASSET_BASE_PRICES,
-  ASSET_DECIMALS
+  ASSET_DECIMALS,
+  ASSET_SYMBOL_LIST
 } from '@/config/assetSymbols'
-import { listPools, type LiquidityPool } from '@/lib/pools'
+import { type LiquidityPool, listPools } from '@/lib/pools'
 
 // Static export only supports GET handlers marked as static; the placeholder
 // GET below is prerendered at build time. The live socket server only exists
@@ -21,7 +21,7 @@ const payoutConnections = new Map<WebSocket, Set<string>>()
 let wss: WebSocketServer | null = null
 
 // Initialize WebSocket server if not already done
-function getWebSocketServer() {
+function _getWebSocketServer() {
   if (!wss) {
     wss = new WebSocketServer({ noServer: true })
 

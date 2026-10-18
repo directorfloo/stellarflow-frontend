@@ -5,7 +5,7 @@
  * This handler shows notifications and deep-links clicks to `/?tx=&type=`.
  */
 
-/* eslint-disable no-undef */
+
 /* global self, clients */
 
 self.addEventListener("push", (event) => {

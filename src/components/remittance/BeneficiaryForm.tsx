@@ -2,27 +2,27 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  X,
-  Landmark,
-  ShieldCheck,
-  CheckCircle2,
-  Loader2,
   AlertTriangle,
-  User,
   Banknote,
   BookmarkPlus,
+  CheckCircle2,
+  Landmark,
+  Loader2,
+  ShieldCheck,
+  User,
+  X,
 } from 'lucide-react';
 import {
   BENEFICIARY_COUNTRIES,
+  type BeneficiaryBankDetails,
+  type BeneficiaryFieldError,
   COUNTRY_BANKING_RULES,
+  type CountryBankingRule,
+  type PayoutAsset,
   addBeneficiary,
   forwardBeneficiaryToAnchor,
   loadSavedBeneficiaries,
   validateBeneficiary,
-  type BeneficiaryBankDetails,
-  type CountryBankingRule,
-  type BeneficiaryFieldError,
-  type PayoutAsset,
 } from '@/lib/beneficiaries';
 
 export interface BeneficiaryFormProps {

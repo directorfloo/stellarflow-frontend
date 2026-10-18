@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronDown, Check, Plus, Wallet, Copy, ExternalLink } from 'lucide-react';
+import { Check, ChevronDown, Copy, ExternalLink, Plus, Wallet } from 'lucide-react';
 
 export interface WalletAccount {
   publicKey: string;

@@ -1,4 +1,4 @@
-import { openDB, type DBSchema, type IDBPDatabase } from "idb";
+import { type DBSchema, type IDBPDatabase, openDB } from "idb";
 
 export const CACHE_DB_NAME = "stellarflow-cache";
 export const CACHE_DB_VERSION = 1;

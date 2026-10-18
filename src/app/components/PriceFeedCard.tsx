@@ -1,10 +1,10 @@
 "use client";
 
 import React, {
+  memo,
+  useCallback,
   useEffect,
   useState,
-  useCallback,
-  memo,
 } from "react";
 import { useRAFInterval } from "@/app/hooks/useRAFInterval";
 import { useInactivityDelay } from "@/app/hooks/useInactivityDelay";
@@ -19,11 +19,11 @@ import { PriceFeedCardSkeleton } from "@/components/skeletons/PriceFeedCardSkele
 import { getCachedHistory, getCachedHistorySync, setCachedHistory } from "../lib/historySync";
 import { useMounted } from "@/app/hooks/useMounted";
 import { usePageVisibility } from "../hooks/usePageVisibility";
-import { POLLING_INTERVALS, INACTIVITY_CONFIG } from "@/config/cacheConfig";
+import { INACTIVITY_CONFIG, POLLING_INTERVALS } from "@/config/cacheConfig";
 import { getLatestPrice } from "@/lib/priceStorage";
 import {
-  useCorridorStream,
   useCorridorConnection,
+  useCorridorStream,
 } from "@/context/CorridorContext";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -210,7 +210,7 @@ const PriceFeedCard: React.FC<PriceFeedCardProps> = ({
     if (!mounted) return;
     if (!wsUpdate || !enableWebSocket || !isPageVisible) return;
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Necessary to sync WebSocket data with local state
+
     setData((prev: PriceFeedData | null) => ({
       price: wsUpdate.price || prev?.price || 0,
       // Reset 24 h change indicator when a fresh price arrives.
@@ -229,7 +229,7 @@ const PriceFeedCard: React.FC<PriceFeedCardProps> = ({
     setLastRefresh(new Date());
     setLoading(false);
     setError(null);
-  }, [wsUpdate, enableWebSocket, isPageVisible, setError]); // `data` intentionally omitted — accessed via functional updater
+  }, [mounted, wsUpdate, enableWebSocket, isPageVisible, setError]); // `data` intentionally omitted — accessed via functional updater
 
   // Handle WebSocket errors
   useEffect(() => {
@@ -237,7 +237,7 @@ const PriceFeedCard: React.FC<PriceFeedCardProps> = ({
     if (wsError && enableWebSocket) {
       setError(`WebSocket error: ${wsError}`);
     }
-  }, [wsError, enableWebSocket, setError]);
+  }, [mounted, wsError, enableWebSocket, setError]);
 
   // Initial fetch + fallback polling (only when WebSocket is disabled or disconnected)
   const pollingActive = mounted && isPageVisible && (!enableWebSocket || !isConnected);

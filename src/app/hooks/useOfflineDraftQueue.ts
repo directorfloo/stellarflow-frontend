@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 import {
-  offlineDraftStore,
   type OfflineDraftInput,
   type OfflineDraftKind,
   type OfflineDraftQueueState,
@@ -11,6 +10,7 @@ import {
   type OfflineDraftSyncResult,
   type OfflineDraftSyncSummary,
   type OfflineTransactionDraft,
+  offlineDraftStore,
 } from "@/lib/OfflineTransactionQueue";
 import { useOnlineStatus } from "@/app/hooks/useOnlineStatus";
 

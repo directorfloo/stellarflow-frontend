@@ -5,12 +5,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import {
-  IdenticonAvatar,
-  IDENTICON_SIZE_PX,
   IDENTICON_GRID,
+  IDENTICON_SIZE_PX,
+  IdenticonAvatar,
+  buildIdenticonMatrix,
   fnv1a32,
   generateIdenticonPalette,
-  buildIdenticonMatrix,
   meetsWcagAaOnDark,
 } from './IdenticonAvatar';
 

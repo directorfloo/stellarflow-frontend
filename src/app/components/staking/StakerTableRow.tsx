@@ -1,9 +1,9 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { shortenAddress } from '@/utils/addressUtils';
 import {
-  getHealthBarColor,
   STAKER_SLASHING_NO_EVENTS,
   STAKER_SLASHING_WITH_EVENTS,
+  getHealthBarColor,
 } from '@/lib/classNameVariants';
 import Icon from '@/components/icons/Icon';
 import { ICON_IDS } from '@/components/icons/iconIds';

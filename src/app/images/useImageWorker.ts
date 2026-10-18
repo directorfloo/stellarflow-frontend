@@ -56,14 +56,15 @@ export function useImageWorker() {
     };
 
     worker.addEventListener("message", handleMessage);
+    const pendingRequests = pendingRef.current;
 
     return () => {
       worker.removeEventListener("message", handleMessage);
-      pendingRef.current.forEach(({ timeoutId, reject }: PendingRequest) => {
+      pendingRequests.forEach(({ timeoutId, reject }: PendingRequest) => {
         clearTimeout(timeoutId);
         reject(new Error("Image worker terminated"));
       });
-      pendingRef.current.clear();
+      pendingRequests.clear();
       worker.terminate();
       workerRef.current = null;
     };
@@ -96,7 +97,7 @@ export function useImageWorker() {
 
         try {
           worker.postMessage(message);
-        } catch (err) {
+        } catch (_err) {
           clearTimeout(timeoutId);
           pendingRef.current.delete(id);
           fallback().then(resolve).catch(reject);

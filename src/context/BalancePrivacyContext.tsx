@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { type ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 const STORAGE_KEY = "stellarflow:balance-privacy";
 interface BalancePrivacyValue { hidden: boolean; toggle: () => void; }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import type { SorobanResourceMetrics, SorobanBudgetLimits } from '@/types/sorobanBudget';
+import type { SorobanBudgetLimits, SorobanResourceMetrics } from '@/types/sorobanBudget';
 import { DEFAULT_SOROBAN_LIMITS } from '@/types/sorobanBudget';
 import { ContractVersionBadge } from '@/components/contracts/ContractVersionBadge';
 

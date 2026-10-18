@@ -2,15 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  CategoryScale,
   Chart,
+  type ChartConfiguration,
+  Filler,
   LineController,
   LineElement,
-  PointElement,
   LinearScale,
-  CategoryScale,
-  Filler,
+  PointElement,
   Tooltip,
-  type ChartConfiguration,
 } from "chart.js";
 import type { PortfolioSummaryData, PortfolioTimeframe } from "@/types/portfolio";
 import { BalanceValue } from "@/context/BalancePrivacyContext";

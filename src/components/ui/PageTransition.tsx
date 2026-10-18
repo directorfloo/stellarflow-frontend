@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { AnimatePresence, type Variants, motion, useReducedMotion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 

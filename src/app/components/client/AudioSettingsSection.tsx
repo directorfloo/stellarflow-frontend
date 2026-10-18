@@ -1,8 +1,8 @@
 'client';
 
 import React from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
-import { useTransactionAudio, SoundPack } from '@/hooks/useTransactionAudio';
+import { Music, Volume2, VolumeX } from 'lucide-react';
+import { SoundPack, useTransactionAudio } from '@/hooks/useTransactionAudio';
 
 export function AudioSettingsSection() {
   const { isEnabled, toggle, currentPack, setSoundPack, playPreview } = useTransactionAudio();

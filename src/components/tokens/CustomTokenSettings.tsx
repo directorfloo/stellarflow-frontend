@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCustomTokens, removeCustomToken, type CustomToken } from "@/lib/customTokens";
+import { type CustomToken, getCustomTokens, removeCustomToken } from "@/lib/customTokens";
 
 export function CustomTokenSettings() {
   const [tokens, setTokens] = useState<CustomToken[]>([]);

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, Check, Clipboard, Download, LoaderCircle, X } from "lucide-react";
 import {
-  createShieldedRemittanceNote,
   type ShieldedRemittanceNote,
+  createShieldedRemittanceNote,
 } from "@/lib/shieldedRemittanceNote";
 import {
   ShieldedProofProgress,

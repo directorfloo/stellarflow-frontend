@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Home, Share2, WifiOff, Bell, X } from "lucide-react";
+import { Bell, Download, Home, Share2, WifiOff, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 const DISMISS_KEY = "stellarflow-pwa-install-guide-dismissed";

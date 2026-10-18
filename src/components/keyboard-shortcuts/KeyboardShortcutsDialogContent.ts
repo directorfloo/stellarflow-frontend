@@ -10,7 +10,7 @@
  * focus management) and forwards them as props.
  */
 
-import { createElement, type ReactElement, type Ref } from "react";
+import { type ReactElement, type Ref, createElement } from "react";
 import type {
   KeyboardShortcutDefinition,
   KeyboardShortcutSection,

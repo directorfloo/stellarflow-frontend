@@ -1,18 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AlertTriangle,
-  CheckCircle2,
-  Loader2,
-  HelpCircle,
   ArrowRight,
+  CheckCircle2,
+  Clock,
   Cpu,
+  Eye,
+  EyeOff,
+  HelpCircle,
+  Loader2,
   Smartphone,
   Usb,
-  EyeOff,
-  Eye,
-  Clock,
 } from 'lucide-react';
 
 export interface HardwareWalletInfo {

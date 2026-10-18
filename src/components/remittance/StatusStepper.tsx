@@ -9,8 +9,8 @@ import {
   RemittanceStep,
   isStepActive,
   isStepCompleted,
-  stepIndex,
   stellarExpertTxUrl,
+  stepIndex,
 } from "@/hooks/useRemittanceStatus";
 
 // ---------------------------------------------------------------------------

@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
+  type StellarRpcNode,
   classifyLatency,
   formatLatencyDisplay,
-  type StellarRpcNode,
 } from "@/config/rpcNodes";
 import { useNetworkHeartbeat } from "@/hooks/useNetworkHeartbeat";
 

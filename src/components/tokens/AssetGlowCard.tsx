@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { useAssetThemeColor, type UseAssetThemeColorOptions } from "@/hooks/ui/useAssetThemeColor";
+import { type UseAssetThemeColorOptions, useAssetThemeColor } from "@/hooks/ui/useAssetThemeColor";
 import { Sparkles } from "lucide-react";
 
 export interface AssetGlowCardProps {
@@ -38,7 +38,7 @@ export function AssetGlowCard({
   className = "",
   showColorBadge = true,
 }: AssetGlowCardProps) {
-  const { hex, ambientGlowStyle, cardBorderStyle, isFallback, isLoading } =
+  const { hex, ambientGlowStyle, cardBorderStyle, isFallback, isLoading: _isLoading } =
     useAssetThemeColor(logoSrc, options);
 
   return (

@@ -20,12 +20,12 @@
  */
 
 import {
+  type CSSProperties,
   useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
 } from "react";
 import type { OrderBookEntry } from "@/app/hooks/useCorridorMetrics";
 

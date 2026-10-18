@@ -5,9 +5,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { NotificationPreferencesModal } from "./NotificationPreferencesModal";
 import { TransactionDetailsModal } from "./TransactionDetailsModal";
 import {
-  parseNotificationDeepLink,
   type NotificationPreferences,
   type PushEventType,
+  parseNotificationDeepLink,
 } from "@/services/notifications";
 
 interface DeepLinkState {

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import OptimizedDialog from "@/app/components/OptimizedDialog";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
-import { useLedgerWallet, LedgerConnectionStep } from "./LedgerWalletProvider";
-import { motion, AnimatePresence } from "framer-motion";
+import { LedgerConnectionStep, useLedgerWallet } from "./LedgerWalletProvider";
+import { AnimatePresence, motion } from "framer-motion";
 
 export interface LedgerConnectModalProps {
   isOpen: boolean;

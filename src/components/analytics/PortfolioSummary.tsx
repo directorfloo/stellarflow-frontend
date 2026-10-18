@@ -7,7 +7,7 @@
  * the per-asset stacked bar chart below the existing net-worth cards.
  */
 
-import { PieChart, Wallet, Droplets, Vault, BarChart2 } from "lucide-react";
+import { BarChart2, Droplets, PieChart, Vault, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { usePortfolioWithFallback } from "@/app/hooks/usePortfolio";

@@ -9,7 +9,7 @@
  * the ticker and comparison table always have something to render.
  */
 
-import { useQuery, type UseQueryResult } from "@tanstack/react-query";
+import { type UseQueryResult, useQuery } from "@tanstack/react-query";
 import type { FxCurrencyCode, FxRatesResponse } from "@/types/fxRates";
 
 export const FX_POLL_INTERVAL_MS = 15_000;

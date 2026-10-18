@@ -1,5 +1,5 @@
 // src/components/SlippageSettingsModal.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface SlippageSettingsModalProps {
   isOpen: boolean;

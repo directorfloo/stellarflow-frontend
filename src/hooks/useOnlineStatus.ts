@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback as _useCallback, useEffect as _useEffect, useState as _useState, useSyncExternalStore } from "react";
 
 type OnlineStatusState = {
   isOnline: boolean;

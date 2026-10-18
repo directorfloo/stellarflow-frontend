@@ -1,12 +1,12 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import {
+  type CspViolationMetadata,
   formatCspPayload,
   isBrowserExtensionViolation,
-  type CspViolationMetadata,
 } from "@/utils/cspReporter";
 import {
-  cspViolationStore,
   calculateCspSeverity,
+  cspViolationStore,
 } from "@/lib/security/cspViolationStore";
 
 describe("cspReporter Client Handler & Filter", () => {

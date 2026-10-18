@@ -11,7 +11,7 @@
  */
 
 import React, { useMemo } from "react";
-import { useGasFee, type FeeTier, type GasFeeSnapshot } from "@/hooks/useGasFee";
+import { type FeeTier, type GasFeeSnapshot, useGasFee } from "@/hooks/useGasFee";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Styling helpers

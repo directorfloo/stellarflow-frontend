@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useWallet } from "@/app/components/providers/WalletProvider";
 import { useNetwork } from "@/app/components/providers/NetworkProvider";
-import { formatTokenAmount, formatXLM, formatUSD } from "@/utils/formatters";
+import { formatTokenAmount, formatUSD, formatXLM } from "@/utils/formatters";
 import type { TokenOption } from "./SwapForm";
 
 interface FeeBreakdownProps {
@@ -33,7 +33,7 @@ interface FeeEstimate {
 }
 
 const XLM_PRICE_USD = 0.12;
-const HIGH_CONGESTION_MULTIPLIER = 2.0;
+const _HIGH_CONGESTION_MULTIPLIER = 2.0;
 const MEDIUM_CONGESTION_MULTIPLIER = 1.5;
 
 function getCongestionLevel(
@@ -46,7 +46,7 @@ function getCongestionLevel(
   return "low";
 }
 
-function getCongestionColor(level: "low" | "medium" | "high"): string {
+function _getCongestionColor(level: "low" | "medium" | "high"): string {
   switch (level) {
     case "high":
       return "text-red-400";
@@ -69,8 +69,8 @@ function getCongestionBg(level: "low" | "medium" | "high"): string {
 }
 
 export const FeeBreakdown: React.FC<FeeBreakdownProps> = ({
-  fromToken,
-  toToken,
+  fromToken: _fromToken,
+  toToken: _toToken,
   amount,
   className = "",
 }) => {
@@ -171,7 +171,7 @@ export const FeeBreakdown: React.FC<FeeBreakdownProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [hasValidAmount, wallet?.publicKey]);
+  }, [config.sorobanRpcUrl, hasValidAmount, wallet?.publicKey]);
 
   useEffect(() => {
     const timer = setTimeout(fetchFeeEstimate, 500);

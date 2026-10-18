@@ -31,8 +31,8 @@ import { CHART_TIMEFRAME_EVENT } from "@/lib/keyboardShortcuts";
 import { getItem, removeItem, setItem } from "@/utils/storage";
 import {
   CANDLE_RESOLUTIONS,
-  CandlestickChart,
   type CandleResolution,
+  CandlestickChart,
 } from "./CandlestickChart";
 
 // ─── Layout options ────────────────────────────────────────────────────────────

@@ -14,16 +14,16 @@ import {
   CANCEL_SELF_TRANSFER_AMOUNT,
   FEE_MULTIPLIER_PRESETS,
   MIN_REPLACEMENT_FEE_MULTIPLIER,
+  type NetworkContext,
+  type PendingTransactionRef,
   STUCK_THRESHOLD_MS,
+  type TransactionDetails,
   cancelPendingTransaction,
   computeReplacementBaseFee,
   formatElapsed,
   formatStroopsAsXlm,
   inspectTransaction,
   speedUpTransaction,
-  type NetworkContext,
-  type PendingTransactionRef,
-  type TransactionDetails,
 } from "@/lib/txSpeedUpOps";
 
 import { CongestionFeeAlert } from "@/components/common/CongestionFeeAlert";

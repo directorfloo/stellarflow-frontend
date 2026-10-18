@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
 import {
-  windowSeries,
-  aggregateSeriesStats,
-  computeSparklinePoints,
   type SeriesStats,
   type SeriesWindow,
   type SparklineGeometry,
+  aggregateSeriesStats,
+  computeSparklinePoints,
+  windowSeries,
 } from "./chartCalculations";
 import type {
   ChartWorkerOutboundMessage,
@@ -75,13 +75,14 @@ export function useChartWorker() {
 
     worker.addEventListener("message", handleMessage);
 
+    const pendingRequests = pendingRef.current;
     return () => {
       worker.removeEventListener("message", handleMessage);
-      pendingRef.current.forEach(({ timeoutId, reject }) => {
+      pendingRequests.forEach(({ timeoutId, reject }) => {
         clearTimeout(timeoutId);
         reject(new Error("Chart worker terminated"));
       });
-      pendingRef.current.clear();
+      pendingRequests.clear();
       worker.terminate();
       workerRef.current = null;
     };

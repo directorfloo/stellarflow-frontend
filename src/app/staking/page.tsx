@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
 import { useRafThrottle } from '../hooks/useRafThrottle';
-import { useTransformedCustomAddressField } from '@/app/hooks/useTransformedData';
-import { buildShortenedAddressMap } from '@/utils/addressUtils';
+import { useTransformedCustomAddressField as _useTransformedCustomAddressField } from '@/app/hooks/useTransformedData';
+import { buildShortenedAddressMap as _buildShortenedAddressMap } from '@/utils/addressUtils';
 import { 
-  ShieldCheck, 
-  Coins, 
-  Percent, 
-  Flame, 
-  Search, 
-  RefreshCw, 
-  AlertTriangle, 
-  Gavel, 
-  TrendingUp, 
-  ArrowUpRight 
+  AlertTriangle as _AlertTriangle,
+  ArrowUpRight as _ArrowUpRight,
+  Coins as _Coins,
+  Flame as _Flame,
+  Gavel as _Gavel,
+  Percent as _Percent,
+  RefreshCw as _RefreshCw,
+  Search as _Search,
+  ShieldCheck as _ShieldCheck,
+  TrendingUp as _TrendingUp
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import {
-  StakerTableRow,
   type StakerTableRecord,
+  StakerTableRow,
 } from '@/app/components/staking/StakerTableRow';
 import { AutoCompoundScheduler } from '@/app/components/staking/AutoCompoundScheduler';
 
@@ -71,10 +71,11 @@ export default function StakingPage() {
   const timeoutsRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
   useEffect(() => {
+    const timeouts = timeoutsRef.current;
     return () => {
       // Explicitly cleanup trailing timers on unmount
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current.clear();
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
     };
   }, []);
 

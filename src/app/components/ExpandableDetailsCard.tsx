@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useCallback, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import type { IconId } from "@/components/icons/iconIds";

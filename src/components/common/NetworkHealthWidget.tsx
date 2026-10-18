@@ -3,33 +3,33 @@
 import React, { useId, useState } from "react";
 import {
   Activity,
-  AlertTriangle,
-  ArrowUpRight,
+  CheckCircle2,
   Clock,
+  Flame,
   Gauge,
   Info,
   RefreshCw,
   Zap,
-  Flame,
-  CheckCircle2,
+  AlertTriangle as _AlertTriangle,
+  ArrowUpRight as _ArrowUpRight,
 } from "lucide-react";
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  type ChartOptions,
+  Filler,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
-  Filler,
-  type ChartOptions,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import {
-  useSorobanNetworkHealth,
   type CongestionLevel,
-  type FeeTrendPoint,
+  type FeeTrendPoint as _FeeTrendPoint,
+  useSorobanNetworkHealth,
 } from "@/hooks/useSorobanNetworkHealth";
 import { CongestionFeeAlert } from "./CongestionFeeAlert";
 
@@ -106,7 +106,7 @@ export function NetworkHealthWidget({
   const {
     metrics,
     isLoading,
-    error,
+    error: _error,
     isSimulatingHighCongestion,
     toggleSimulateHighCongestion,
     refresh,

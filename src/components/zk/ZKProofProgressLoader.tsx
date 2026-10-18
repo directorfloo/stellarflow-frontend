@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
-import { ZK_PROOF_STAGES, ZKProofProgressState, ZKProofStatus, type ZKProofConfig } from "./ZKProofTypes";
+import { type ZKProofConfig, ZKProofProgressState, ZKProofStatus, ZK_PROOF_STAGES } from "./ZKProofTypes";
 
 const STAGE_ESTIMATED_TIMES = [15, 45, 10, 5]; // seconds per stage
 

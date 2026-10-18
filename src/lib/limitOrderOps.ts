@@ -99,7 +99,7 @@ export async function submitLimitOrder(
     Networks,
     TransactionBuilder,
     nativeToScVal,
-    Transaction,
+    Transaction: _Transaction,
   } = await import("@stellar/stellar-sdk");
   const { Server } = await import("@stellar/stellar-sdk/rpc");
 
@@ -186,7 +186,7 @@ export async function cancelLimitOrder(
     Networks,
     TransactionBuilder,
     nativeToScVal,
-    Transaction,
+    Transaction: _Transaction,
   } = await import("@stellar/stellar-sdk");
   const { Server } = await import("@stellar/stellar-sdk/rpc");
 

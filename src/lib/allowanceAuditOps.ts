@@ -10,9 +10,9 @@
  * contract bindings land — the UI only depends on these two functions.
  */
 import {
-  computeRiskLevel,
-  UNLIMITED_ALLOWANCE_THRESHOLD,
   type TokenAllowance,
+  UNLIMITED_ALLOWANCE_THRESHOLD,
+  computeRiskLevel,
 } from "@/types/allowance";
 
 function buildAllowance(

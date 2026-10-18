@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useMemo as _useMemo, useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  CheckCircle2,
-  XCircle,
-  MinusCircle,
-  ArrowRight,
-  ShieldCheck,
-  Fuel,
-  Clock,
-  ExternalLink,
-  Copy,
-  Check,
-  Loader2,
-  Sparkles,
   AlertTriangle,
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  Clock,
+  Copy,
+  Fuel,
+  Loader2,
+  MinusCircle,
   RotateCcw,
+  ShieldCheck,
+  Sparkles,
+  XCircle,
+  ExternalLink as _ExternalLink,
 } from "lucide-react";
 import { useOptionalWallet } from "@/app/components/providers/WalletProvider";
 import { useGasFee } from "@/hooks/useGasFee";
@@ -131,7 +131,7 @@ export function MobileVoteCard({
 
   // Optional wallet state
   const walletContext = useOptionalWallet();
-  const walletConnected = walletContext?.isConnected ?? true;
+  const _walletConnected = walletContext?.isConnected ?? true;
   const connectedPublicKey = walletContext?.wallet?.publicKey ?? activeProposer;
 
   // Gas fee from live hook or fallback

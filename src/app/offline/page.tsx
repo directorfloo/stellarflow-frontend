@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { WifiOff, Wifi, RefreshCw, Database, Clock } from "lucide-react";
+import { Clock, Database, RefreshCw, Wifi, WifiOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 
 export default function OfflinePage() {
+  const router = useRouter();
   const { isOnline, lastOfflineTime } = useOnlineStatus();
   const [retrying, setRetrying] = useState(false);
   const [showCachedData, setShowCachedData] = useState(false);
@@ -58,11 +60,11 @@ export default function OfflinePage() {
   useEffect(() => {
     if (isOnline) {
       const timer = setTimeout(() => {
-        window.location.href = '/';
+        router.replace("/");
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [isOnline]);
+  }, [isOnline, router]);
 
   if (isOnline && !retrying) {
     return (

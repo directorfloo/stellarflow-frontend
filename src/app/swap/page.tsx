@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Horizon, Asset, Operation, TransactionBuilder } from "@stellar/stellar-sdk";
+import React, { useEffect, useMemo, useState } from "react";
+import { Asset, Horizon, Operation, TransactionBuilder } from "@stellar/stellar-sdk";
 import { NetworkProvider, useNetwork } from "@/app/components/providers/NetworkProvider";
 import { useWalletState } from "@/app/hooks/useWalletState";
 import { useSlippageTolerance } from "@/app/hooks/useSlippageTolerance";
@@ -39,7 +39,7 @@ function SwapContent() {
   const [destAsset, setDestAsset] = useState<Asset | null>(null);
   const [destAmount, setDestAmount] = useState<string>(""); // User enters how much receiver should get (strict receive)
   const [destinationAddress, setDestinationAddress] = useState<string>("");
-  const [paths, setPaths] = useState<PathRecord[]>([]);
+  const [_paths, setPaths] = useState<PathRecord[]>([]);
   const [selectedPath, setSelectedPath] = useState<PathRecord | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -127,7 +127,7 @@ function SwapContent() {
     });
     
     // Add intermediate path assets
-    selectedPath.path.forEach((hop, index) => {
+    selectedPath.path.forEach((hop, _index) => {
       const asset = hop.asset_type === "native" 
         ? Asset.native() 
         : new Asset(hop.asset_code!, hop.asset_issuer!);
@@ -173,7 +173,7 @@ function SwapContent() {
           : new Asset(hop.asset_code!, hop.asset_issuer!)
       );
 
-      const transaction = new TransactionBuilder(account, {
+      const _transaction = new TransactionBuilder(account, {
         fee: "100",
         networkPassphrase: networkPassphrase
       })

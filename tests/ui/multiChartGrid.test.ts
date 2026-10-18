@@ -20,7 +20,7 @@ import {
   saveMultiChartConfig,
   updateCellConfig,
 } from "@/components/trading/MultiChartGrid";
-import { getItem, setItem, __resetStorageForTests } from "@/utils/storage";
+import { __resetStorageForTests, getItem, setItem } from "@/utils/storage";
 
 /**
  * Pure-logic and persistence coverage for the multi-chart grid (Issue #999).

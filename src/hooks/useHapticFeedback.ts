@@ -7,18 +7,18 @@
  * Provides reactive user preference state, toggle functions, and semantic trigger helpers.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
+  HAPTIC_CHANGE_EVENT,
   HapticPattern,
-  HapticPreset,
+  HAPTIC_PATTERNS as _HAPTIC_PATTERNS,
+  HapticPreset as _HapticPreset,
+  cancelHaptic,
   getHapticsEnabled,
+  isHapticsSupported,
   setHapticsEnabled,
   toggleHaptics as toggleHapticsLib,
-  isHapticsSupported,
   triggerHaptic,
-  cancelHaptic,
-  HAPTIC_CHANGE_EVENT,
-  HAPTIC_PATTERNS,
 } from '@/lib/haptics';
 
 export interface UseHapticFeedbackReturn {

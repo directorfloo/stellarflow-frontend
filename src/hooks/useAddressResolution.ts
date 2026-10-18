@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
-  resolveAddress,
   type ResolvedAddress,
+  resolveAddress,
 } from "@/lib/addressResolution";
 
 export function useAddressResolution(input: string) {

@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Zap,
-  Clock,
-  Settings,
-  Trash2,
   CheckCircle2,
-  Loader2,
-  Shield,
+  Clock,
   Info,
+  Loader2,
+  Settings,
+  Shield,
+  Trash2,
+  Zap,
 } from 'lucide-react';
 import { useToast } from '@/components/ui/ToastQueue';
 

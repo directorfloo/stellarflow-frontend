@@ -12,7 +12,7 @@
  * All PnL/ROI math lives in `./lpPnl` so it stays unit-testable without a DOM.
  */
 
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
@@ -24,6 +24,11 @@ import {
   TrendingUp,
 } from "lucide-react";
 import {
+  type LPPnLRow,
+  type LPPnLSortKey,
+  type LPPnLStatusFilter,
+  type LPPosition,
+  type SortDirection,
   buildLPPnLCsv,
   computeLPPnLRows,
   filterLPPnLRows,
@@ -33,11 +38,6 @@ import {
   roiTone,
   sortLPPnLRows,
   summarizeLPPnL,
-  type LPPnLRow,
-  type LPPnLSortKey,
-  type LPPnLStatusFilter,
-  type LPPosition,
-  type SortDirection,
 } from "./lpPnl";
 
 // ---------------------------------------------------------------------------

@@ -1,16 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import { FxRateTicker, FxComparisonTable, FiatOnRampModal, SEP38RateChart } from "@/components/remittance";
-import { CorridorStatusMap, FxRateTicker, FxComparisonTable, FiatOnRampModal, type RemittanceCorridor } from "@/components/remittance";
-import { CorridorStatusMap, FxRateTicker, FxComparisonTable, FiatOnRampModal, SEP24InteractiveModal, type RemittanceCorridor } from "@/components/remittance";
+import {
+  CorridorStatusMap,
+  FiatOnRampModal,
+  FxComparisonTable,
+  FxRateTicker,
+  type RemittanceCorridor,
+  SEP24InteractiveModal,
+  SEP38RateChart,
+} from "@/components/remittance";
 import { RedeemNoteForm } from "@/components/remittance/RedeemNoteForm";
-import { ShieldedDepositModal } from "@/components/remittance/ShieldedDepositModal";
+import { ShieldedDepositModal as _ShieldedDepositModal } from "@/components/remittance/ShieldedDepositModal";
 import { useOptionalWallet, useOptionalWalletActions } from "@/app/components/providers/WalletProvider";
 import Link from "next/link";
 import { ArrowDownToLine, ArrowUpFromLine, CreditCard, LockKeyhole, Send, ShieldAlert } from "lucide-react";
-import { ArrowDownToLine, ArrowUpFromLine, CreditCard, LockKeyhole, ShieldAlert } from "lucide-react";
-import { RedeemNoteForm } from "@/components/remittance/RedeemNoteForm";
 import type { SEP24Operation } from "@/lib/sep24Interactive";
 
 export default function RemittancePage() {
@@ -19,7 +23,7 @@ export default function RemittancePage() {
   const wallet = walletState?.wallet;
   const [isOnRampOpen, setIsOnRampOpen] = useState(false);
   const [isSEP24Open, setIsSEP24Open] = useState(false);
-  const [isShieldedDepositOpen, setIsShieldedDepositOpen] = useState(false);
+  const [_isShieldedDepositOpen, setIsShieldedDepositOpen] = useState(false);
   const [sep24Operation, setSEP24Operation] = useState<SEP24Operation>("deposit");
   const [selectedCorridor, setSelectedCorridor] = useState<RemittanceCorridor | null>(null);
 

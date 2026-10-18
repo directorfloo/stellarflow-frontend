@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page, expect, test } from '@playwright/test';
 
 // Visual regression coverage (Issue #603)
 //

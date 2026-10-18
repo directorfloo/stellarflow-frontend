@@ -7,8 +7,8 @@ import { BridgeUnlockStepper } from "@/components/bridge/BridgeUnlockStepper";
 import { BridgeSignatureStatus } from "@/components/bridge/BridgeSignatureStatus";
 import type { RefundProgress } from "@/hooks/useBridgeRefunds";
 import {
-  FAILURE_REASON_LABELS,
   type BridgeTransferRecord,
+  FAILURE_REASON_LABELS,
 } from "@/types/bridge";
 
 const CHAIN_LABELS: Record<BridgeTransferRecord["originChain"], string> = {

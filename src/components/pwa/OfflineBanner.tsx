@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { WifiOff, Wifi, X, Clock } from "lucide-react";
+import { Clock, Wifi, WifiOff, X } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/useOnlineStatus";
 
 interface OfflineBannerProps {
@@ -32,7 +32,7 @@ export function OfflineBanner({
   dismissible = false, 
   autoHideDelay = 2000 
 }: OfflineBannerProps) {
-  const { isOnline, lastOfflineTime, lastOnlineTime } = useOnlineStatus();
+  const { isOnline, lastOfflineTime, lastOnlineTime: _lastOnlineTime } = useOnlineStatus();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [showReconnected, setShowReconnected] = useState(false);

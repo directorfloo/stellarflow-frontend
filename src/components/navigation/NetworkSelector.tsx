@@ -28,10 +28,10 @@ import React, { useCallback, useId } from "react";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
+  type NetworkTarget,
   useNetwork,
   useNetworkActions,
   useNetworkStatus,
-  type NetworkTarget,
 } from "@/app/components/providers/NetworkProvider";
 
 // ─────────────────────────────────────────────────────────────────────────────

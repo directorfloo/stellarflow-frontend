@@ -34,9 +34,9 @@ import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
   NETWORK_CONFIGS,
+  type NetworkTarget,
   useNetwork,
   useNetworkActions,
-  type NetworkTarget,
 } from "@/app/components/providers/NetworkProvider";
 import { useMounted } from "@/app/hooks/useMounted";
 

@@ -7,12 +7,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
-  normalizePreferences,
-  isCategoryEnabled,
-  buildNotificationDeepLink,
-  parseNotificationDeepLink,
-  DEFAULT_NOTIFICATION_PREFERENCES,
   CATEGORY_TO_EVENT,
+  DEFAULT_NOTIFICATION_PREFERENCES,
+  buildNotificationDeepLink,
+  isCategoryEnabled,
+  normalizePreferences,
+  parseNotificationDeepLink,
 } from "./notifications.ts";
 
 test("normalizePreferences fills defaults", () => {

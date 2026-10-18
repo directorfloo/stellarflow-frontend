@@ -2,7 +2,7 @@
 
 import React, { memo, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Shimmer } from "@/components/skeletons/Shimmer";
 import { MapSkeleton } from "@/components/skeletons/MapSkeleton";
 import { RateSparklineSkeleton } from "@/components/skeletons/RateSparklineSkeleton";

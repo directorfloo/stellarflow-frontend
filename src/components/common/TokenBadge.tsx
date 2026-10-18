@@ -219,7 +219,7 @@ interface TooltipContentProps {
 const TooltipContent = React.memo(function TooltipContent({
   contractAddress,
   issuerPublicKey,
-  symbol,
+  symbol: _symbol,
   onCopy,
 }: TooltipContentProps) {
   const [copiedField, setCopiedField] = useState<'address' | 'issuer' | null>(

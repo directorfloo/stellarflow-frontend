@@ -29,7 +29,7 @@ const statusConfig: Record<HealthStatus, { label: string; textColor: string; dot
 
 const GlobalHealthIndicator = ({ status = "ACTIVE" }: GlobalHealthIndicatorProps) => {
   const config = statusConfig[status];
-  const isActive = status === "ACTIVE";
+  const _isActive = status === "ACTIVE";
 
   return (
     <div className="flex items-center gap-2" >

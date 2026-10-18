@@ -19,17 +19,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  X,
-  KeyRound,
   AlertTriangle,
-  HelpCircle,
-  RefreshCw,
   ChevronDown,
   ChevronUp,
+  HelpCircle,
+  KeyRound,
+  RefreshCw,
+  X,
 } from "lucide-react";
 import type {
-  PublicKeyCredentialRequestOptionsJSON,
   AuthenticationResponseJSON,
+  PublicKeyCredentialRequestOptionsJSON,
 } from "@simplewebauthn/browser";
 import {
   classifyPasskeyError,
@@ -149,14 +149,6 @@ export function PasskeyLoginPrompt({
     }
   }, [isOpen]);
 
-  // ── Auto-start challenge on open once support is confirmed ───────────────
-  useEffect(() => {
-    if (isOpen && isSupported === true && phase === "idle") {
-      startAuthentication();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, isSupported]);
-
   // ── Keyboard shortcut ────────────────────────────────────────────────────
   useEffect(() => {
     if (!isOpen) return;
@@ -204,6 +196,13 @@ export function PasskeyLoginPrompt({
       setErrorCode(code);
     }
   }, [getOptions, verifyResponse, onSuccess, onClose, storeSetError]);
+
+  // ── Auto-start challenge on open once support is confirmed ───────────────
+  useEffect(() => {
+    if (isOpen && isSupported === true && phase === "idle") {
+      startAuthentication();
+    }
+  }, [isOpen, isSupported, phase, startAuthentication]);
 
   if (!isOpen) return null;
 

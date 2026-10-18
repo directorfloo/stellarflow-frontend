@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  TIMEOUT_OPTIONS,
   type InactivityTimeoutMinutes,
+  TIMEOUT_OPTIONS,
 } from "@/components/security/InactivityLockGuard";
 
 describe("InactivityLockGuard Configuration and Logic", () => {

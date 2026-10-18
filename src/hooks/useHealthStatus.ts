@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { getHealthStatusBatch, type HealthStatusBatch } from '@/lib/api/healthService';
+import { useEffect, useState } from 'react';
+import { type HealthStatusBatch, getHealthStatusBatch } from '@/lib/api/healthService';
 import { useOnlineStatus } from '@/app/hooks/useOnlineStatus';
 
 interface UseHealthStatusReturn {

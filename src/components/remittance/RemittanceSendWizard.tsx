@@ -4,12 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, Loader2, Send } from "lucide-react";
 import {
   BENEFICIARY_COUNTRIES,
-  COUNTRY_BANKING_RULES,
-  validateBeneficiary,
   type BeneficiaryFieldError,
+  COUNTRY_BANKING_RULES,
   type PayoutAsset,
+  validateBeneficiary,
 } from "@/lib/beneficiaries";
-import { SEND_ASSETS, type PayoutCorridor, type Sep38Quote } from "@/types/remittanceSend";
+import { type PayoutCorridor, SEND_ASSETS, type Sep38Quote } from "@/types/remittanceSend";
 
 /**
  * Cross-border remittance send wizard (#1078).

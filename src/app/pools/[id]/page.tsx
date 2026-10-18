@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import _Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPoolById, listPoolIds } from "@/lib/pools";
 import { PoolDetailClient } from "./PoolDetailClient";

@@ -16,18 +16,18 @@
 import { useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  Check,
   Fingerprint,
   Key,
   Laptop,
-  Smartphone,
-  Shield,
-  Trash2,
   Pencil,
-  Check,
-  X,
   Plus,
+  Shield,
+  Smartphone,
+  Trash2,
+  X,
 } from "lucide-react";
-import { usePasskeys, type PasskeyDevice } from "@/hooks/usePasskeys";
+import { type PasskeyDevice, usePasskeys } from "@/hooks/usePasskeys";
 
 // ---------------------------------------------------------------------------
 // Props

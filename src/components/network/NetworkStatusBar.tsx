@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import {
-  formatLatencyDisplay,
   classifyLatency,
+  formatLatencyDisplay,
 } from "@/config/rpcNodes";
-import { useNetworkHeartbeat, type UseNetworkHeartbeatReturn } from "@/hooks/useNetworkHeartbeat";
+import { type UseNetworkHeartbeatReturn, useNetworkHeartbeat } from "@/hooks/useNetworkHeartbeat";
 import { NodeFailoverDropdown } from "./NodeFailoverDropdown";
 
 export interface NetworkStatusBarProps {

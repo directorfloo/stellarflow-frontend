@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  WalletStateContext,
-  WalletStatusContext,
   WalletActionsContext,
   type WalletState,
+  WalletStateContext,
+  WalletStatusContext,
 } from './WalletProvider';
 
 export interface MockWalletConfig {
@@ -39,9 +39,15 @@ const DEFAULT_CONFIG: MockWalletConfig = {
  * live Stellar testnet connections during design iterations.
  * Can be used in Storybook or local development.
  */
-export function MockWalletProvider({ children, config = {} }: MockWalletProviderProps) {
-  const mergedConfig = { ...DEFAULT_CONFIG, ...config };
-  const [connected, setConnected] = useState(!!mergedConfig.initialConnected);
+export function MockWalletProvider({
+  children,
+  config = DEFAULT_CONFIG,
+}: MockWalletProviderProps) {
+  const mergedConfig = useMemo(
+    () => ({ ...DEFAULT_CONFIG, ...config }),
+    [config],
+  );
+  const [connected, _setConnected] = useState(!!mergedConfig.initialConnected);
   const [isChecking, setIsChecking] = useState(false);
   
   const walletState: WalletState | null = useMemo(() => {

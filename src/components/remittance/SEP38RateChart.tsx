@@ -3,15 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Chart,
   CategoryScale,
+  Chart,
+  type ChartConfiguration,
   Filler,
-  LinearScale,
   LineController,
   LineElement,
+  LinearScale,
   PointElement,
   Tooltip,
-  type ChartConfiguration,
 } from "chart.js";
 import {
   SEP38_PAIRS,
@@ -147,7 +147,7 @@ export default function SEP38RateChart({ className = "" }: SEP38RateChartProps) 
       chartRef.current = null;
     };
     // Chart is initialized once; rate data is applied by the update effect below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   useEffect(() => {

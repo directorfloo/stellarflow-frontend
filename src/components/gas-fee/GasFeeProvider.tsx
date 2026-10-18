@@ -16,10 +16,10 @@
 
 import React, { createContext, useContext, useMemo } from "react";
 import {
-  useGasFee,
   type FeeTier,
   type FeeTierPreset,
   type GasFeeSnapshot,
+  useGasFee,
 } from "@/hooks/useGasFee";
 
 // ─────────────────────────────────────────────────────────────────────────────

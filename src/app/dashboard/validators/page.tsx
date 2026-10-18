@@ -3,8 +3,8 @@
 import React, { useMemo, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
-  useValidatorAudit,
   type ValidatorNode,
+  useValidatorAudit,
 } from "../../hooks/useValidatorAudit";
 import { useDebouncedInput } from "../../hooks/useDebouncedInput";
 import { ValidatorHeartbeatCell } from "../../components/validators/ValidatorHeartbeatCell";
