@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useWallet } from '@/hooks/useWallet';
+import { useWallet } from '@/app/components/providers/WalletProvider';
 import { useRemoveLiquidity } from '@/hooks/useRemoveLiquidity';
 import { formatTokenAmount } from '@/utils/formatters';
 
@@ -28,7 +28,8 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
   position,
   onSuccess,
 }) => {
-  const { isConnected } = useWallet();
+  const { wallet } = useWallet();
+  const isConnected = wallet?.connected || false;
   const { removeLiquidity, isRemoving } = useRemoveLiquidity();
 
   const [percentage, setPercentage] = useState<number>(50);
@@ -56,7 +57,7 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
   if (!isOpen) return null;
 
   const handleExecute = async () => {
-    if (!isConnected || parseFloat(lpToBurn) <= 0) return;
+    if (!wallet?.connected || parseFloat(lpToBurn) <= 0) return;
 
     try {
       await removeLiquidity({
@@ -150,7 +151,7 @@ export const RemoveLiquidityModal: React.FC<RemoveLiquidityModalProps> = ({
         {/* Action Button */}
         <button
           onClick={handleExecute}
-          disabled={!isConnected || isRemoving || parseFloat(lpToBurn) <= 0}
+          disabled={!wallet?.connected || isRemoving || parseFloat(lpToBurn) <= 0}
           className={`w-full py-3 rounded-xl font-bold transition-all ${
             isRemoving
               ? 'bg-red-600/70 text-white cursor-wait'

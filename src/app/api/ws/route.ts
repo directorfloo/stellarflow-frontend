@@ -3,12 +3,20 @@ import { WebSocketServer, WebSocket } from 'ws'
 import {
   ASSET_SYMBOL_LIST,
   ASSET_BASE_PRICES,
-  ASSET_DECIMALS,
+  ASSET_DECIMALS
 } from '@/config/assetSymbols'
+import { listPools, type LiquidityPool } from '@/lib/pools'
+
+// Static export only supports GET handlers marked as static; the placeholder
+// GET below is prerendered at build time. The live socket server only exists
+// when the custom Node server (server.js) runs.
+export const dynamic = 'force-static'
 
 // Store active connections and subscriptions
 const connections = new Map<WebSocket, Set<string>>()
 const assetSubscriptions = new Map<string, Set<WebSocket>>()
+const payoutSubscriptions = new Map<string, Set<WebSocket>>()
+const payoutConnections = new Map<WebSocket, Set<string>>()
 
 let wss: WebSocketServer | null = null
 
@@ -55,8 +63,9 @@ function getWebSocketServer() {
   return wss
 }
 interface SocketMessage {
-  type: "subscribe" | "unsubscribe";
+  type: "subscribe" | "unsubscribe" | "subscribePayout" | "unsubscribePayout";
   assetIds?: string[];
+  payoutIds?: string[];
 }
 function handleMessage(ws: WebSocket, data: SocketMessage) {
   const { type, assetIds } = data
@@ -105,6 +114,49 @@ function handleMessage(ws: WebSocket, data: SocketMessage) {
       }
       break
 
+    case 'subscribePayout':
+      if (Array.isArray(data.payoutIds)) {
+        const subscribedPayouts = payoutConnections.get(ws) || new Set()
+
+        data.payoutIds.forEach((payoutId: string) => {
+          subscribedPayouts.add(payoutId)
+
+          if (!payoutSubscriptions.has(payoutId)) {
+            payoutSubscriptions.set(payoutId, new Set())
+          }
+          payoutSubscriptions.get(payoutId)!.add(ws)
+        })
+
+        payoutConnections.set(ws, subscribedPayouts)
+
+        ws.send(JSON.stringify({
+          type: 'payout_subscription_confirmed',
+          payoutIds: data.payoutIds,
+          timestamp: Date.now()
+        }))
+      }
+      break
+
+    case 'unsubscribePayout':
+      if (Array.isArray(data.payoutIds)) {
+        const subscribedPayouts = payoutConnections.get(ws) || new Set()
+
+        data.payoutIds.forEach((payoutId: string) => {
+          subscribedPayouts.delete(payoutId)
+
+          const subscribers = payoutSubscriptions.get(payoutId)
+          if (subscribers) {
+            subscribers.delete(ws)
+            if (subscribers.size === 0) {
+              payoutSubscriptions.delete(payoutId)
+            }
+          }
+        })
+
+        payoutConnections.set(ws, subscribedPayouts)
+      }
+      break
+
     default:
       ws.send(JSON.stringify({
         type: 'error',
@@ -126,6 +178,20 @@ function cleanupConnection(ws: WebSocket) {
       }
     })
     connections.delete(ws)
+  }
+
+  const subscribedPayouts = payoutConnections.get(ws)
+  if (subscribedPayouts) {
+    subscribedPayouts.forEach((payoutId: string) => {
+      const subscribers = payoutSubscriptions.get(payoutId)
+      if (subscribers) {
+        subscribers.delete(ws)
+        if (subscribers.size === 0) {
+          payoutSubscriptions.delete(payoutId)
+        }
+      }
+    })
+    payoutConnections.delete(ws)
   }
 }
 
@@ -169,13 +235,155 @@ function simulatePriceUpdates() {
   }, 2000 + Math.random() * 3000) // Random interval between 2-5 seconds
 }
 
+// Generate one side of a synthetic order book radiating out from `midPrice`.
+// Each level's `total` is the cumulative amount from the top of book down to
+// that level, so the client can size depth bars without re-summing.
+function generateOrderBookLevels(
+  midPrice: number,
+  side: 'bid' | 'ask',
+  levels = 10,
+) {
+  const result: { price: number; amount: number; total: number }[] = []
+  let total = 0
+
+  for (let i = 0; i < levels; i++) {
+    const step = midPrice * 0.0008 * (i + 1)
+    const price = side === 'bid' ? midPrice - step : midPrice + step
+    const amount = Math.round((50 + Math.random() * 950) * 100) / 100
+    total = Math.round((total + amount) * 100) / 100
+
+    result.push({
+      price: Math.round(price * 1e6) / 1e6,
+      amount,
+      total,
+    })
+  }
+
+  return result
+}
+
+// Simulate order book depth updates for demo purposes — broadcasts to the
+// same per-asset subscriber set used by price updates, distinguished by
+// `type: 'orderbook_update'`.
+function simulateOrderBookUpdates() {
+  const assets = ASSET_SYMBOL_LIST
+
+  setInterval(() => {
+    assets.forEach((assetId) => {
+      const subscribers = assetSubscriptions.get(assetId)
+      if (subscribers && subscribers.size > 0) {
+        const basePrice = ASSET_BASE_PRICES[assetId]
+        const variation = (Math.random() - 0.5) * 0.02 // ±1% variation
+        const midPrice = basePrice * (1 + variation)
+
+        const update = {
+          type: 'orderbook_update',
+          assetId,
+          data: {
+            assetPair: assetId,
+            bids: generateOrderBookLevels(midPrice, 'bid'),
+            asks: generateOrderBookLevels(midPrice, 'ask'),
+            timestamp: Date.now(),
+          },
+          timestamp: Date.now(),
+        }
+
+        subscribers.forEach((ws) => {
+          if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(update))
+          }
+        })
+      }
+    })
+  }, 1500 + Math.random() * 2000) // Random interval between 1.5-3.5 seconds
+}
+
+// Fraction of each swap fee that accrues to liquidity providers; the remainder
+// is the protocol cut. Applied on the server so the emitted split is
+// authoritative rather than being re-derived by every client.
+const LP_FEE_SHARE = 0.7
+
+// Simulate AMM swap executions for demo purposes — broadcasts to the same
+// per-subscription subscriber set used by the price and order book streams,
+// distinguished by `type: 'trade_execution'`. Subscribers key on the pool id
+// (e.g. "xlm-usdc"), so no extra protocol handshake is required.
+async function simulateTradeExecutions() {
+  // Resolved once — the pool registry is cached and effectively static.
+  const pools = await listPools().catch(() => [] as LiquidityPool[])
+  if (pools.length === 0) return
+
+  setInterval(() => {
+    pools.forEach((pool) => {
+      const subscribers = assetSubscriptions.get(pool.id)
+      if (!subscribers || subscribers.size === 0) return
+
+      const volumeUsd = 250 + Math.random() * 7_500
+      // Occasional outsized fill so downstream spike highlighting is
+      // exercised by the demo feed rather than only under real load.
+      const spike = Math.random() > 0.92 ? 4 + Math.random() * 6 : 1
+      const feeAmount = volumeUsd * (pool.feePercent / 100) * spike
+
+      const update = {
+        type: 'trade_execution',
+        assetId: pool.id,
+        data: {
+          poolId: pool.id,
+          volumeUsd,
+          feeAmount,
+          // Derive the protocol cut as the remainder so the two shares always
+          // reconcile exactly against `feeAmount` in integer-safe floating
+          // point, however small the fee is.
+          lpFee: feeAmount * LP_FEE_SHARE,
+          protocolFee: feeAmount - feeAmount * LP_FEE_SHARE,
+          feeAsset: pool.assetB,
+          timestamp: Date.now(),
+        },
+        timestamp: Date.now(),
+      }
+
+      subscribers.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify(update))
+        }
+      })
+    })
+  }, 700 + Math.random() * 500) // Random interval between 700-1200ms
+}
+
 // Start simulation after a delay
 setTimeout(simulatePriceUpdates, 1000)
+setTimeout(simulateOrderBookUpdates, 1200)
+setTimeout(simulateTradeExecutions, 1400)
 
 export async function GET(_request: NextRequest) {
   // This is a placeholder - WebSocket upgrade happens in the Next.js server
   return new NextResponse('WebSocket endpoint', { status: 200 })
 }
 
-// Export for use in server.js or custom server setup
-export { getWebSocketServer, assetSubscriptions }
+export async function POST(request: NextRequest) {
+  try {
+    const payload = await request.json()
+    const { transactionId, status, error } = payload
+    if (!transactionId || !status) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 })
+    }
+    const subscribers = payoutSubscriptions.get(transactionId)
+    if (subscribers) {
+      const update = {
+        type: 'payout_status_update',
+        transactionId,
+        status,
+        error: error || null,
+        timestamp: Date.now()
+      }
+      subscribers.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify(update))
+        }
+      })
+    }
+    return NextResponse.json({ received: true })
+  } catch {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+  }
+}

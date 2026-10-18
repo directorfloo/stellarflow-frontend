@@ -79,9 +79,19 @@ export const ICON_IDS = {
   mailIcon:   "icon-mail",
   save:       "icon-save",
   rotateCcw:  "icon-rotate-ccw",
+  volume2:    "icon-volume-2",
+  sun:        "icon-sun",
+  moon:       "icon-moon",
+  monitor:    "icon-monitor",
 
   // Governance page
   xCircle:    "icon-x-circle",
+  minus:      "icon-minus",
+
+  // QR / Remittance
+  qrCode:     "icon-qr-code",
+  camera:     "icon-camera",
+  scan:       "icon-scan",
 
   // Navigation / topbar
   logOut:     "icon-log-out",

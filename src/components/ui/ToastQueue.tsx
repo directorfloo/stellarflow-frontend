@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState, useCallback, useEffect, use
 import { AnimatePresence, motion } from "framer-motion";
 import Icon from "@/components/icons/Icon";
 import { ICON_IDS, IconId } from "@/components/icons/iconIds";
+import { useTransactionAudio } from "@/hooks/useTransactionAudio";
+import { triggerHaptic } from "@/lib/haptics";
 
 export type ToastStatus = "submitted" | "processing" | "confirmed" | "failed";
 
@@ -33,9 +35,37 @@ export function useToast() {
   return context;
 }
 
+/**
+ * Same queue as {@link useToast} but returns `null` instead of throwing when no
+ * provider is mounted, for globally-mounted UI that should still work — just
+ * without notifications — outside the provider tree.
+ */
+export function useOptionalToast() {
+  return useContext(ToastContext);
+}
+
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const timeouts = useRef<Record<string, NodeJS.Timeout>>({});
+  const { playSuccess, playFailure } = useTransactionAudio();
+
+  // Play a chime and trigger tactile haptic cues whenever a toast's status transitions,
+  // tracked outside of setState so the sound/haptic is a side effect, not a state
+  // update (avoids double-firing under React strict mode).
+  const lastPlayedStatus = useRef<Record<string, ToastStatus>>({});
+  useEffect(() => {
+    for (const toast of toasts) {
+      if (lastPlayedStatus.current[toast.id] === toast.status) continue;
+      lastPlayedStatus.current[toast.id] = toast.status;
+      if (toast.status === "submitted" || toast.status === "confirmed") {
+        triggerHaptic("txConfirm");
+        if (toast.status === "confirmed") playSuccess();
+      } else if (toast.status === "failed") {
+        triggerHaptic("error");
+        playFailure();
+      }
+    }
+  }, [toasts, playSuccess, playFailure]);
 
   const removeToast = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));

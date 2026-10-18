@@ -2,6 +2,7 @@
 
 import React, { useMemo, useCallback, useEffect, useRef, useState } from "react";
 import { subscribe } from "@/workers/masterTimerWorker";
+import { useDebounce } from "@/app/hooks/useDebounce";
 import { withShortenedAddressField } from "@/utils/addressUtils";
 import { useIsHydrated } from "@/app/hooks/useIsHydrated";
 import Icon from "@/components/icons/Icon";
@@ -34,8 +35,10 @@ export interface ProposalRecord {
 
 export interface ProposalListProps {
   proposals: ProposalRecord[];
-  /** Filter applied externally (e.g. tab selection). Defaults to "all". */
-  filter?: "all" | "active" | "archived";
+  /** Status filter applied externally (e.g. tab selection). Defaults to "all". */
+  filter?: "all" | ProposalStatus;
+  /** Called when the user clicks Vote on an active proposal. */
+  onVote?: (proposal: ProposalRecord) => void;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -188,6 +191,7 @@ interface ProposalRowProps {
   proposal: ProposalRecord & { shortenedAddress: string };
   ledgersRemaining: number;
   isHydrated: boolean;
+  onVote?: (proposal: ProposalRecord & { shortenedAddress: string }) => void;
 }
 
 function proposalRowAreEqual(prev: ProposalRowProps, next: ProposalRowProps): boolean {
@@ -197,7 +201,8 @@ function proposalRowAreEqual(prev: ProposalRowProps, next: ProposalRowProps): bo
     prev.proposal.votesFor === next.proposal.votesFor &&
     prev.proposal.votesAgainst === next.proposal.votesAgainst &&
     prev.ledgersRemaining === next.ledgersRemaining &&
-    prev.isHydrated === next.isHydrated
+    prev.isHydrated === next.isHydrated &&
+    prev.onVote === next.onVote
   );
 }
 
@@ -205,6 +210,7 @@ const ProposalRow = React.memo(function ProposalRow({
   proposal,
   ledgersRemaining,
   isHydrated,
+  onVote,
 }: ProposalRowProps) {
   return (
     <div
@@ -256,14 +262,27 @@ const ProposalRow = React.memo(function ProposalRow({
             quorumThreshold={proposal.quorumThreshold}
           />
 
-          <button
-            className="p-2 bg-[#0d1117] border border-gray-700 text-gray-400 rounded-lg shrink-0 self-end md:self-auto relative overflow-hidden"
-            aria-label={`View proposal ${proposal.id}`}
-            style={{ transition: "border-color 150ms ease" }}
-          >
-            <span className="absolute inset-0 bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none" />
-            <Icon id={ICON_IDS.chevronRight} size={18} className="relative z-10" />
-          </button>
+          {proposal.status === "Active" ? (
+            <button
+              type="button"
+              onClick={() => onVote?.(proposal)}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium shrink-0 self-end md:self-auto relative overflow-hidden hover:bg-blue-700 transition-colors"
+              aria-label={`Vote on proposal ${proposal.id}`}
+            >
+              <span className="absolute inset-0 bg-blue-700 opacity-0 transition-opacity duration-150 pointer-events-none" />
+              <Icon id={ICON_IDS.gavel} size={16} className="relative z-10" />
+              <span className="relative z-10">Vote</span>
+            </button>
+          ) : (
+            <button
+              className="p-2 bg-[#0d1117] border border-gray-700 text-gray-400 rounded-lg shrink-0 self-end md:self-auto relative overflow-hidden"
+              aria-label={`View proposal ${proposal.id}`}
+              style={{ transition: "border-color 150ms ease" }}
+            >
+              <span className="absolute inset-0 bg-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none" />
+              <Icon id={ICON_IDS.chevronRight} size={18} className="relative z-10" />
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -275,17 +294,20 @@ ProposalRow.displayName = "ProposalRow";
 // Empty State
 // ─────────────────────────────────────────────────────────────────────────────
 
-function EmptyState({ filter }: { filter: ProposalListProps["filter"] }) {
-  const label =
-    filter === "active"
-      ? "active proposals"
-      : filter === "archived"
-      ? "archived proposals"
-      : "proposals";
+function EmptyState({
+  filter,
+  hasSearch,
+}: {
+  filter: ProposalListProps["filter"];
+  hasSearch: boolean;
+}) {
+  const label = filter ? `${filter.toLowerCase()} proposals` : "proposals";
   return (
     <div className="flex flex-col items-center justify-center py-16 text-gray-500 gap-3">
       <Icon id={ICON_IDS.vote} size={32} className="opacity-30" />
-      <p className="text-sm">No {label} found</p>
+      <p className="text-sm">
+        {hasSearch ? `No ${label} match your search` : `No ${label} found`}
+      </p>
     </div>
   );
 }
@@ -294,8 +316,11 @@ function EmptyState({ filter }: { filter: ProposalListProps["filter"] }) {
 // ProposalList — main export
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function ProposalList({ proposals, filter = "all" }: ProposalListProps) {
+export function ProposalList({ proposals, filter = "all", onVote }: ProposalListProps) {
   const isHydrated = useIsHydrated();
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearch = useDebounce(searchTerm, 250);
+  const deferredSearch = React.useDeferredValue(debouncedSearch);
 
   // Pre-compute shortened proposer addresses at ingestion time
   const enrichedProposals = useMemo(
@@ -303,15 +328,21 @@ export function ProposalList({ proposals, filter = "all" }: ProposalListProps) {
     [proposals],
   );
 
-  // Filter by tab selection
+  // Search runs from the deferred value so typing stays responsive while the
+  // visible proposal collection updates after the debounce period.
   const visibleProposals = useMemo(() => {
-    if (filter === "active") return enrichedProposals.filter((p) => p.status === "Active");
-    if (filter === "archived")
-      return enrichedProposals.filter(
-        (p) => p.status === "Passed" || p.status === "Executed" || p.status === "Rejected",
-      );
-    return enrichedProposals;
-  }, [enrichedProposals, filter]);
+    const query = deferredSearch.trim().toLowerCase();
+
+    return enrichedProposals.filter((proposal) => {
+      const matchesStatus = filter === "all" || proposal.status === filter;
+      const matchesSearch =
+        query.length === 0 ||
+        proposal.title.toLowerCase().includes(query) ||
+        proposal.description?.toLowerCase().includes(query);
+
+      return matchesStatus && matchesSearch;
+    });
+  }, [deferredSearch, enrichedProposals, filter]);
 
   // Live ledger countdown — shared RAF ticker, throttled to one decrement per
   // ~STELLAR_LEDGER_SECONDS seconds rather than every frame.
@@ -350,20 +381,34 @@ export function ProposalList({ proposals, filter = "all" }: ProposalListProps) {
     return unsub;
   }, [isHydrated, onTick]);
 
-  if (visibleProposals.length === 0) {
-    return <EmptyState filter={filter} />;
-  }
-
   return (
-    <div className="space-y-4">
-      {visibleProposals.map((proposal) => (
-        <ProposalRow
-          key={proposal.id}
-          proposal={proposal}
-          ledgersRemaining={ledgerCounts[proposal.id] ?? proposal.endsInLedgers}
-          isHydrated={isHydrated}
+    <div>
+      <div className="relative mb-6 max-w-xl">
+        <Icon id={ICON_IDS.search} size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+        <input
+          type="search"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          placeholder="Search proposal titles or descriptions..."
+          aria-label="Search proposal titles or descriptions"
+          className="w-full rounded-md border border-gray-700 bg-[#0d1117] py-2 pl-10 pr-4 text-sm text-gray-100 focus:border-blue-500 focus:outline-none"
         />
-      ))}
+      </div>
+      {visibleProposals.length === 0 ? (
+        <EmptyState filter={filter} hasSearch={deferredSearch.trim().length > 0} />
+      ) : (
+        <div className="space-y-4">
+          {visibleProposals.map((proposal) => (
+            <ProposalRow
+              key={proposal.id}
+              proposal={proposal}
+              ledgersRemaining={ledgerCounts[proposal.id] ?? proposal.endsInLedgers}
+              isHydrated={isHydrated}
+              onVote={onVote}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

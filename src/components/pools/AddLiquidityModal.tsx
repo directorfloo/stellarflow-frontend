@@ -8,6 +8,7 @@ import {
   WalletProvider,
   useWallet,
 } from "@/app/components/providers/WalletProvider";
+import { submitSingleSidedLiquidity } from "@/lib/liquidityOps";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -38,6 +39,8 @@ export interface AddLiquidityModalProps {
   assetB: PoolAsset;
   /** On-chain reserves used to compute the counter-asset amount and LP estimate */
   reserves: PoolReserves;
+  /** Soroban pool contract that owns the atomic swap-and-mint entry point. */
+  poolContractId?: string;
   /** Human-readable pool identifier shown in the modal header */
   poolLabel?: string;
   onDepositSuccess?: (txHash: string) => void;
@@ -127,6 +130,47 @@ function parseAmount(raw: string): number {
   return isFinite(parsed) && parsed >= 0 ? parsed : NaN;
 }
 
+export interface SingleSidedDepositQuote {
+  inputAmount: number;
+  swapInputAmount: number;
+  swapOutputAmount: number;
+  finalAmountA: number;
+  finalAmountB: number;
+}
+
+/** Solves the reserve-aware 50/50 split before the transaction is signed. */
+export function calculateSingleSidedDepositQuote(
+  inputAmount: number,
+  inputAsset: "A" | "B",
+  reserves: PoolReserves,
+  feeBps = 30,
+): SingleSidedDepositQuote {
+  const reserveIn = inputAsset === "A" ? reserves.reserveA : reserves.reserveB;
+  const reserveOut = inputAsset === "A" ? reserves.reserveB : reserves.reserveA;
+  if (!isFinite(inputAmount) || inputAmount <= 0 || reserveIn <= 0 || reserveOut <= 0) {
+    return { inputAmount: 0, swapInputAmount: 0, swapOutputAmount: 0, finalAmountA: 0, finalAmountB: 0 };
+  }
+
+  const feeFactor = 1 - feeBps / 10_000;
+  const targetRatio = reserveOut / reserveIn;
+  let low = 0;
+  let high = inputAmount;
+  for (let iteration = 0; iteration < 64; iteration += 1) {
+    const swapInput = (low + high) / 2;
+    const effectiveInput = swapInput * feeFactor;
+    const swapOutput = (effectiveInput * reserveOut) / (reserveIn + effectiveInput);
+    if (swapOutput > (inputAmount - swapInput) * targetRatio) high = swapInput;
+    else low = swapInput;
+  }
+
+  const swapInputAmount = (low + high) / 2;
+  const effectiveInput = swapInputAmount * feeFactor;
+  const swapOutputAmount = (effectiveInput * reserveOut) / (reserveIn + effectiveInput);
+  return inputAsset === "A"
+    ? { inputAmount, swapInputAmount, swapOutputAmount, finalAmountA: inputAmount - swapInputAmount, finalAmountB: swapOutputAmount }
+    : { inputAmount, swapInputAmount, swapOutputAmount, finalAmountA: swapOutputAmount, finalAmountB: inputAmount - swapInputAmount };
+}
+
 // ---------------------------------------------------------------------------
 // Inner modal implementation (requires WalletProvider in the tree)
 // ---------------------------------------------------------------------------
@@ -138,12 +182,15 @@ function AddLiquidityModalContent({
   assetB,
   reserves,
   poolLabel,
+  poolContractId,
   onDepositSuccess,
   onDepositError,
 }: AddLiquidityModalProps) {
   // ── Input state ────────────────────────────────────────────────────────────
   const [rawAmountA, setRawAmountA] = useState("");
   const [touchedA, setTouchedA] = useState(false);
+  const [inputAsset, setInputAsset] = useState<"A" | "B">("A");
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
   // ── Submission state ───────────────────────────────────────────────────────
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -160,12 +207,13 @@ function AddLiquidityModalContent({
   const { wallet } = useWallet();
 
   // ── Derived calculations (memoised) ────────────────────────────────────────
-  const amountA = useMemo(() => parseAmount(rawAmountA), [rawAmountA]);
-
-  const amountB = useMemo(
-    () => calcCounterAmount(amountA, reserves.reserveA, reserves.reserveB),
-    [amountA, reserves.reserveA, reserves.reserveB],
+  const inputAmount = useMemo(() => parseAmount(rawAmountA), [rawAmountA]);
+  const quote = useMemo(
+    () => calculateSingleSidedDepositQuote(inputAmount, inputAsset, reserves),
+    [inputAmount, inputAsset, reserves],
   );
+  const amountA = quote.finalAmountA;
+  const amountB = quote.finalAmountB;
 
   const lpMintEstimate = useMemo(
     () => calcLpMintEstimate(amountA, amountB, reserves),
@@ -178,13 +226,12 @@ function AddLiquidityModalContent({
   );
 
   const isPoolEmpty = reserves.reserveA === 0 && reserves.reserveB === 0;
-  const hasValidAmounts =
-    isFinite(amountA) && amountA > 0 && isFinite(amountB) && amountB > 0;
+  const hasValidAmounts = !isPoolEmpty && amountA > 0 && amountB > 0;
 
   // ── Approval helpers ───────────────────────────────────────────────────────
 
-  const bothApproved =
-    approval.assetA === "approved" && approval.assetB === "approved";
+  const inputApprovalKey = inputAsset === "A" ? "assetA" : "assetB";
+  const inputApproved = approval[inputApprovalKey] === "approved";
 
   /**
    * Simulate on-chain allowance check for a single asset.
@@ -255,6 +302,8 @@ function AddLiquidityModalContent({
     if (!isOpen) {
       setRawAmountA("");
       setTouchedA(false);
+      setInputAsset("A");
+      setIsConfirmationOpen(false);
       setSubmitError(null);
       setTxHash(null);
       setIsSubmitting(false);
@@ -278,23 +327,31 @@ function AddLiquidityModalContent({
       return;
     }
 
-    if (!bothApproved) {
-      setSubmitError(
-        "Both assets must be approved before depositing. Use the Approve buttons above.",
-      );
+    if (!inputApproved) {
+      setSubmitError(`Approve ${inputAsset === "A" ? assetA.symbol : assetB.symbol} before depositing.`);
       return;
     }
 
+    setIsConfirmationOpen(true);
+  };
+
+  const handleConfirm = async () => {
     setIsSubmitting(true);
 
     try {
-      const { submitTransaction } = await import("@/lib/transactionOps");
-      const hash = await submitTransaction({
-        [assetA.contractId]: amountA,
-        [assetB.contractId]: amountB,
+      if (!poolContractId) throw new Error("This pool is missing its contract address.");
+      const toAtomic = (amount: number) => BigInt(Math.floor(amount * 1_000_000));
+      const result = await submitSingleSidedLiquidity({
+        poolContractId,
+        tokenInId: inputAsset === "A" ? assetA.contractId : assetB.contractId,
+        amountIn: toAtomic(inputAmount),
+        minAmountA: toAtomic(amountA * 0.995),
+        minAmountB: toAtomic(amountB * 0.995),
+        minLpAmount: toAtomic(lpMintEstimate * 0.995),
       });
-      setTxHash(hash);
-      onDepositSuccess?.(hash);
+      setTxHash(result.txHash);
+      setIsConfirmationOpen(false);
+      onDepositSuccess?.(result.txHash);
     } catch (err) {
       const error =
         err instanceof Error ? err : new Error("Deposit transaction failed.");
@@ -307,13 +364,13 @@ function AddLiquidityModalContent({
 
   // ── Derived UI states ──────────────────────────────────────────────────────
   const amountAError =
-    touchedA && rawAmountA !== "" && !isFinite(amountA)
+    touchedA && rawAmountA !== "" && (!isFinite(inputAmount) || inputAmount <= 0)
       ? "Enter a valid positive number."
       : null;
 
   const canSubmit =
     hasValidAmounts &&
-    bothApproved &&
+    inputApproved &&
     !isSubmitting &&
     txHash === null &&
     wallet?.connected === true;
@@ -360,14 +417,32 @@ function AddLiquidityModalContent({
           </div>
         </div>
 
-        {/* ── Asset A input ──────────────────────────────────────────────── */}
+        {/* ── Single-token input ─────────────────────────────────────────── */}
         <div className="space-y-1.5">
+          <div className="flex items-center justify-between gap-3">
           <label
             htmlFor="add-liq-amount-a"
             className="text-xs uppercase font-bold text-gray-500"
           >
-            {assetA.symbol} Amount
+            Deposit Token
           </label>
+            <div className="flex rounded-lg border border-gray-700 bg-[#0d1117] p-0.5" role="group" aria-label="Deposit token">
+              {(["A", "B"] as const).map((key) => {
+                const asset = key === "A" ? assetA : assetB;
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => { setInputAsset(key); setApproval({ assetA: "idle", assetB: "idle" }); setSubmitError(null); }}
+                    className={`px-2.5 py-1 text-xs font-semibold rounded-md ${inputAsset === key ? "bg-blue-600 text-white" : "text-gray-400 hover:text-gray-200"}`}
+                    disabled={isSubmitting || txHash !== null}
+                  >
+                    {asset.symbol}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div className="relative">
             <input
               id="add-liq-amount-a"
@@ -403,13 +478,13 @@ function AddLiquidityModalContent({
           )}
         </div>
 
-        {/* ── Asset B (auto-computed) ────────────────────────────────────── */}
+        {/* ── Calculated balanced contribution ───────────────────────────── */}
         <div className="space-y-1.5">
           <label
             htmlFor="add-liq-amount-b"
             className="text-xs uppercase font-bold text-gray-500"
           >
-            {assetB.symbol} Amount{" "}
+            Balanced Pool Contribution{" "}
             <span className="normal-case font-normal text-gray-600">
               (calculated)
             </span>
@@ -421,22 +496,22 @@ function AddLiquidityModalContent({
               readOnly
               value={
                 hasValidAmounts
-                  ? amountB.toFixed(6)
-                  : isPoolEmpty && isFinite(amountA) && amountA > 0
+                  ? `${amountA.toFixed(6)} ${assetA.symbol} + ${amountB.toFixed(6)} ${assetB.symbol}`
+                  : isPoolEmpty && isFinite(inputAmount) && inputAmount > 0
                   ? "—"
                   : ""
               }
               placeholder="0.000000"
               className="w-full rounded-lg border border-gray-700 bg-[#0d1117]/60 px-3 py-2.5 font-mono text-sm text-gray-400 placeholder:text-gray-600 focus:outline-none cursor-default pr-16"
-              aria-label={`Required ${assetB.symbol} amount (auto-calculated)`}
+              aria-label={`Calculated balanced ${assetA.symbol} and ${assetB.symbol} contribution`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-400 pointer-events-none">
-              {assetB.symbol}
+              {assetA.symbol} / {assetB.symbol}
             </span>
           </div>
           {!isPoolEmpty && (
             <p className="text-xs text-gray-600">
-              Automatically matched to the pool reserve ratio to prevent slippage.
+              The required swap is calculated from the pool ratio before signing.
             </p>
           )}
           {isPoolEmpty && (
@@ -495,14 +570,14 @@ function AddLiquidityModalContent({
           </div>
         )}
 
-        {/* ── Dual-asset approval state machine ─────────────────────────── */}
+        {/* ── Input-token approval state machine ─────────────────────────── */}
         <div className="space-y-2">
           <p className="text-xs uppercase font-bold text-gray-500">
-            Asset Approvals
+            Input Token Approval
           </p>
-          <div className="grid grid-cols-2 gap-3">
-            {(["assetA", "assetB"] as const).map((key) => {
-              const asset = key === "assetA" ? assetA : assetB;
+          <div className="grid grid-cols-1 gap-3">
+            {([inputApprovalKey] as const).map((key) => {
+              const asset = inputAsset === "A" ? assetA : assetB;
               const status = approval[key];
               const isApproved = status === "approved";
               const isLoading =
@@ -594,6 +669,20 @@ function AddLiquidityModalContent({
           </div>
         )}
 
+        {isConfirmationOpen && hasValidAmounts && (
+          <div className="rounded-lg border border-amber-500/30 bg-amber-950/10 p-4 space-y-3" role="region" aria-label="Deposit confirmation">
+            <div>
+              <p className="text-xs uppercase font-bold tracking-wider text-amber-400">Review atomic deposit</p>
+              <p className="mt-1 text-xs text-gray-400">One transaction performs the internal swap and LP mint.</p>
+            </div>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between gap-4"><span className="text-gray-400">Internal swap</span><span className="font-mono text-gray-200">{quote.swapInputAmount.toFixed(6)} {inputAsset === "A" ? assetA.symbol : assetB.symbol}</span></div>
+              <div className="flex justify-between gap-4"><span className="text-gray-400">Swap receives</span><span className="font-mono text-gray-200">{quote.swapOutputAmount.toFixed(6)} {inputAsset === "A" ? assetB.symbol : assetA.symbol}</span></div>
+              <div className="flex justify-between gap-4 border-t border-amber-500/10 pt-2"><span className="text-gray-400">LP token mint</span><span className="font-mono font-semibold text-emerald-400">{lpMintEstimate.toFixed(6)} LP</span></div>
+            </div>
+          </div>
+        )}
+
         {/* ── Success banner ─────────────────────────────────────────────── */}
         {txHash && (
           <div className="rounded-lg border border-emerald-500/40 bg-emerald-950/20 px-3 py-2 text-sm text-emerald-300">
@@ -613,11 +702,12 @@ function AddLiquidityModalContent({
           </button>
           {!txHash && (
             <button
-              type="submit"
+              type={isConfirmationOpen ? "button" : "submit"}
+              onClick={isConfirmationOpen ? handleConfirm : undefined}
               disabled={!canSubmit}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isSubmitting ? "Depositing…" : "Add Liquidity"}
+              {isSubmitting ? "Confirming…" : isConfirmationOpen ? "Confirm Deposit" : "Review Deposit"}
             </button>
           )}
         </div>

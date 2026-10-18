@@ -46,7 +46,7 @@ export const CorridorAssetIcon = React.memo(function CorridorAssetIcon({
       strokeLinejoin="round"
       className={className}
     >
-      <use xlink:href={`${CORRIDOR_SPRITE}#${symbolId}`} />
+      <use href={`${CORRIDOR_SPRITE}#${symbolId}`} />
     </svg>
   );
 });
@@ -80,22 +80,9 @@ export const CorridorSpriteIcon = React.memo(function CorridorSpriteIcon({
       strokeLinejoin="round"
       className={className}
     >
-      <use xlink:href={`${CORRIDOR_SPRITE}#${symbolId}`} />
+      <use href={`${CORRIDOR_SPRITE}#${symbolId}`} />
     </svg>
   );
 });
 
 CorridorSpriteIcon.displayName = "CorridorSpriteIcon";
-
-export function parseCorridorPairCodes(pair: string): [string, string] | null {
-  const segments = pair
-    .split(" / ")
-    .map((segment) => segment.trim())
-    .filter(Boolean);
-
-  if (segments.length < 2) {
-    return null;
-  }
-
-  return [segments[0], segments[1]];
-}

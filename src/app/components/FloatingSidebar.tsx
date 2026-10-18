@@ -8,12 +8,15 @@ import Icon from "@/components/icons/Icon";
 import { ICON_IDS } from "@/components/icons/iconIds";
 import type { IconId } from "@/components/icons/iconIds";
 import { useMounted } from "@/app/hooks/useMounted";
+import { motion, useReducedMotion } from "framer-motion";
 
 const navItems: { iconId: IconId; label: string; href: string }[] = [
   { iconId: ICON_IDS.layoutDashboard, label: "Dashboard",  href: "/" },
   { iconId: ICON_IDS.database,        label: "Contracts",  href: "/contracts" },
-  { iconId: ICON_IDS.lineChart,       label: "Analytics",  href: "/analytics" },
+  { iconId: ICON_IDS.lineChart,       label: "Analytics",  href: "/dashboard/portfolio" },
   { iconId: ICON_IDS.globe,           label: "Governance", href: "/governance" },
+  { iconId: ICON_IDS.shieldCheck,     label: "Multi-signature", href: "/multisig" },
+  { iconId: ICON_IDS.signal,          label: "RPC Benchmark", href: "/rpc-benchmark" },
   { iconId: ICON_IDS.settings,        label: "Settings",   href: "/settings" },
 ];
 
@@ -21,6 +24,7 @@ const FloatingSidebar = memo(() => {
   const mounted = useMounted();
   const pathname = usePathname();
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
   const [active, setActive] = useState(pathname ?? "Dashboard");
   const [hovered, setHovered] = useState<string | null>(null);
   const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null);
@@ -130,36 +134,42 @@ const FloatingSidebar = memo(() => {
               </>
             )}
 
-            <Link
-              href={href}
-              prefetch={false}
-              onClick={() => handleSetActive(href)}
-              onFocus={() => handlePrefetch(href)}
-              onMouseEnter={(e) => {
-                handleSetHovered(label, e);
-                handlePrefetch(href);
-              }}
-              onPointerEnter={(e) => handlePrefetch(href)}
-              onMouseOver={(e) => handlePrefetch(href)}
-              onMouseLeave={() => handleSetHovered(null)}
-              className="relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200"
-              style={{
-                color: isActive
-                  ? "#f5c842"
-                  : isHovered
-                    ? "#ffffff"
-                    : "rgba(255,255,255,0.45)",
-                background: isActive
-                  ? "rgba(245,200,66,0.12)"
-                  : isHovered
-                    ? "rgba(255,255,255,0.08)"
-                    : "transparent",
-                transform: isHovered && !isActive ? "scale(1.08)" : "scale(1)",
-              }}
-              aria-label={label}
+            <motion.div
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.08, y: -2 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}
+              transition={{ duration: shouldReduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Icon id={iconId} size={20} strokeWidth={isActive ? 2.2 : 1.8} />
-            </Link>
+              <Link
+                href={href}
+                prefetch={false}
+                onClick={() => handleSetActive(href)}
+                onFocus={() => handlePrefetch(href)}
+                onMouseEnter={(e) => {
+                  handleSetHovered(label, e);
+                  handlePrefetch(href);
+                }}
+                onPointerEnter={(e) => handlePrefetch(href)}
+                onMouseOver={(e) => handlePrefetch(href)}
+                onMouseLeave={() => handleSetHovered(null)}
+                className="relative flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200"
+                style={{
+                  color: isActive
+                    ? "#f5c842"
+                    : isHovered
+                      ? "#ffffff"
+                      : "rgba(255,255,255,0.45)",
+                  background: isActive
+                    ? "rgba(245,200,66,0.12)"
+                    : isHovered
+                      ? "rgba(255,255,255,0.08)"
+                      : "transparent",
+                  transform: isHovered && !isActive ? "scale(1.08)" : "scale(1)",
+                }}
+                aria-label={label}
+              >
+                <Icon id={iconId} size={20} strokeWidth={isActive ? 2.2 : 1.8} />
+              </Link>
+            </motion.div>
 
             {/* Tooltip */}
             {isHovered && mounted && hoveredRect && createPortal(

@@ -146,16 +146,18 @@ export function getItem<T>(
       return fallbackValue !== undefined ? fallbackValue : null;
     }
 
-    if (envelope.version < APP_STORAGE_VERSION) {
+    const envelopeVersion = Number(envelope.version);
+
+    if (envelopeVersion < APP_STORAGE_VERSION) {
       // Run migrations (if any migrations exist, or reset outdated storage)
-      console.info(`Migrating storage key ${key} from version ${envelope.version} to ${APP_STORAGE_VERSION}`);
-      const migratedData = runMigrations(key, envelope.data, envelope.version);
+      console.info(`Migrating storage key ${key} from version ${envelopeVersion} to ${APP_STORAGE_VERSION}`);
+      const migratedData = migrateStorageData(key, envelope.data, envelopeVersion);
       if (migratedData === null) {
         removeItem(key);
         return fallbackValue !== undefined ? fallbackValue : null;
       }
       setItem(key, migratedData);
-      envelope.data = migratedData;
+      envelope.data = migratedData as T;
     }
 
     // Schema Validation Check
@@ -210,9 +212,13 @@ export function clear(): void {
 }
 
 /**
- * Migrates data schemas when updating application versions
+ * Migrates data schemas when updating application versions.
+ *
+ * Exported so {@link file://./storageSanitizer.ts} validates boot-time entries
+ * against the exact same ladder this module applies on read — a second,
+ * divergent copy of `migrations` is how "it works until you read it" bugs start.
  */
-function runMigrations(key: string, data: unknown, fromVersion: number): unknown | null {
+export function migrateStorageData(key: string, data: unknown, fromVersion: number): unknown | null {
   try {
     let currentData = data;
     for (let version = fromVersion; version < APP_STORAGE_VERSION; version += 1) {

@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useWallet } from '@/hooks/useWallet';
+import { useWallet, useWalletActions } from '@/app/components/providers/WalletProvider';
 import { useSwapExecution } from '@/hooks/useSwapExecution';
 import { formatTokenAmount } from '@/utils/formatters';
+import { PathVisualizer } from './PathVisualizer';
+import { HighPriceImpactModal } from '@/components/trading';
+import { getLatestPrice } from '@/lib/priceStorage';
 
 export interface TokenOption {
   symbol: string;
@@ -17,7 +20,10 @@ interface SwapFormProps {
 }
 
 export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => {
-  const { isConnected, connectWallet, address } = useWallet();
+  const { wallet } = useWallet();
+  const { refreshWalletState } = useWalletActions();
+  const isConnected = wallet?.connected || false;
+  const address = wallet?.publicKey || '';
   const { executeSwap, isSwapping } = useSwapExecution();
 
   const [fromToken, setFromToken] = useState<TokenOption>(tokens[0]);
@@ -32,14 +38,19 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
   const [priceImpact, setPriceImpact] = useState<number>(0);
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false);
+  const [quoteError, setQuoteError] = useState<boolean>(false);
+  const [showHighImpactModal, setShowHighImpactModal] = useState<boolean>(false);
+  const [xlmUsdPrice, setXlmUsdPrice] = useState<number | null>(null);
+  const fromAmountInputRef = React.useRef<HTMLInputElement>(null);
+  const quoteKeyRef = React.useRef<string | null>(null);
 
   // Fetch token balances on asset or account change
   const fetchBalances = useCallback(async () => {
-    if (!isConnected || !address) return;
+    if (!wallet?.connected || !wallet.publicKey) return;
     try {
       const [resFrom, resTo] = await Promise.all([
-        fetch(`/api/v1/balances?account=${address}&token=${fromToken.address}`),
-        fetch(`/api/v1/balances?account=${address}&token=${toToken.address}`),
+        fetch(`/api/v1/balances?account=${wallet.publicKey}&token=${fromToken.address}`),
+        fetch(`/api/v1/balances?account=${wallet.publicKey}&token=${toToken.address}`),
       ]);
       const dataFrom = await resFrom.json();
       const dataTo = await resTo.json();
@@ -49,23 +60,35 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
     } catch (err) {
       console.error('Error fetching token balances:', err);
     }
-  }, [isConnected, address, fromToken, toToken]);
+  }, [wallet?.connected, wallet?.publicKey, fromToken, toToken]);
 
   useEffect(() => {
     fetchBalances();
   }, [fetchBalances]);
 
+  useEffect(() => {
+    let active = true;
+    getLatestPrice('USD-XLM').then((price) => {
+      if (active && price && price.price > 0) setXlmUsdPrice(1 / price.price);
+    }).catch(() => undefined);
+    return () => { active = false; };
+  }, []);
+
   // Fetch swap quote and auto-balance ratio calculation
   useEffect(() => {
     let isMounted = true;
+    const currentQuoteKey = `${fromToken.address}:${toToken.address}:${fromAmount}`;
+    quoteKeyRef.current = null;
     const fetchQuote = async () => {
       if (!fromAmount || parseFloat(fromAmount) <= 0) {
         setToAmount('');
         setPriceImpact(0);
+        setQuoteError(false);
         return;
       }
 
       setIsLoadingRate(true);
+      setQuoteError(false);
       try {
         const response = await fetch(
           `/api/v1/swap/quote?from=${fromToken.address}&to=${toToken.address}&amount=${fromAmount}`
@@ -75,9 +98,16 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
         if (isMounted && data) {
           setToAmount(data.estimatedOutput || '');
           setExchangeRate(data.rate || null);
-          setPriceImpact(data.priceImpact || 0);
+          const impact = Number(data.priceImpact);
+          if (Number.isFinite(impact) && data.estimatedOutput) {
+            setPriceImpact(impact);
+            quoteKeyRef.current = currentQuoteKey;
+          } else {
+            setPriceImpact(0);
+          }
         }
       } catch (err) {
+        if (isMounted) setQuoteError(true);
         console.error('Error fetching swap quote:', err);
       } finally {
         if (isMounted) setIsLoadingRate(false);
@@ -111,22 +141,14 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
   const isValidAmount = parsedFromAmount > 0;
 
   const submitButtonState = useMemo(() => {
-    if (!isConnected) return { text: 'Connect Wallet', disabled: false, action: connectWallet };
+    if (!isConnected) return { text: 'Connect Wallet', disabled: false, action: refreshWalletState };
     if (!isValidAmount) return { text: 'Enter an Amount', disabled: true };
     if (hasInsufficientBalance) return { text: `Insufficient ${fromToken.symbol} Balance`, disabled: true };
     if (isSwapping) return { text: 'Executing Swap...', disabled: true };
     return { text: 'Swap Tokens', disabled: false };
-  }, [isConnected, isValidAmount, hasInsufficientBalance, isSwapping, fromToken.symbol, connectWallet]);
+  }, [isConnected, isValidAmount, hasInsufficientBalance, isSwapping, fromToken.symbol, refreshWalletState]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (submitButtonState.action) {
-      submitButtonState.action();
-      return;
-    }
-
-    if (submitButtonState.disabled) return;
-
+  const performSwapExecution = async () => {
     try {
       await executeSwap({
         fromToken: fromToken.address,
@@ -137,12 +159,29 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
 
       setFromAmount('');
       setToAmount('');
+      setShowHighImpactModal(false);
       fetchBalances();
       if (onSwapSuccess) onSwapSuccess();
     } catch (err) {
       console.error('Swap execution failed:', err);
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (submitButtonState.disabled) return;
+
+    const currentQuoteKey = `${fromToken.address}:${toToken.address}:${fromAmount}`;
+    if (isLoadingRate || quoteError || quoteKeyRef.current !== currentQuoteKey || !toAmount) return;
+
+    if (priceImpact > 5) {
+      setShowHighImpactModal(true);
+      return;
+    }
+
+    await performSwapExecution();
+  };
+
 
   return (
     <div className="w-full max-w-lg mx-auto rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-2xl">
@@ -168,6 +207,7 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
           <div className="flex items-center gap-3">
             <input
               type="number"
+              ref={fromAmountInputRef}
               placeholder="0.0"
               value={fromAmount}
               onChange={(e) => setFromAmount(e.target.value)}
@@ -258,6 +298,11 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
           </div>
         )}
 
+        {/* Multi-Hop Route Visualization */}
+        {isValidAmount && (
+          <PathVisualizer fromToken={fromToken} toToken={toToken} amount={fromAmount} />
+        )}
+
         {/* Submit Button */}
         <button
           type="submit"
@@ -271,6 +316,27 @@ export const SwapForm: React.FC<SwapFormProps> = ({ tokens, onSwapSuccess }) => 
           {submitButtonState.text}
         </button>
       </form>
+
+      <HighPriceImpactModal
+        isOpen={showHighImpactModal}
+        priceImpact={priceImpact}
+        fromAmount={fromAmount}
+        fromSymbol={fromToken.symbol}
+        toAmount={toAmount}
+        toSymbol={toToken.symbol}
+        estimatedUsdLoss={fromToken.symbol.toUpperCase() === 'XLM' && xlmUsdPrice !== null
+          ? parsedFromAmount * xlmUsdPrice * (priceImpact / 100)
+          : null}
+        onConfirmSwap={performSwapExecution}
+        onAdjustTradeSize={() => {
+          setShowHighImpactModal(false);
+          requestAnimationFrame(() => fromAmountInputRef.current?.focus());
+        }}
+        onClose={() => {
+          setShowHighImpactModal(false);
+          requestAnimationFrame(() => fromAmountInputRef.current?.focus());
+        }}
+      />
     </div>
   );
 };

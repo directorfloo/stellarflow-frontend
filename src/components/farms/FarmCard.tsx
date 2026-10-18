@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useWallet } from '@/hooks/useWallet';
-import { useHarvestRewards } from '@/hooks/useHarvestRewards';
 import { formatTokenAmount, formatCountdown } from '@/utils/formatters';
+import YieldFarmModal from './YieldFarmModal';
+import { AutoHarvestGasOptimizationWizard } from './AutoHarvestGasOptimizationWizard';
 
 export interface FarmPool {
   id: string;
@@ -9,9 +9,12 @@ export interface FarmPool {
   pairTokens: [string, string];
   apr: number;
   userStakedLP: string;
+  walletLpBalance?: string;
   claimableRewards: string;
   rewardSymbol: string;
+  rewardEmissionRate?: string;
   lockExpiryTimestamp: number | null; // Unix timestamp in seconds
+  earlyUnstakePenaltyPercent?: number;
 }
 
 interface FarmCardProps {
@@ -20,10 +23,8 @@ interface FarmCardProps {
 }
 
 export const FarmCard: React.FC<FarmCardProps> = ({ farm, onRefresh }) => {
-  const { isConnected, connectWallet } = useWallet();
-  const { harvestRewards, isHarvesting } = useHarvestRewards();
-  
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [isFarmModalOpen, setIsFarmModalOpen] = useState(false);
 
   // Lockup countdown timer calculation
   useEffect(() => {
@@ -42,22 +43,6 @@ export const FarmCard: React.FC<FarmCardProps> = ({ farm, onRefresh }) => {
   }, [farm.lockExpiryTimestamp]);
 
   const isLocked = farm.lockExpiryTimestamp !== null && timeLeft > 0;
-  const hasClaimable = parseFloat(farm.claimableRewards) > 0;
-
-  const handleHarvest = async () => {
-    if (!isConnected) {
-      await connectWallet();
-      return;
-    }
-    
-    try {
-      await harvestRewards(farm.id);
-      if (onRefresh) onRefresh();
-    } catch (error) {
-      console.error('Failed to harvest rewards:', error);
-    }
-  };
-
   return (
     <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-lg hover:border-gray-700 transition-all">
       {/* Header: Pool Pair & APR */}
@@ -97,6 +82,8 @@ export const FarmCard: React.FC<FarmCardProps> = ({ farm, onRefresh }) => {
         </div>
       </div>
 
+      <AutoHarvestGasOptimizationWizard apr={farm.apr} />
+
       {/* Lockup Status & Countdown */}
       {farm.lockExpiryTimestamp !== null && (
         <div className="mb-4 rounded-lg bg-gray-800/60 p-3 flex items-center justify-between text-xs">
@@ -111,20 +98,20 @@ export const FarmCard: React.FC<FarmCardProps> = ({ farm, onRefresh }) => {
         </div>
       )}
 
-      {/* Action Button: One-Click Harvest */}
+      {/* Action Button: Manage the farm position */}
       <button
-        onClick={handleHarvest}
-        disabled={!hasClaimable || isHarvesting}
-        className={`w-full py-2.5 px-4 rounded-lg font-semibold transition-all duration-200 ${
-          !hasClaimable
-            ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
-            : isHarvesting
-            ? 'bg-yellow-600 text-white cursor-wait opacity-75'
-            : 'bg-yellow-500 hover:bg-yellow-400 text-gray-950 shadow-md hover:shadow-yellow-500/20'
-        }`}
+        onClick={() => setIsFarmModalOpen(true)}
+        className="w-full rounded-lg bg-yellow-500 px-4 py-2.5 font-semibold text-gray-950 shadow-md transition-all duration-200 hover:bg-yellow-400 hover:shadow-yellow-500/20"
       >
-        {isHarvesting ? 'Harvesting Rewards...' : 'Harvest Rewards'}
+        Manage farm
       </button>
+
+      <YieldFarmModal
+        isOpen={isFarmModalOpen}
+        onClose={() => setIsFarmModalOpen(false)}
+        farm={farm}
+        onRefresh={onRefresh}
+      />
     </div>
   );
 };

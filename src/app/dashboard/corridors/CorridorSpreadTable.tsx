@@ -1,12 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import type { CorridorMetrics } from "../../hooks/useCorridorMetrics";
-import {
-  CorridorAssetIcon,
-  CorridorSpriteIcon,
-  parseCorridorPairCodes,
-} from "./CorridorAssetIcon";
+import { corridorPairToId, parseCorridorPairCodes } from "@/lib/corridorId";
+import { CorridorAssetIcon, CorridorSpriteIcon } from "./CorridorAssetIcon";
 
 interface CorridorSpreadTableProps {
   metrics: CorridorMetrics[];
@@ -87,6 +85,15 @@ const CorridorSpreadRow = React.memo(
             {item.latencyMs}ms
           </span>
         </td>
+        <td className="py-3 px-4 text-right">
+          <Link
+            href={`/corridors/${corridorPairToId(item.pair)}`}
+            onClick={(event) => event.stopPropagation()}
+            className="text-xs font-mono text-lime-400 hover:underline"
+          >
+            View &rarr;
+          </Link>
+        </td>
       </tr>
     );
   },
@@ -132,6 +139,7 @@ export default function CorridorSpreadTable({
               <th className="py-3 px-4 text-right">Market Spread</th>
               <th className="py-3 px-4 text-right">24h Vol (USDC)</th>
               <th className="py-3 px-4 text-right">Ingestion Latency</th>
+              <th className="py-3 px-4 text-right">Details</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-800/50 text-sm">
