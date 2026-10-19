@@ -49,6 +49,9 @@ test.describe('Visual regression — landing page (Issue #603)', () => {
   for (const breakpoint of BREAKPOINTS) {
     test(`matches baseline at ${breakpoint.name}`, async ({ page }) => {
       await page.setViewportSize({ width: breakpoint.width, height: breakpoint.height });
+      await page.addInitScript(() => {
+        window.localStorage.setItem('stellarflow.onboarding.completed', 'true');
+      });
       await page.goto('/');
       await page.locator('body').waitFor({ state: 'visible' });
       await prepareForSnapshot(page);

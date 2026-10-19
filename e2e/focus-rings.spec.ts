@@ -21,7 +21,7 @@ test('keyboard focus rings cover native and ARIA controls, but not mouse focus',
     `;
   });
 
-  const button = page.getByRole('button', { name: 'Button' });
+  const button = page.getByRole('button', { name: 'Button', exact: true });
   await button.click();
   await expect(button).toBeFocused();
   expect(await button.evaluate((element) => element.matches(':focus-visible'))).toBe(false);

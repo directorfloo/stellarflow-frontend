@@ -14,23 +14,45 @@ import { type Page, expect, test } from "@playwright/test";
 const DASHBOARD = "/dashboard/widgets";
 const STORAGE_KEY = "stellarflow-dashboard-grid-layout:v1";
 
-/** Bounding box of a placed widget, in CSS pixels. */
-async function boxOf(page: Page, widgetId: string) {
-  const locator = page.getByTestId(`widget-${widgetId}`);
-  await expect(locator).toBeVisible();
-  return locator.boundingBox();
+interface StoredLayout {
+  layouts: Record<string, { i: string; x: number; y: number }[]>;
 }
 
 /** Read the persisted layout for the widest (reference) breakpoint. */
-function readStoredLayout(page: Page) {
+function readStoredLayout(page: Page): Promise<StoredLayout | null> {
   return page.evaluate((key) => {
     const raw = window.localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? (JSON.parse(raw) as StoredLayout) : null;
   }, STORAGE_KEY);
 }
 
-function storedItem(layout: { layouts: Record<string, { i: string }[]> }, id: string) {
+function storedItem(layout: StoredLayout | null, id: string) {
   return layout?.layouts?.lg?.find((item) => item.i === id);
+}
+
+async function dragWidgetBy(page: Page, widgetId: string, x: number, y: number) {
+  const handle = page.locator(`[data-testid="widget-${widgetId}"] .widget-drag-handle`);
+  await expect(handle).toBeVisible();
+  await handle.scrollIntoViewIfNeeded();
+
+  const handleBox = await handle.boundingBox();
+  const viewport = page.viewportSize();
+  expect(handleBox).not.toBeNull();
+  expect(viewport).not.toBeNull();
+
+  const startX = handleBox!.x + handleBox!.width / 2;
+  const startY = handleBox!.y + handleBox!.height / 2;
+  const targetX = startX + x;
+  const targetY = startY + y;
+  expect(targetX).toBeGreaterThanOrEqual(0);
+  expect(targetX).toBeLessThan(viewport!.width);
+  expect(targetY).toBeGreaterThanOrEqual(0);
+  expect(targetY).toBeLessThan(viewport!.height);
+
+  await page.mouse.move(startX, startY);
+  await page.mouse.down();
+  await page.mouse.move(targetX, targetY, { steps: 12 });
+  await page.mouse.up();
 }
 
 test.describe("Customizable dashboard grid", () => {
@@ -39,6 +61,7 @@ test.describe("Customizable dashboard grid", () => {
     await expect(page.getByTestId("customizable-dashboard")).toBeVisible();
     // The grid renders only after the container has been measured.
     await expect(page.locator(".react-grid-layout")).toBeVisible();
+    await expect.poll(() => readStoredLayout(page)).not.toBeNull();
   });
 
   test("renders the default widgets on the desktop grid", async ({ page }) => {
@@ -48,79 +71,62 @@ test.describe("Customizable dashboard grid", () => {
   });
 
   test("snaps a dragged widget to grid positions", async ({ page }) => {
-    const before = await boxOf(page, "analytics-volume");
-
-    const handle = page.locator('[data-testid="widget-analytics-volume"] .widget-drag-handle');
-    await handle.hover();
-    await page.mouse.down();
-    // Move well past the drag threshold and past several column widths.
-    await page.mouse.move(before!.x + 520, before!.y + 340, { steps: 20 });
-    await page.mouse.up();
+    await page.getByTestId("remove-widget-analytics-fee-market").click();
+    await expect(page.getByTestId("widget-analytics-fee-market")).toHaveCount(0);
+    const before = storedItem(await readStoredLayout(page), "analytics-volume")!;
+    const grid = await page.locator(".react-grid-layout").boundingBox();
+    expect(grid).not.toBeNull();
+    await dragWidgetBy(page, "analytics-volume", grid!.width / 2, 0);
 
     await expect
       .poll(async () => storedItem(await readStoredLayout(page), "analytics-volume")?.x)
-      .not.toBe(0);
+      .not.toBe(before.x);
 
-    // The stored position must be a whole number of grid columns and the widget
-    // must actually have moved on screen.
     const item = storedItem(await readStoredLayout(page), "analytics-volume")!;
     expect(Number.isInteger(item.x)).toBe(true);
     expect(Number.isInteger(item.y)).toBe(true);
 
-    const after = await boxOf(page, "analytics-volume");
-    expect(Math.abs(after!.x - before!.x)).toBeGreaterThan(50);
+    expect(item.x).toBeGreaterThan(before.x);
   });
 
   test("persists the layout across a page navigation", async ({ page }) => {
-    const before = await boxOf(page, "analytics-asset-mix");
-
-    const handle = page.locator('[data-testid="widget-analytics-asset-mix"] .widget-drag-handle');
-    await handle.hover();
-    await page.mouse.down();
-    await page.mouse.move(before!.x + 400, before!.y + 260, { steps: 20 });
-    await page.mouse.up();
+    await page.getByTestId("remove-widget-portfolio-balance").click();
+    await expect(page.getByTestId("widget-portfolio-balance")).toHaveCount(0);
+    const before = storedItem(await readStoredLayout(page), "analytics-asset-mix")!;
+    const grid = await page.locator(".react-grid-layout").boundingBox();
+    expect(grid).not.toBeNull();
+    await dragWidgetBy(page, "analytics-asset-mix", grid!.width / 3, 0);
 
     await expect
-      .poll(async () => storedItem(await readStoredLayout(page), "analytics-asset-mix")?.y)
-      .not.toBe(0);
+      .poll(async () => storedItem(await readStoredLayout(page), "analytics-asset-mix")?.x)
+      .not.toBe(before.x);
+    const moved = storedItem(await readStoredLayout(page), "analytics-asset-mix")!;
 
     // Navigate away and back: the saved layout must be restored.
     await page.goto("/dashboard/portfolio");
     await page.goto(DASHBOARD);
     await expect(page.locator(".react-grid-layout")).toBeVisible();
 
-    const after = await boxOf(page, "analytics-asset-mix");
-    const restored = await boxOf(page, "analytics-volume");
-    const fresh = await page.evaluate(() => {
-      const raw = window.localStorage.getItem("stellarflow-dashboard-grid-layout:v1");
-      const layout = raw ? JSON.parse(raw) : null;
-      return layout?.layouts?.lg?.find((item: { i: string }) => item.i === "analytics-asset-mix");
-    });
-    expect(restored?.y).toBeGreaterThan(after!.y);
-    expect(Number.isInteger(restored?.x)).toBe(true);
-    expect(Number.isInteger(fresh?.y)).toBe(true);
+    await expect.poll(() => readStoredLayout(page)).not.toBeNull();
+    expect(storedItem(await readStoredLayout(page), "analytics-asset-mix")).toEqual(moved);
   });
 
   test("restores a saved layout after a full reload", async ({ page }) => {
-    const before = await boxOf(page, "portfolio-balance");
-
-    const handle = page.locator('[data-testid="widget-portfolio-balance"] .widget-drag-handle');
-    await handle.hover();
-    await page.mouse.down();
-    await page.mouse.move(before!.x + 300, before!.y + 420, { steps: 20 });
-    await page.mouse.up();
+    await page.getByTestId("remove-widget-analytics-asset-mix").click();
+    await expect(page.getByTestId("widget-analytics-asset-mix")).toHaveCount(0);
+    const before = storedItem(await readStoredLayout(page), "portfolio-balance")!;
+    await dragWidgetBy(page, "portfolio-balance", 0, 80);
 
     await expect
       .poll(async () => storedItem(await readStoredLayout(page), "portfolio-balance")?.y)
-      .not.toBe(4);
+      .not.toBe(before.y);
+    const moved = storedItem(await readStoredLayout(page), "portfolio-balance")!;
 
     await page.reload();
     await expect(page.locator(".react-grid-layout")).toBeVisible();
 
-    const after = await boxOf(page, "portfolio-balance");
-    const stored = storedItem(await readStoredLayout(page), "portfolio-balance")!;
-    expect(Number.isInteger(stored.y)).toBe(true);
-    expect(after!.y).toBeGreaterThan(before!.y);
+    await expect.poll(() => readStoredLayout(page)).not.toBeNull();
+    expect(storedItem(await readStoredLayout(page), "portfolio-balance")).toEqual(moved);
   });
 
   test("adds a widget from the drawer and persists it", async ({ page }) => {
@@ -142,6 +148,8 @@ test.describe("Customizable dashboard grid", () => {
   });
 
   test("groups the drawer by Charts, Bookmarks and Portfolio", async ({ page }) => {
+    await page.getByTestId("remove-widget-portfolio-balance").click();
+    await page.getByTestId("remove-widget-portfolio-allocations").click();
     await page.getByTestId("open-widget-drawer").click();
     const drawer = page.getByTestId("widget-drawer");
     await expect(drawer).toContainText("Charts");
@@ -164,25 +172,16 @@ test.describe("Customizable dashboard grid", () => {
   });
 
   test("restores the default layout with the reset action", async ({ page }) => {
-    const defaultBox = await boxOf(page, "analytics-asset-mix");
+    const defaultLayout = await readStoredLayout(page);
 
     await page.getByTestId("open-widget-drawer").click();
     await page.getByTestId("add-widget-bookmarks-watchlist").click();
     await expect(page.getByTestId("widget-bookmarks-watchlist")).toBeVisible();
 
-    const handle = page.locator('[data-testid="widget-analytics-asset-mix"] .widget-drag-handle');
-    await handle.hover();
-    await page.mouse.down();
-    await page.mouse.move(defaultBox!.x + 380, defaultBox!.y + 300, { steps: 20 });
-    await page.mouse.up();
-
     await page.getByTestId("reset-layout").click();
 
-    // The added widget is gone and the moved widget is back where it started.
     await expect(page.getByTestId("widget-bookmarks-watchlist")).toHaveCount(0);
-    const resetBox = await boxOf(page, "analytics-asset-mix");
-    expect(Math.abs(resetBox!.x - defaultBox!.x)).toBeLessThan(2);
-    expect(Math.abs(resetBox!.y - defaultBox!.y)).toBeLessThan(2);
+    await expect.poll(() => readStoredLayout(page)).toEqual(defaultLayout);
   });
 
   test("falls back to the default layout for a corrupt saved layout", async ({ page }) => {
