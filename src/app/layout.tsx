@@ -159,6 +159,7 @@ export default async function RootLayout({
         className="antialiased font-sans flex flex-col min-h-screen"
       >
         <GlobalErrorBoundary>
+        <CircuitBreakerProvider>
         <OfflineBanner />
         {/*
           Circuit breaker provider wraps the whole tree so an on-chain
@@ -167,9 +168,7 @@ export default async function RootLayout({
           The banner itself sits above it in document order so it is the first
           thing a user meets when a pause lands.
         */}
-        <CircuitBreakerProvider>
-          <CircuitBreakerBanner />
-        </CircuitBreakerProvider>
+        <CircuitBreakerBanner />
         <CspReporterInit />
         <StorageSanitizer />
         <SvgSprite />
@@ -224,6 +223,7 @@ export default async function RootLayout({
             </HapticProvider>
           </AccessibilityProvider>
         </ThemeProvider>
+        </CircuitBreakerProvider>
         </GlobalErrorBoundary>
       </body>
     </html>
