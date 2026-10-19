@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @config "../../tailwind.config.js";
 
+html {
+  background-color: #0d1117;
+}
+
 /*
  * Tailwind CSS v4 dark mode
  * ─────────────────────────

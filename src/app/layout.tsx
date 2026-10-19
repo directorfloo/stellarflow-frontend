@@ -67,10 +67,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Fallback background colour while the script above runs. */}
-        <style>{`html{background-color:#0d1117}`}</style>
-        {/* Prevent background flash before next-themes hydrates */}
-        <style nonce={nonce}>{`html { background-color: #0d1117; }`}</style>
         {/* Preconnect to polyfill CDN (font files are self-hosted via next/font, so no Google Fonts preconnect needed) */}
         <link
           rel="preconnect"
