@@ -14,6 +14,12 @@ let globalState: OnlineStatusState = {
   lastOfflineTime: null,
 };
 
+const serverSnapshot: OnlineStatusState = {
+  isOnline: true,
+  lastOnlineTime: null,
+  lastOfflineTime: null,
+};
+
 const listeners = new Set<() => void>();
 
 function subscribe(callback: () => void) {
@@ -26,7 +32,7 @@ function getSnapshot() {
 }
 
 function getServerSnapshot() {
-  return { isOnline: true, lastOnlineTime: null, lastOfflineTime: null };
+  return serverSnapshot;
 }
 
 function notifyListeners() {

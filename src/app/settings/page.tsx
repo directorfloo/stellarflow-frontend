@@ -51,6 +51,7 @@ const TOGGLE_STYLES = {
 function SettingsContent() {
   const [showKey, setShowKey] = useState(false);
   const [_screenLockModalOpen, _setScreenLockModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Custom Horizon endpoint form
   const { horizonUrl, customHorizonUrl } = useNetwork();
@@ -270,6 +271,13 @@ function SettingsContent() {
             Push Notifications
           </h2>
           <NotificationPreferencesPanel compact />
+          <button
+            type="button"
+            onClick={() => setIsDrawerOpen(true)}
+            className="mt-4 text-sm text-blue-400 hover:underline"
+          >
+            Manage notification preferences
+          </button>
         </section>
 
         {/* Auto-Lock Security Settings */}

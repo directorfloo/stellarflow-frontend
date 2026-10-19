@@ -67,7 +67,12 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: subresourceRecoveryScript }} nonce={nonce} />
+        <Script
+          id="subresource-recovery"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: subresourceRecoveryScript }}
+          nonce={nonce}
+        />
         {/*
          * Flash-prevention: blocking inline script runs synchronously before
          * any CSS/JS loads. It reads the stored theme from localStorage and,
@@ -79,9 +84,12 @@ export default async function RootLayout({
          * again falling back to the OS `prefers-contrast: more` signal — so the
          * boosted palette is on <html> before paint and never flashes.
          *
-         * Must be a plain <script> tag (not next/script) so it blocks parsing.
+         * beforeInteractive keeps this ahead of hydration and the first paint.
          */}
-        <script
+        <Script
+          id="theme-preference-bootstrap"
+          strategy="beforeInteractive"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var r=document.documentElement;var s=localStorage.getItem('stellarflow-theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);r.classList.toggle('dark',d);r.classList.toggle('light',!d);var c=localStorage.getItem('stellarflow-high-contrast');var h=c===null?window.matchMedia('(prefers-contrast: more)').matches:c==='true';r.classList.toggle('high-contrast',h);r.dataset.contrast=h?'high':'normal';}catch(e){}})();`,
           }}
