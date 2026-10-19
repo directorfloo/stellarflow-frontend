@@ -67,33 +67,6 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Script
-          id="subresource-recovery"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: subresourceRecoveryScript }}
-          nonce={nonce}
-        />
-        {/*
-         * Flash-prevention: blocking inline script runs synchronously before
-         * any CSS/JS loads. It reads the stored theme from localStorage and,
-         * when absent, falls back to the OS colour-scheme preference.
-         * The correct "dark" or "light" class is applied to <html> before the
-         * first paint, eliminating any theme flash on hard-reload or cold start.
-         *
-         * It also restores the stored high-contrast (WCAG AAA) preference —
-         * again falling back to the OS `prefers-contrast: more` signal — so the
-         * boosted palette is on <html> before paint and never flashes.
-         *
-         * beforeInteractive keeps this ahead of hydration and the first paint.
-         */}
-        <Script
-          id="theme-preference-bootstrap"
-          strategy="beforeInteractive"
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var r=document.documentElement;var s=localStorage.getItem('stellarflow-theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);r.classList.toggle('dark',d);r.classList.toggle('light',!d);var c=localStorage.getItem('stellarflow-high-contrast');var h=c===null?window.matchMedia('(prefers-contrast: more)').matches:c==='true';r.classList.toggle('high-contrast',h);r.dataset.contrast=h?'high':'normal';}catch(e){}})();`,
-          }}
-        />
         {/* Fallback background colour while the script above runs. */}
         <style>{`html{background-color:#0d1117}`}</style>
         {/* Prevent background flash before next-themes hydrates */}
@@ -158,6 +131,24 @@ export default async function RootLayout({
       <body
         className="antialiased font-sans flex flex-col min-h-screen"
       >
+        <Script
+          id="subresource-recovery"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: subresourceRecoveryScript }}
+          nonce={nonce}
+        />
+        {/*
+         * Apply saved theme and contrast preferences before first paint.
+         * beforeInteractive runs this before Next.js client code loads.
+         */}
+        <Script
+          id="theme-preference-bootstrap"
+          strategy="beforeInteractive"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var r=document.documentElement;var s=localStorage.getItem('stellarflow-theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);r.classList.toggle('dark',d);r.classList.toggle('light',!d);var c=localStorage.getItem('stellarflow-high-contrast');var h=c===null?window.matchMedia('(prefers-contrast: more)').matches:c==='true';r.classList.toggle('high-contrast',h);r.dataset.contrast=h?'high':'normal';}catch(e){}})();`,
+          }}
+        />
         <GlobalErrorBoundary>
         <CircuitBreakerProvider>
         <OfflineBanner />
