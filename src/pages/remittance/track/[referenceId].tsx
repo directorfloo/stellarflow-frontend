@@ -158,6 +158,7 @@ export default function RemittanceTrackingPage() {
 
   const [data, setData] = useState<RemittanceTrackingData>(() => getMockTrackingData(referenceId));
   const [loading, setLoading] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(405);
   const [copied, setCopied] = useState(false);
   const [isSupportDrawerOpen, setIsSupportDrawerOpen] = useState(false);
@@ -184,6 +185,7 @@ export default function RemittanceTrackingPage() {
 
   // Live countdown timer
   useEffect(() => {
+    setIsHydrated(true);
     const updateCountdown = () => {
       const remainingMs = Math.max(0, data.estimatedArrivalMs - Date.now());
       setSecondsRemaining(Math.floor(remainingMs / 1000));
@@ -514,7 +516,7 @@ export default function RemittanceTrackingPage() {
                             >
                               {step.label}
                             </h3>
-                            {stepRecord?.completedAt && (
+                            {isHydrated && stepRecord?.completedAt && (
                               <span className="font-mono text-[11px] text-slate-400">
                                 {new Date(stepRecord.completedAt).toLocaleTimeString([], {
                                   hour: "2-digit",

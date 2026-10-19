@@ -113,6 +113,11 @@ export class WebSocketManager {
             this.tradeListeners.forEach((callback) =>
               callback(message.data as AmmTradeEvent),
             );
+          } else if (
+            message.type === "multisig_signature_request" ||
+            message.type === "multisig_signature_resolved"
+          ) {
+            this.multisigListeners.forEach((callback) => callback(message));
           } else {
             // Non-price indexer channels ride the same socket. They are fanned
             // out raw so each channel owns its own payload parsing.
@@ -197,6 +202,14 @@ export class WebSocketManager {
 
   public unsubscribeFromIndexerEvents(callback: IndexerEventCallback) {
     this.indexerEventListeners.delete(callback);
+  }
+
+  public subscribeToMultisigEvents(callback: MultisigCallback) {
+    this.multisigListeners.add(callback);
+  }
+
+  public unsubscribeFromMultisigEvents(callback: MultisigCallback) {
+    this.multisigListeners.delete(callback);
   }
 
   // Dynamic asset registration commands sent up to raw socket pipeline
